@@ -81,10 +81,6 @@
         <span class="nav-icon">📊</span> Dashboard
         <span class="nav-badge" id="badge-alertas">3</span>
       </div>
-      <div class="nav-item" onclick="showView('ia')">
-        <span class="nav-icon">🧠</span> Inteligência IA
-        <span class="nav-badge amber" id="badge-ia">7</span>
-      </div>
       <div class="nav-item" onclick="showView('alertas')">
         <span class="nav-icon">🚨</span> Alertas & Riscos
         <span class="nav-badge" id="badge-risk">5</span>
@@ -243,7 +239,7 @@
               </div>
             </div>
             <div class="card-body alert-panel">
-              <div class="alert-item critical" onclick="showView('ia')">
+              <div class="alert-item critical" onclick="showView('alertas')">
                 <div class="alert-dot critical"></div>
                 <div class="alert-content">
                   <div class="alert-title">Queda Crítica — Lucas Ferreira</div>
@@ -251,11 +247,11 @@
                 </div>
                 <div class="alert-time">2h</div>
               </div>
-              <div class="alert-item critical" onclick="showView('ia')">
+              <div class="alert-item critical" onclick="showView('alertas')">
                 <div class="alert-dot critical"></div>
                 <div class="alert-content">
-                  <div class="alert-title">NLP: Termos sensíveis detectados</div>
-                  <div class="alert-desc">"Isolado", "agressivo" — observações Prof. Carla, T. 8A.</div>
+                  <div class="alert-title">Atenção em observação — Rafael Santos</div>
+                  <div class="alert-desc">Comportamento e rendimento exigem revisão imediata.</div>
                 </div>
                 <div class="alert-time">5h</div>
               </div>
@@ -267,7 +263,7 @@
                 </div>
                 <div class="alert-time">1d</div>
               </div>
-              <div class="alert-item low" onclick="showView('ia')">
+              <div class="alert-item low" onclick="showView('alertas')">
                 <div class="alert-dot low"></div>
                 <div class="alert-content">
                   <div class="alert-title">Padrão Incomum Detectado</div>
@@ -347,7 +343,7 @@
               <thead>
                 <tr>
                   <th>Aluno</th><th>Turma</th><th>Matrícula</th><th>Frequência</th>
-                  <th>Média</th><th>Índice IA</th><th>Status</th><th>Ações</th>
+                  <th>Média</th><th>Status</th><th>Ações</th>
                 </tr>
               </thead>
               <tbody id="alunosTable"></tbody>
@@ -439,7 +435,7 @@
         <div class="page-header">
           <div class="page-header-icon purple">📝</div>
           <div><h2>Avaliações & Observações</h2>
-          <p>Notas quantitativas, qualitativas e análise NLP</p></div>
+          <p>Notas quantitativas, qualitativas e acompanhamento pedagógico</p></div>
           <div class="page-header-actions">
             <button class="btn btn-primary" onclick="openModal('modal-nota')">+ Lançar Nota</button>
             <button class="btn btn-ghost" onclick="openModal('modal-observacao')">💬 Observação</button>
@@ -456,7 +452,7 @@
           <div class="card">
             <div class="table-wrapper">
               <table>
-                <thead><tr><th>Aluno</th><th>Turma</th><th>Disciplina</th><th>Tipo</th><th>Nota</th><th>Data</th><th>Variação IA</th></tr></thead>
+                <thead><tr><th>Aluno</th><th>Turma</th><th>Disciplina</th><th>Tipo</th><th>Nota</th><th>Data</th></tr></thead>
                 <tbody id="notasTable"></tbody>
               </table>
             </div>
@@ -479,70 +475,6 @@
               </div>
               <canvas id="historicoChart" height="220"></canvas>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══════════════ IA ═══════════════ -->
-      <div id="view-ia" class="view">
-        <div class="page-header">
-          <div class="page-header-icon red">🧠</div>
-          <div><h2>Motor de Inteligência Artificial</h2>
-          <p>Análise preditiva · NLP · Detecção de anomalias · Séries temporais</p></div>
-          <div class="page-header-actions">
-            <button class="btn btn-amber" onclick="runAIAnalysis()">⚡ Executar Análise</button>
-          </div>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card red">
-            <div class="stat-label">Anomalias Detectadas</div>
-            <div class="stat-value">7</div>
-            <div class="stat-meta">Esta semana</div>
-            <div class="stat-icon">🔍</div>
-          </div>
-          <div class="stat-card amber">
-            <div class="stat-label">Alertas NLP</div>
-            <div class="stat-value">4</div>
-            <div class="stat-meta">Termos sensíveis</div>
-            <div class="stat-icon">💬</div>
-          </div>
-          <div class="stat-card blue">
-            <div class="stat-label">Correlações</div>
-            <div class="stat-value">12</div>
-            <div class="stat-meta">Frequência × Notas</div>
-            <div class="stat-icon">🔗</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-label">Precisão do Modelo</div>
-            <div class="stat-value">89%</div>
-            <div class="stat-meta">Baseado em histórico</div>
-            <div class="stat-icon">🎯</div>
-          </div>
-        </div>
-
-        <div class="grid-2" style="margin-bottom:20px">
-          <div class="card">
-            <div class="card-header"><h3>📉 Série Temporal — Anomalias Detectadas</h3></div>
-            <div class="card-body">
-              <canvas id="iaTimeChart" height="200"></canvas>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header"><h3>💬 Análise NLP — Observações</h3></div>
-            <div class="card-body">
-              <div id="nlpResults"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h3>🔍 Alunos Monitorados pela IA</h3>
-            <div class="card-subtitle">Detecção automática de padrões fora do normal</div>
-          </div>
-          <div class="card-body">
-            <div id="iaAlunosCards"></div>
           </div>
         </div>
       </div>
@@ -681,7 +613,7 @@
 <div class="modal-overlay" id="modal-observacao">
   <div class="modal">
     <div class="modal-title">💬 Observação Comportamental</div>
-    <div class="modal-sub">Análise qualitativa processada por NLP</div>
+    <div class="modal-sub">Registro de observação comportamental</div>
     <div class="form-grid">
       <div class="form-group"><label class="form-label">Aluno *</label><select class="form-select" id="o-aluno"></select></div>
       <div class="form-group"><label class="form-label">Observação *</label>
@@ -691,12 +623,8 @@
         <select class="form-select" id="o-prio"><option value="low">Baixa</option><option value="medium">Média</option><option value="high">Alta</option></select>
       </div>
     </div>
-    <div id="nlpPreview" style="display:none;margin-top:12px;padding:12px;background:var(--amber-pale);border-radius:10px;font-size:13px;color:#92400E">
-      <strong>⚡ IA Detectou:</strong> <span id="nlpPreviewText"></span>
-    </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-observacao')">Cancelar</button>
-      <button class="btn btn-amber" onclick="analyzeObservacao()">🧠 Analisar com IA</button>
       <button class="btn btn-primary" onclick="saveObservacao()">💾 Salvar</button>
     </div>
   </div>
@@ -836,11 +764,11 @@ const DB = {
     {id:1,alunoId:1,aluno:"Lucas Ferreira",meta:"Recuperar média para 6.0 até o 3º Bimestre",est:"Aulas de reforço 2x/semana. Reunião com família. Acompanhamento psicológico.",prazo:"2025-08-01",status:"Em andamento"},
   ],
   alertas: [
-    {id:1,tipo:"critical",titulo:"Risco Crítico — Lucas Ferreira",desc:"Queda de nota de 9.0 para 4.5 em 3 semanas. Frequência em 58%. IA Índice: 91/100",data:"2025-05-10 09:15",lido:false},
-    {id:2,tipo:"critical",titulo:"Termos NLP Detectados — Rafael Santos",desc:"Observações contêm: 'agressivo'. Aluno com frequência 45% e média 3.8.",data:"2025-05-09 14:22",lido:false},
+    {id:1,tipo:"critical",titulo:"Risco Crítico — Lucas Ferreira",desc:"Queda de nota de 9.0 para 4.5 em 3 semanas. Frequência em 58%.",data:"2025-05-10 09:15",lido:false},
+    {id:2,tipo:"critical",titulo:"Atenção em Observação — Rafael Santos",desc:"Aluno com frequência 45% e média 3.8. Intervenção recomendada.",data:"2025-05-09 14:22",lido:false},
     {id:3,tipo:"medium",titulo:"5 Faltas Consecutivas — Ana Souza",desc:"Aluna da Turma 6B sem justificativas registradas. Média caindo para 6.2.",data:"2025-05-08 11:00",lido:false},
-    {id:4,tipo:"critical",titulo:"Anomalia Coletiva — Turma 7C",desc:"3 alunos com queda simultânea de desempenho e frequência na mesma semana.",data:"2025-05-07 16:30",lido:false},
-    {id:5,tipo:"medium",titulo:"Termos NLP — Mateus Carvalho",desc:"Observação contém: 'triste', 'desmotivado'. Recomendado acompanhamento.",data:"2025-05-06 09:45",lido:false},
+    {id:4,tipo:"critical",titulo:"Queda Coletiva — Turma 7C",desc:"3 alunos com queda simultânea de desempenho e frequência na mesma semana.",data:"2025-05-07 16:30",lido:false},
+    {id:5,tipo:"medium",titulo:"Acompanhamento de Mateus Carvalho",desc:"Observação reforça necessidade de apoio individualizado.",data:"2025-05-06 09:45",lido:false},
     {id:6,tipo:"low",titulo:"Queda Moderada — Gabriel Alves",desc:"Média caiu 0.8 pontos este bimestre. Sem outros fatores detectados.",data:"2025-05-05 13:00",lido:true},
     {id:7,tipo:"low",titulo:"Frequência Abaixo de 75% — Ana Souza",desc:"Limite de atenção atingido. Notificação enviada para responsável.",data:"2025-05-03 08:30",lido:true},
   ],
@@ -891,7 +819,6 @@ const viewTitles = {
   turmas: ['Turmas & Instituições', 'Estrutura escolar'],
   frequencia: ['Frequência', 'Registro diário de presença'],
   avaliacoes: ['Avaliações', 'Notas e observações comportamentais'],
-  ia: ['Motor de IA', 'Análise preditiva · NLP · Anomalias'],
   alertas: ['Central de Alertas', 'Situações que requerem intervenção'],
   encaminhamentos: ['Encaminhamentos', 'Psicólogos · Conselho Tutelar · Família'],
   planos: ['Planos de Ação', 'Metas de recuperação individual'],
@@ -924,7 +851,6 @@ function renderView(view) {
     case 'turmas': renderTurmas(); break;
     case 'frequencia': renderFrequencia(); break;
     case 'avaliacoes': renderAvaliacoes(); break;
-    case 'ia': renderIA(); break;
     case 'alertas': renderAlertas(); break;
     case 'encaminhamentos': renderEncaminhamentos(); break;
     case 'planos': renderPlanos(); break;
@@ -1023,14 +949,12 @@ function renderAlunos(list) {
     const riskLabel = a.risco === 'critical' ? '🔴 Crítico' : a.risco === 'medium' ? '🟡 Moderado' : '🟢 Normal';
     const freqColor = a.freq < 70 ? 'var(--red)' : a.freq < 85 ? 'var(--amber)' : 'var(--green)';
     const mediaColor = a.media < 5 ? 'var(--red)' : a.media < 7 ? 'var(--amber)' : 'var(--green)';
-    const iaIdx = calcIAIndex(a);
     return `<tr>
       <td><div class="td-name"><div class="td-avatar ${getAvatarColor(a.id)}">${getInitials(a.nome)}</div><div><div style="font-weight:700;font-size:13.5px">${a.nome}</div><div style="font-size:11px;color:var(--text-muted)">${a.resp}</div></div></div></td>
       <td><span class="tag blue">${a.turma}</span></td>
       <td style="font-size:12px;color:var(--text-muted)">${a.mat}</td>
       <td><span style="font-weight:700;color:${freqColor}">${a.freq}%</span></td>
       <td><span style="font-weight:700;color:${mediaColor}">${a.media.toFixed(1)}</span></td>
-      <td><div class="ai-score ${riskClass}" style="width:46px;height:46px"><div class="ai-score-val" style="font-size:15px">${iaIdx}</div><div class="ai-score-label">IA</div></div></td>
       <td><span class="risk-badge ${riskClass}">${riskLabel}</span></td>
       <td><div style="display:flex;gap:6px">
         <button class="btn btn-ghost btn-sm btn-icon" onclick="showAlunoDetalhe(${a.id})" title="Ver detalhes">👁️</button>
@@ -1039,14 +963,6 @@ function renderAlunos(list) {
       </div></td>
     </tr>`;
   }).join('') || '<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">🔍</div><p>Nenhum aluno encontrado.</p></div></td></tr>';
-}
-
-function calcIAIndex(a) {
-  let score = 100;
-  if(a.freq < 70) score -= 30; else if(a.freq < 85) score -= 15;
-  if(a.media < 5) score -= 35; else if(a.media < 7) score -= 15;
-  if(a.obs && /isolado|agressiv|triste|desmotivad/i.test(a.obs)) score -= 20;
-  return Math.max(5, score);
 }
 
 function filterAlunos(val) {
@@ -1116,7 +1032,7 @@ function showAlunoDetalhe(id) {
       </div>
       <div style="margin-left:auto"><span class="risk-badge ${riskClass} " style="font-size:13px;padding:6px 14px">${a.risco==='critical'?'🔴 Risco Crítico':a.risco==='medium'?'🟡 Atenção Moderada':'🟢 Normal'}</span></div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
       <div style="text-align:center;padding:14px;background:var(--gray-50);border-radius:10px">
         <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:${a.freq<70?'var(--red)':a.freq<85?'var(--amber)':'var(--green)'}">${a.freq}%</div>
         <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Frequência</div>
@@ -1124,10 +1040,6 @@ function showAlunoDetalhe(id) {
       <div style="text-align:center;padding:14px;background:var(--gray-50);border-radius:10px">
         <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:${a.media<5?'var(--red)':a.media<7?'var(--amber)':'var(--green)'}">${a.media.toFixed(1)}</div>
         <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Média Geral</div>
-      </div>
-      <div style="text-align:center;padding:14px;background:var(--gray-50);border-radius:10px">
-        <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:var(--blue)">${calcIAIndex(a)}</div>
-        <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Índice IA</div>
       </div>
     </div>
     ${notas.length ? `<div style="margin-bottom:16px"><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--text-muted)">AVALIAÇÕES RECENTES</div>${notas.map(n=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-100);font-size:13px"><span>${n.disciplina} · ${n.tipo}</span><span style="font-weight:700;color:${n.nota<5?'var(--red)':n.nota<7?'var(--amber)':'var(--green)'}">${n.nota}</span></div>`).join('')}</div>` : ''}
@@ -1294,7 +1206,7 @@ function renderNotas() {
       <td><span class="tag gray">${n.tipo}</span></td>
       <td><strong style="font-size:16px;color:${n.nota<5?'var(--red)':n.nota<7?'var(--amber)':'var(--green)'}">${n.nota.toFixed(1)}</strong></td>
       <td style="font-size:12px;color:var(--text-muted)">${n.data}</td>
-      <td><span style="font-weight:700;color:${varColor}">${varIcon} ${Math.abs(n.var).toFixed(1)}</span>${n.var < -2 ? ' <span class="tag red" style="font-size:10px">⚡ IA</span>' : ''}</td>
+      <td><span style="font-weight:700;color:${varColor}">${varIcon} ${Math.abs(n.var).toFixed(1)}</span></td>
     </tr>`;
   }).join('');
 }
@@ -1308,7 +1220,6 @@ function renderObservacoes() {
         <div class="td-avatar ${getAvatarColor(o.alunoId)}" style="width:32px;height:32px">${getInitials(o.aluno)}</div>
         <strong>${o.aluno}</strong>
         <span class="tag ${o.prio==='high'?'red':o.prio==='medium'?'amber':'gray'}">${o.prio==='high'?'Alta':o.prio==='medium'?'Média':'Baixa'}</span>
-        ${o.termos.length ? `<div>${o.termos.map(t=>`<span class="nlp-tag negative">⚡ ${t}</span>`).join('')}</div>` : ''}
         <span style="margin-left:auto;font-size:11px;color:var(--text-muted)">${o.prof} · ${o.data}</span>
       </div>
       <div style="font-size:13.5px;color:var(--text);line-height:1.5">"${o.texto}"</div>
@@ -1324,7 +1235,7 @@ function saveNota() {
   const novaVar = nota - aluno.media;
   DB.notas.unshift({id:DB.notas.length+1,alunoId,aluno:aluno.nome,turma:aluno.turma,disciplina:document.getElementById('n-disc').value,tipo:document.getElementById('n-tipo').value,nota,bim:document.getElementById('n-bim').value,data:document.getElementById('n-data').value,var:+novaVar.toFixed(1)});
   aluno.media = +((aluno.media + nota)/2).toFixed(1);
-  if(novaVar < -2.5) { DB.alertas.unshift({id:Date.now(),tipo:'critical',titulo:'⚡ IA: Queda Detectada — '+aluno.nome,desc:`Nota ${nota} registrada. Queda de ${Math.abs(novaVar).toFixed(1)} pontos.`,data:new Date().toLocaleDateString('pt-BR'),lido:false}); document.getElementById('badge-alertas').textContent = DB.alertas.filter(a=>!a.lido).length; showToast('⚡ IA detectou queda significativa!','danger'); }
+  if(novaVar < -2.5) { DB.alertas.unshift({id:Date.now(),tipo:'critical',titulo:'Queda Detectada — '+aluno.nome,desc:`Nota ${nota} registrada. Queda de ${Math.abs(novaVar).toFixed(1)} pontos.`,data:new Date().toLocaleDateString('pt-BR'),lido:false}); document.getElementById('badge-alertas').textContent = DB.alertas.filter(a=>!a.lido).length; showToast('Queda significativa detectada!','danger'); }
   closeModal('modal-nota'); renderNotas(); showToast('Nota lançada!','success');
 }
 
@@ -1333,25 +1244,9 @@ function saveObservacao() {
   const aluno = DB.alunos.find(a=>a.id===alunoId);
   const texto = document.getElementById('o-texto').value.trim();
   if(!aluno || !texto) { showToast('Preencha todos os campos!','danger'); return; }
-  const termos = detectNLP(texto);
-  DB.observacoes.unshift({id:DB.observacoes.length+1,alunoId,aluno:aluno.nome,texto,prio:document.getElementById('o-prio').value,data:new Date().toLocaleDateString('pt-BR'),termos,prof:currentUser.nome});
-  if(termos.length) { showToast('⚡ NLP detectou termos sensíveis: ' + termos.join(', '),'warning'); }
+  DB.observacoes.unshift({id:DB.observacoes.length+1,alunoId,aluno:aluno.nome,texto,prio:document.getElementById('o-prio').value,data:new Date().toLocaleDateString('pt-BR'),termos:[],prof:currentUser.nome});
   closeModal('modal-observacao'); renderObservacoes(); showToast('Observação salva!','success');
   document.getElementById('o-texto').value = '';
-  document.getElementById('nlpPreview').style.display = 'none';
-}
-
-function analyzeObservacao() {
-  const texto = document.getElementById('o-texto').value;
-  const termos = detectNLP(texto);
-  const el = document.getElementById('nlpPreview');
-  if(termos.length) { el.style.display='block'; document.getElementById('nlpPreviewText').innerHTML = termos.map(t=>`<span class="nlp-tag negative">${t}</span>`).join(''); }
-  else { el.style.display='block'; el.style.background='var(--green-pale)'; el.style.color='#065F46'; document.getElementById('nlpPreviewText').textContent = 'Nenhum termo sensível detectado ✓'; }
-}
-
-function detectNLP(texto) {
-  const sensivel = ['isolado','isolada','agressiv','triste','desmotivad','chorando','brigou','xingou','desapareceu','não quer','recusa','apático','apática','ameaçou','machucou','abusado'];
-  return sensivel.filter(t => texto.toLowerCase().includes(t));
 }
 
 function switchTab(btn, tabId) {
@@ -1388,88 +1283,6 @@ function renderHistoricoChart(alunoId) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// IA
-// ═══════════════════════════════════════════════════════════
-function renderIA() {
-  renderNLPResults();
-  renderIAAlunos();
-  createIATimeChart();
-}
-
-function renderNLPResults() {
-  const el = document.getElementById('nlpResults');
-  if(!el) return;
-  el.innerHTML = DB.observacoes.filter(o=>o.termos.length>0).map(o => `
-    <div style="padding:12px;border-radius:10px;background:var(--red-pale);margin-bottom:10px;border-left:4px solid var(--red)">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <strong style="font-size:13px">${o.aluno}</strong>
-        <span style="font-size:11px;color:var(--text-muted)">${o.data} · ${o.prof}</span>
-      </div>
-      <div style="margin-bottom:6px">${o.termos.map(t=>`<span class="nlp-tag negative">⚡ ${t}</span>`).join('')}</div>
-      <div style="font-size:12px;color:var(--text-muted);line-height:1.4;font-style:italic">"${o.texto.substring(0,120)}…"</div>
-    </div>
-  `).join('') || '<div style="text-align:center;padding:24px;color:var(--text-muted)">✅ Nenhum termo sensível detectado recentemente.</div>';
-}
-
-function renderIAAlunos() {
-  const el = document.getElementById('iaAlunosCards');
-  if(!el) return;
-  const alunos = DB.alunos.filter(a=>a.risco !== 'normal');
-  el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px">` +
-    alunos.map(a => {
-      const idx = calcIAIndex(a);
-      const reasons = [];
-      if(a.freq < 70) reasons.push('📉 Frequência crítica: '+a.freq+'%');
-      if(a.freq < 85 && a.freq >= 70) reasons.push('⚠️ Frequência baixa: '+a.freq+'%');
-      if(a.media < 5) reasons.push('📉 Média crítica: '+a.media);
-      if(a.media < 7 && a.media >= 5) reasons.push('⚠️ Média abaixo do esperado: '+a.media);
-      const obsA = DB.observacoes.filter(o=>o.alunoId===a.id && o.termos.length);
-      if(obsA.length) reasons.push('🧠 NLP: '+[...new Set(obsA.flatMap(o=>o.termos))].join(', '));
-      return `<div class="card" style="border-left:4px solid ${a.risco==='critical'?'var(--red)':'var(--amber)'}">
-        <div class="card-body">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-            <div class="td-avatar ${getAvatarColor(a.id)}" style="width:44px;height:44px;font-size:16px;border-radius:12px">${getInitials(a.nome)}</div>
-            <div>
-              <div style="font-weight:800;font-size:14px">${a.nome}</div>
-              <div style="font-size:12px;color:var(--text-muted)">Turma ${a.turma}</div>
-            </div>
-            <div class="ai-score ${a.risco}" style="margin-left:auto">
-              <div class="ai-score-val">${idx}</div>
-              <div class="ai-score-label">IA</div>
-            </div>
-          </div>
-          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:6px">Fatores Detectados</div>
-          ${reasons.map(r=>`<div style="font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:6px">${r}</div>`).join('')}
-          <div style="display:flex;gap:6px;margin-top:12px">
-            <button class="btn btn-ghost btn-sm" onclick="showAlunoDetalhe(${a.id})">👁️ Ver Perfil</button>
-            <button class="btn btn-amber btn-sm" onclick="closeModal('modal-aluno-detalhe');showView('encaminhamentos');setTimeout(()=>openModal('modal-encaminhamento'),100)">🔀 Encaminhar</button>
-          </div>
-        </div>
-      </div>`;
-    }).join('') + '</div>';
-}
-
-function createIATimeChart() {
-  const ctx = document.getElementById('iaTimeChart');
-  if(!ctx || chartsCreated.iaTimeChart) return;
-  chartsCreated.iaTimeChart = new Chart(ctx, {
-    type:'line',
-    data:{
-      labels:['Jan','Fev','Mar','Abr','Mai'],
-      datasets:[
-        {label:'Anomalias Detectadas',data:[2,3,4,5,7],borderColor:'var(--red)',backgroundColor:'rgba(239,68,68,0.1)',fill:true,tension:0.4,pointRadius:6,pointBackgroundColor:'var(--red)'},
-        {label:'Alertas NLP',data:[1,2,2,3,4],borderColor:'var(--amber)',backgroundColor:'rgba(245,158,11,0.08)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'var(--amber)'},
-      ]
-    },
-    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{family:'Nunito'},boxWidth:12}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false}}}}
-  });
-}
-
-function runAIAnalysis() {
-  showToast('🧠 Análise IA em execução…','info');
-  setTimeout(()=>{ showToast('✅ Análise concluída! 7 anomalias encontradas.','success'); renderIA(); },1800);
-}
-
 // ═══════════════════════════════════════════════════════════
 // ALERTAS
 // ═══════════════════════════════════════════════════════════
@@ -1592,8 +1405,8 @@ function renderRelatorios() {
   const reports = [
     {icon:'📊',title:'Relatório de Desempenho',desc:'Médias por turma, disciplina e bimestre.',color:'blue',btn:'Gerar PDF'},
     {icon:'📅',title:'Relatório de Frequência',desc:'Taxas de presença, ausência e justificativas.',color:'green',btn:'Gerar PDF'},
-    {icon:'🚨',title:'Alunos em Risco',desc:'Lista anonimizada de alunos com Índice IA elevado.',color:'red',btn:'Gerar PDF'},
-    {icon:'🧠',title:'Análise IA Completa',desc:'Anomalias, NLP e correlações detectadas.',color:'purple',btn:'Gerar Relatório'},
+    {icon:'🚨',title:'Alunos em Risco',desc:'Lista dos alunos com maior atenção e acompanhamento.',color:'red',btn:'Gerar PDF'},
+    {icon:'📈',title:'Análise de Desempenho',desc:'Indicadores de evolução, quedas e atenção pedagógica.',color:'purple',btn:'Gerar Relatório'},
     {icon:'🔀',title:'Encaminhamentos',desc:'Registro de todos os encaminhamentos do período.',color:'amber',btn:'Gerar PDF'},
     {icon:'📋',title:'Conselho de Classe',desc:'Relatório consolidado para reunião pedagógica.',color:'blue',btn:'Gerar PDF'},
   ];
@@ -1662,7 +1475,7 @@ function renderLGPD() {
             <div style="font-size:12px;font-family:monospace;background:var(--navy);color:#A5F3FC;padding:14px;border-radius:10px;line-height:1.8">
               <div>[${new Date().toLocaleDateString('pt-BR')} 09:15] LOGIN — Ana Coordenadora (Gestor)</div>
               <div>[${new Date().toLocaleDateString('pt-BR')} 09:18] ACESSO — Perfil Lucas Ferreira</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:22] ALERTA — IA gerou alerta crítico #007</div>
+              <div>[${new Date().toLocaleDateString('pt-BR')} 09:22] ALERTA — Alerta crítico registrado #007</div>
               <div>[${new Date().toLocaleDateString('pt-BR')} 09:25] ENCAMINHAMENTO — Criado para Rafael Santos</div>
               <div>[${new Date().toLocaleDateString('pt-BR')} 09:31] NOTA — Lançamento de avaliação</div>
               <div>[${new Date().toLocaleDateString('pt-BR')} 09:45] RELATORIO — Gerado (Anonimizado)</div>
