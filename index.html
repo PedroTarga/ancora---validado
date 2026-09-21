@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,8 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<link rel="stylesheet" href="assets/css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+<script src="script.js" defer></script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -31,7 +33,7 @@
       <option value="psicologo">🩺 Profissional de Apoio / Psicólogo</option>
       <option value="pais">👨‍👩‍👧 Responsável / Pais</option>
     </select>
-    <div id="login-prof-row" class="d-none">
+    <div id="login-prof-row" style="display:none">
       <label class="login-label">Identificar Professor</label>
       <select class="login-input" id="loginProfId">
         <option value="1">Prof. Carla Mendes — Matemática (8A · 8B · 9A)</option>
@@ -40,7 +42,7 @@
         <option value="4">Prof. José Teixeira — História (8B · 9A)</option>
       </select>
     </div>
-    <div id="login-pais-row" class="d-none">
+    <div id="login-pais-row" style="display:none">
       <label class="login-label">Identificar Filho(a)</label>
       <select class="login-input" id="loginAlunoId">
         <option value="1">Lucas Ferreira — Turma 8A</option>
@@ -93,8 +95,11 @@
       <div class="nav-item" onclick="showView('professores')">
         <span class="nav-icon">👩‍🏫</span> Professores
       </div>
+      <div class="nav-item" onclick="showView('disciplinas')">
+        <span class="nav-icon">📚</span> Disciplinas
+      </div>
       <div class="nav-item" onclick="showView('turmas')">
-        <span class="nav-icon">🏛️</span> Turmas & Instituições
+        <span class="nav-icon">🏛️</span> Turmas
       </div>
       <div class="nav-item" onclick="showView('frequencia')">
         <span class="nav-icon">📅</span> Frequência
@@ -107,8 +112,11 @@
       <div class="nav-item" onclick="showView('encaminhamentos')">
         <span class="nav-icon">🔀</span> Encaminhamentos
       </div>
-      <div class="nav-item" onclick="showView('planos')">
-        <span class="nav-icon">📋</span> Planos de Ação
+      <div class="nav-item" onclick="showView('casos')">
+        <span class="nav-icon">📋</span> Acompanhamento de Casos
+      </div>
+      <div class="nav-item" onclick="showView('laudos')">
+        <span class="nav-icon">📎</span> Laudos
       </div>
 
       <div class="nav-section-label">Relatórios</div>
@@ -126,8 +134,8 @@
           <div class="sidebar-user-name" id="sidebar-name">Gestor</div>
           <div class="sidebar-user-role" id="sidebar-role">Coordenação</div>
         </div>
-        <button class="sidebar-logout" onclick="doLogout()" title="Sair">↩</button>
       </div>
+      <button class="btn-sair-full" onclick="doLogout()">↩ Sair / Trocar Perfil</button>
     </div>
   </aside>
 
@@ -147,7 +155,7 @@
         🔔
         <div class="notif-dot"></div>
       </div>
-      <div class="topbar-icon-btn" title="Configurações">⚙️</div>
+      <button class="topbar-sair" onclick="doLogout()">↩ Sair</button>
     </header>
 
     <div class="page-content">
@@ -238,7 +246,7 @@
                 <div class="card-subtitle">Revisão necessária</div>
               </div>
             </div>
-            <div class="card-body alert-panel">
+            <div class="card-body" style="padding:14px">
               <div class="alert-item critical" onclick="showView('alertas')">
                 <div class="alert-dot critical"></div>
                 <div class="alert-content">
@@ -250,8 +258,8 @@
               <div class="alert-item critical" onclick="showView('alertas')">
                 <div class="alert-dot critical"></div>
                 <div class="alert-content">
-                  <div class="alert-title">Atenção em observação — Rafael Santos</div>
-                  <div class="alert-desc">Comportamento e rendimento exigem revisão imediata.</div>
+                  <div class="alert-title">NLP: Termos sensíveis detectados</div>
+                  <div class="alert-desc">"Isolado", "agressivo" — observações Prof. Carla, T. 8A.</div>
                 </div>
                 <div class="alert-time">5h</div>
               </div>
@@ -271,13 +279,13 @@
                 </div>
                 <div class="alert-time">2d</div>
               </div>
-              <button class="btn btn-ghost btn-sm w-100 mt-8" onclick="showView('alertas')">Ver todos os alertas →</button>
+              <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px" onclick="showView('alertas')">Ver todos os alertas →</button>
             </div>
           </div>
         </div>
 
         <!-- TURMAS RANKING + PIE -->
-        <div class="grid-2 mt-20">
+        <div class="grid-2" style="margin-top:20px">
           <div class="card">
             <div class="card-header">
               <div><h3>Ranking de Turmas — Índice de Risco</h3>
@@ -292,7 +300,7 @@
               <div><h3>Distribuição de Risco</h3>
               <div class="card-subtitle">Situação atual dos 328 alunos</div></div>
             </div>
-            <div class="card-body chart-legend-wrap">
+            <div class="card-body" style="display:flex;align-items:center;justify-content:center;gap:24px">
               <canvas id="riskPie" width="180" height="180"></canvas>
               <div style="display:flex;flex-direction:column;gap:8px">
                 <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:var(--green)"></div><span style="font-size:13px">Normal (277)</span></div>
@@ -343,7 +351,7 @@
               <thead>
                 <tr>
                   <th>Aluno</th><th>Turma</th><th>Matrícula</th><th>Frequência</th>
-                  <th>Média</th><th>Status</th><th>Ações</th>
+                  <th>Média</th><th>Índice IA</th><th>Status</th><th>Ações</th>
                 </tr>
               </thead>
               <tbody id="alunosTable"></tbody>
@@ -396,10 +404,15 @@
           <div><h2>Módulo de Frequência</h2>
           <p>Registro diário de presença com justificativas</p></div>
           <div class="page-header-actions">
-            <input type="date" class="form-input" id="freqDate" style="width:160px">
-            <select class="form-select" id="freqTurma" style="width:140px" onchange="loadFreqTurma()">
+            <select class="form-select" id="freqTurma" style="width:130px" onchange="loadFreqTurma()">
               <option>8A</option><option>8B</option><option>7C</option><option>6A</option>
             </select>
+            <select class="form-select" id="freqDisc" style="width:140px" onchange="loadFreqTurma()">
+              <option value="">Todas as disciplinas</option>
+            </select>
+            <input type="date" class="form-input" id="freqDataIni" style="width:148px">
+            <span style="color:var(--text-muted);font-size:12px;align-self:center">até</span>
+            <input type="date" class="form-input" id="freqDataFim" style="width:148px">
             <button class="btn btn-success" onclick="saveFrequencia()">💾 Salvar</button>
           </div>
         </div>
@@ -407,7 +420,10 @@
         <div class="grid-cols-3-1">
           <div class="card">
             <div class="card-header">
-              <h3>📋 Lista de Presença — <span id="freqTurmaLabel">8A</span></h3>
+              <div>
+                <h3>📋 Lista de Presença — <span id="freqTurmaLabel">8A</span></h3>
+                <div class="card-subtitle" id="freqPeriodoLabel">Selecione turma, disciplina e período</div>
+              </div>
             </div>
             <div class="card-body" style="padding:0">
               <div id="freqList"></div>
@@ -435,10 +451,44 @@
         <div class="page-header">
           <div class="page-header-icon purple">📝</div>
           <div><h2>Avaliações & Observações</h2>
-          <p>Notas quantitativas, qualitativas e acompanhamento pedagógico</p></div>
+          <p>Consulta por aluno · Lançamento de notas · Observações pedagógicas</p></div>
           <div class="page-header-actions">
             <button class="btn btn-primary" onclick="openModal('modal-nota')">+ Lançar Nota</button>
             <button class="btn btn-ghost" onclick="openModal('modal-observacao')">💬 Observação</button>
+          </div>
+        </div>
+
+        <!-- Filtro de consulta por aluno -->
+        <div class="card" style="margin-bottom:18px">
+          <div class="card-body" style="padding:14px 20px">
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <label style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px">Turma</label>
+                <select class="form-select" style="width:120px" id="avalTurmaFiltro" onchange="filtrarAvalAlunos()">
+                  <option value="">Todas</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <label style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px">Aluno *</label>
+                <select class="form-select" style="width:220px" id="avalAlunoFiltro" onchange="renderAvaliacoesAluno()">
+                  <option value="">Selecione um aluno</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <label style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px">Bimestre</label>
+                <select class="form-select" style="width:150px" id="avalBimFiltro" onchange="renderAvaliacoesAluno()">
+                  <option value="">Todos</option>
+                  <option>1º Bimestre</option><option>2º Bimestre</option>
+                  <option>3º Bimestre</option><option>4º Bimestre</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <label style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px">Disciplina</label>
+                <select class="form-select" style="width:150px" id="avalDiscFiltro" onchange="renderAvaliacoesAluno()">
+                  <option value="">Todas</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -449,10 +499,11 @@
         </div>
 
         <div id="tab-notas">
+          <div id="avalAlunoInfo"></div>
           <div class="card">
             <div class="table-wrapper">
               <table>
-                <thead><tr><th>Aluno</th><th>Turma</th><th>Disciplina</th><th>Tipo</th><th>Nota</th><th>Data</th></tr></thead>
+                <thead><tr><th>Aluno</th><th>Disciplina</th><th>Tipo</th><th>Nota</th><th>Bimestre</th><th>Data</th><th>Variação</th></tr></thead>
                 <tbody id="notasTable"></tbody>
               </table>
             </div>
@@ -496,26 +547,96 @@
       <div id="view-encaminhamentos" class="view">
         <div class="page-header">
           <div class="page-header-icon purple">🔀</div>
-          <div><h2>Módulo de Encaminhamentos</h2>
-          <p>Psicólogos escolares, conselho tutelar, família</p></div>
+          <div><h2>Encaminhamentos</h2>
+          <p>Psicólogos escolares · Conselho Tutelar · Família · Reforço Pedagógico</p></div>
           <div class="page-header-actions">
             <button class="btn btn-primary" onclick="openModal('modal-encaminhamento')">+ Novo Encaminhamento</button>
+          </div>
+        </div>
+        <!-- Busca por RA ou nome -->
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-body" style="padding:12px 20px">
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+              <div style="position:relative;flex:1;min-width:240px">
+                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted)">🔍</span>
+                <input class="form-input" style="padding-left:36px" placeholder="Buscar por nome completo ou RA (Registro do Aluno)…" id="encBusca" oninput="renderEncaminhamentos()">
+              </div>
+              <select class="form-select" style="width:170px" id="encTipoFiltro" onchange="renderEncaminhamentos()">
+                <option value="">Todos os tipos</option>
+                <option value="psico">Psicólogo Escolar</option>
+                <option value="tutelar">Conselho Tutelar</option>
+                <option value="familiar">Reunião Familiar</option>
+                <option value="pedagogico">Reforço Pedagógico</option>
+              </select>
+              <select class="form-select" style="width:150px" id="encStatusFiltro" onchange="renderEncaminhamentos()">
+                <option value="">Todos os status</option>
+                <option value="Pendente">Pendente</option>
+                <option value="Em andamento">Em andamento</option>
+                <option value="Encerrado">Encerrado</option>
+              </select>
+            </div>
           </div>
         </div>
         <div id="encaminhamentosList"></div>
       </div>
 
-      <!-- ═══════════════ PLANOS ═══════════════ -->
-      <div id="view-planos" class="view">
+      <!-- ═══════════════ ACOMPANHAMENTO DE CASOS ═══════════════ -->
+      <div id="view-casos" class="view">
         <div class="page-header">
           <div class="page-header-icon blue">📋</div>
-          <div><h2>Planos de Ação Individual</h2>
-          <p>Metas de recuperação e acompanhamento pedagógico</p></div>
+          <div><h2>Acompanhamento de Casos</h2>
+          <p>Histórico por aluno · Clique no aluno para registrar ou editar o plano de ação</p></div>
           <div class="page-header-actions">
-            <button class="btn btn-primary" onclick="openModal('modal-plano')">+ Novo Plano</button>
+            <input class="form-input" style="width:230px" placeholder="🔍 Buscar aluno ou RA…" id="casosBusca" oninput="renderCasos()">
+            <select class="form-select" style="width:150px" id="casosStatusFiltro" onchange="renderCasos()">
+              <option value="">Todos os status</option>
+              <option value="ativo">Crítico / Ativo</option>
+              <option value="andamento">Em andamento</option>
+              <option value="encerrado">Encerrado</option>
+            </select>
           </div>
         </div>
-        <div id="planosList"></div>
+        <div id="casosList"></div>
+      </div>
+
+      <!-- ═══════════════ LAUDOS ═══════════════ -->
+      <div id="view-laudos" class="view">
+        <div class="page-header">
+          <div class="page-header-icon purple">📎</div>
+          <div><h2>Laudos</h2>
+          <p>Anexar e consultar laudos médicos e psicológicos dos alunos (TEA, TDAH, entre outros)</p></div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" onclick="openModal('modal-laudo')">+ Anexar Laudo</button>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-body" style="padding:12px 20px">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+              <input class="form-input" style="width:230px" placeholder="🔍 Buscar por aluno ou RA…" id="laudosBusca" oninput="renderLaudos()">
+              <select class="form-select" style="width:180px" id="laudosTipoFiltro" onchange="renderLaudos()">
+                <option value="">Todos os tipos</option>
+                <option value="TEA">TEA (Autismo)</option>
+                <option value="TDAH">TDAH</option>
+                <option value="Dislexia">Dislexia</option>
+                <option value="Outro">Outros</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div id="laudosList"></div>
+      </div>
+
+      <!-- ═══════════════ DISCIPLINAS ═══════════════ -->
+      <div id="view-disciplinas" class="view">
+        <div class="page-header">
+          <div class="page-header-icon blue">📚</div>
+          <div><h2>Disciplinas</h2>
+          <p>Cadastro e vínculo de disciplinas com turmas e professores</p></div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" onclick="openModal('modal-disciplina')">+ Nova Disciplina</button>
+          </div>
+        </div>
+        <div id="disciplinasBody"></div>
       </div>
 
       <!-- ═══════════════ RELATÓRIOS ═══════════════ -->
@@ -613,7 +734,7 @@
 <div class="modal-overlay" id="modal-observacao">
   <div class="modal">
     <div class="modal-title">💬 Observação Comportamental</div>
-    <div class="modal-sub">Registro de observação comportamental</div>
+    <div class="modal-sub">Análise qualitativa processada por NLP</div>
     <div class="form-grid">
       <div class="form-group"><label class="form-label">Aluno *</label><select class="form-select" id="o-aluno"></select></div>
       <div class="form-group"><label class="form-label">Observação *</label>
@@ -623,8 +744,12 @@
         <select class="form-select" id="o-prio"><option value="low">Baixa</option><option value="medium">Média</option><option value="high">Alta</option></select>
       </div>
     </div>
+    <div id="nlpPreview" style="display:none;margin-top:12px;padding:12px;background:var(--amber-pale);border-radius:10px;font-size:13px;color:#92400E">
+      <strong>⚡ IA Detectou:</strong> <span id="nlpPreviewText"></span>
+    </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-observacao')">Cancelar</button>
+      <button class="btn btn-amber" onclick="analyzeObservacao()">🧠 Analisar com IA</button>
       <button class="btn btn-primary" onclick="saveObservacao()">💾 Salvar</button>
     </div>
   </div>
@@ -684,7 +809,115 @@
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-aluno-detalhe')">Fechar</button>
       <button class="btn btn-amber" onclick="closeModal('modal-aluno-detalhe');openModal('modal-encaminhamento')">🔀 Encaminhar</button>
-      <button class="btn btn-primary" onclick="closeModal('modal-aluno-detalhe');openModal('modal-plano')">📋 Criar Plano</button>
+      <button class="btn btn-primary" onclick="abrirCasoDoDetalhe()">📋 Ver / Editar Caso</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Disciplina -->
+<div class="modal-overlay" id="modal-disciplina">
+  <div class="modal">
+    <div class="modal-title">📚 Nova Disciplina</div>
+    <div class="modal-sub">Cadastrar disciplina e vincular à turma e professor</div>
+    <div class="form-grid form-grid-2">
+      <div class="form-group"><label class="form-label">Nome da Disciplina *</label><input class="form-input" id="disc-nome" placeholder="Ex: Matemática"></div>
+      <div class="form-group"><label class="form-label">Carga Horária (h/sem)</label><input class="form-input" id="disc-ch" type="number" min="1" max="20" placeholder="4"></div>
+      <div class="form-group"><label class="form-label">Turma *</label>
+        <select class="form-select" id="disc-turma"><option>6A</option><option>6B</option><option>7A</option><option>7C</option><option>8A</option><option>8B</option><option>9A</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Professor Responsável</label>
+        <select class="form-select" id="disc-prof"><option value="">Selecione…</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Período / Ano Letivo</label><input class="form-input" id="disc-ano" placeholder="2025"></div>
+      <div class="form-group"><label class="form-label">Área do Conhecimento</label>
+        <select class="form-select" id="disc-area">
+          <option>Linguagens</option><option>Matemática</option><option>Ciências da Natureza</option>
+          <option>Ciências Humanas</option><option>Ensino Religioso</option><option>Artes</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-disciplina')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveDisciplina()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Laudo -->
+<div class="modal-overlay" id="modal-laudo">
+  <div class="modal">
+    <div class="modal-title">📎 Anexar Laudo</div>
+    <div class="modal-sub">Registro de laudo médico ou psicológico — acesso restrito conforme LGPD</div>
+    <div class="form-grid form-grid-2">
+      <div class="form-group"><label class="form-label">Aluno *</label><select class="form-select" id="laud-aluno"></select></div>
+      <div class="form-group"><label class="form-label">Tipo de Laudo *</label>
+        <select class="form-select" id="laud-tipo">
+          <option value="TEA">TEA — Transtorno do Espectro Autista</option>
+          <option value="TDAH">TDAH — Déficit de Atenção e Hiperatividade</option>
+          <option value="Dislexia">Dislexia</option>
+          <option value="Deficiência Intelectual">Deficiência Intelectual</option>
+          <option value="Deficiência Auditiva">Deficiência Auditiva</option>
+          <option value="Deficiência Visual">Deficiência Visual</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">CID-10 / CID-11</label><input class="form-input" id="laud-cid" placeholder="Ex: F84.0"></div>
+      <div class="form-group"><label class="form-label">Data do Laudo</label><input class="form-input" id="laud-data" type="date"></div>
+      <div class="form-group"><label class="form-label">Médico / Profissional Responsável</label><input class="form-input" id="laud-medico" placeholder="Dr(a). Nome Completo"></div>
+      <div class="form-group"><label class="form-label">Validade</label>
+        <select class="form-select" id="laud-validade">
+          <option value="indefinida">Indeterminada</option>
+          <option value="anual">Anual — requer renovação</option>
+          <option value="bienal">Bienal</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:12px"><label class="form-label">Observações / Necessidades Especiais</label>
+      <textarea class="form-textarea" id="laud-obs" placeholder="Descreva as necessidades de adaptação pedagógica indicadas no laudo…"></textarea>
+    </div>
+    <div style="margin-top:12px;padding:11px;background:var(--amber-pale);border-radius:10px;font-size:12.5px;color:#92400E">
+      🔒 <strong>LGPD:</strong> Dados de saúde são sensíveis. O acesso a este laudo é restrito a Gestores e Profissionais de Apoio autorizados.
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-laudo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveLaudo()">💾 Registrar Laudo</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Caso / Plano de Ação (acessado a partir de Acompanhamento de Casos) -->
+<div class="modal-overlay" id="modal-caso-plano">
+  <div class="modal" style="max-width:660px">
+    <div class="modal-title" id="casoPlanoTitulo">📋 Plano de Ação Individual</div>
+    <div class="modal-sub" id="casoPlanoSub">Clique em um aluno em Acompanhamento de Casos</div>
+    <div class="form-grid form-grid-2">
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Meta Principal *</label>
+        <input class="form-input" id="caso-meta" placeholder="Ex: Elevar média para 7.0 no 3º bimestre">
+      </div>
+      <div class="form-group"><label class="form-label">Prazo de Conclusão</label><input class="form-input" id="caso-prazo" type="date"></div>
+      <div class="form-group"><label class="form-label">Responsável pelo Acompanhamento</label>
+        <input class="form-input" id="caso-resp" placeholder="Nome do coordenador / psicólogo">
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label class="form-label">Estratégias e Ações Planejadas</label>
+        <textarea class="form-textarea" id="caso-est" placeholder="Descreva as intervenções previstas, frequência de encontros, metas parciais…"></textarea>
+      </div>
+      <div class="form-group"><label class="form-label">Status do Caso</label>
+        <select class="form-select" id="caso-status">
+          <option value="ativo">Crítico / Ativo</option>
+          <option value="andamento">Em andamento</option>
+          <option value="encerrado">Encerrado</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Progresso (%)</label>
+        <input class="form-input" id="caso-prog" type="number" min="0" max="100" placeholder="0">
+      </div>
+    </div>
+    <input type="hidden" id="caso-alunoId">
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-caso-plano')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCasoPlano()">💾 Salvar Plano</button>
     </div>
   </div>
 </div>
@@ -710,834 +943,6 @@
   </div>
 </div>
 
-<script>
-// ═══════════════════════════════════════════════════════════
-// DATA LAYER
-// ═══════════════════════════════════════════════════════════
-const DB = {
-  alunos: [
-    {id:1,nome:"Lucas Ferreira",turma:"8A",mat:"2024001",nasc:"2012-03-15",resp:"Maria Ferreira",tel:"(15)98765-1234",freq:58,media:4.5,risco:"critical",obs:"Apresenta sinais de isolamento social"},
-    {id:2,nome:"Ana Souza",turma:"6B",mat:"2024002",nasc:"2013-07-22",resp:"João Souza",tel:"(15)98765-2345",freq:72,media:6.2,risco:"medium",obs:"Ausências frequentes sem justificativa"},
-    {id:3,nome:"Pedro Lima",turma:"7A",mat:"2024003",nasc:"2012-11-08",resp:"Sandra Lima",tel:"(15)98765-3456",freq:91,media:8.7,risco:"normal",obs:"Aluno dedicado e participativo"},
-    {id:4,nome:"Mariana Costa",turma:"9A",mat:"2024004",nasc:"2011-04-30",resp:"Roberto Costa",tel:"(15)98765-4567",freq:85,media:7.9,risco:"normal",obs:"Ótima socialização com colegas"},
-    {id:5,nome:"Rafael Santos",turma:"8B",mat:"2024005",nasc:"2012-09-12",resp:"Cláudia Santos",tel:"(15)98765-5678",freq:45,media:3.8,risco:"critical",obs:"Comportamento agressivo relatado por professores"},
-    {id:6,nome:"Beatriz Oliveira",turma:"7C",mat:"2024006",nasc:"2013-01-25",resp:"Fábio Oliveira",tel:"(15)98765-6789",freq:88,media:8.1,risco:"normal",obs:""},
-    {id:7,nome:"Gabriel Alves",turma:"6A",mat:"2024007",nasc:"2013-05-17",resp:"Letícia Alves",tel:"(15)98765-7890",freq:76,media:6.8,risco:"medium",obs:"Dificuldade em matemática"},
-    {id:8,nome:"Isabela Rocha",turma:"8A",mat:"2024008",nasc:"2012-08-03",resp:"Nelson Rocha",tel:"(15)98765-8901",freq:93,media:9.2,risco:"normal",obs:""},
-    {id:9,nome:"Mateus Carvalho",turma:"7C",mat:"2024009",nasc:"2012-12-20",resp:"Vera Carvalho",tel:"(15)98765-9012",freq:62,media:5.1,risco:"medium",obs:"Tristeza e desmotivação notada"},
-    {id:10,nome:"Sofia Barbosa",turma:"9A",mat:"2024010",nasc:"2011-06-14",resp:"Antônio Barbosa",tel:"(15)98765-0123",freq:97,media:9.5,risco:"normal",obs:""},
-  ],
-  professores: [
-    {id:1,nome:"Carla Mendes",disciplina:"Matemática",email:"carla@escola.br",reg:"REG001",turmas:["8A","8B","9A"],alertas:5,ultimo:"Hoje"},
-    {id:2,nome:"Paulo Andrade",disciplina:"Português",email:"paulo@escola.br",reg:"REG002",turmas:["7A","7C","8A"],alertas:3,ultimo:"Ontem"},
-    {id:3,nome:"Marina Ramos",disciplina:"Ciências",email:"marina@escola.br",reg:"REG003",turmas:["6A","6B","7A"],alertas:2,ultimo:"Há 2 dias"},
-    {id:4,nome:"José Teixeira",disciplina:"História",email:"jose@escola.br",reg:"REG004",turmas:["8B","9A"],alertas:1,ultimo:"Há 3 dias"},
-  ],
-  turmas: [
-    {id:1,nome:"6A",serie:"6º Ano",turno:"Matutino",sala:"Sala 01",alunos:32,saude:82},
-    {id:2,nome:"6B",serie:"6º Ano",turno:"Vespertino",sala:"Sala 02",alunos:30,saude:75},
-    {id:3,nome:"7A",serie:"7º Ano",turno:"Matutino",sala:"Sala 05",alunos:35,saude:88},
-    {id:4,nome:"7C",serie:"7º Ano",turno:"Vespertino",sala:"Sala 07",alunos:29,saude:64},
-    {id:5,nome:"8A",serie:"8º Ano",turno:"Matutino",sala:"Sala 09",alunos:33,saude:58},
-    {id:6,nome:"8B",serie:"8º Ano",turno:"Vespertino",sala:"Sala 10",alunos:31,saude:71},
-    {id:7,nome:"9A",serie:"9º Ano",turno:"Matutino",sala:"Sala 12",alunos:38,saude:91},
-  ],
-  notas: [
-    {id:1,alunoId:1,aluno:"Lucas Ferreira",turma:"8A",disciplina:"Matemática",tipo:"Prova",nota:4.5,bim:"2º Bimestre",data:"2025-05-10",var:-4.5},
-    {id:2,alunoId:2,aluno:"Ana Souza",turma:"6B",disciplina:"Português",tipo:"Trabalho",nota:6.2,bim:"2º Bimestre",data:"2025-05-09",var:-1.8},
-    {id:3,alunoId:3,aluno:"Pedro Lima",turma:"7A",disciplina:"Ciências",tipo:"Prova",nota:8.7,bim:"2º Bimestre",data:"2025-05-08",var:+0.5},
-    {id:4,alunoId:5,aluno:"Rafael Santos",turma:"8B",disciplina:"Matemática",tipo:"Prova",nota:3.8,bim:"2º Bimestre",data:"2025-05-07",var:-3.2},
-    {id:5,alunoId:8,aluno:"Isabela Rocha",turma:"8A",disciplina:"Português",tipo:"Prova",nota:9.2,bim:"2º Bimestre",data:"2025-05-06",var:+0.8},
-    {id:6,alunoId:9,aluno:"Mateus Carvalho",turma:"7C",disciplina:"Ciências",tipo:"Exercício",nota:5.1,bim:"2º Bimestre",data:"2025-05-05",var:-2.1},
-  ],
-  observacoes: [
-    {id:1,alunoId:1,aluno:"Lucas Ferreira",texto:"O aluno está cada vez mais isolado em sala. Não interage com os colegas e parece triste e desmotivado.",prio:"high",data:"2025-05-10",termos:["isolado","triste","desmotivado"],prof:"Carla Mendes"},
-    {id:2,alunoId:5,aluno:"Rafael Santos",texto:"Rafael apresentou comportamento agressivo durante a aula de hoje, xingando colega e recusando seguir orientações.",prio:"high",data:"2025-05-08",termos:["agressivo"],prof:"Paulo Andrade"},
-    {id:3,alunoId:9,aluno:"Mateus Carvalho",texto:"Notei que o Mateus parece bem triste ultimamente e desmotivado. Perguntei se estava bem e desconversou.",prio:"medium",data:"2025-05-06",termos:["triste","desmotivado"],prof:"Marina Ramos"},
-    {id:4,alunoId:2,aluno:"Ana Souza",texto:"Ana faltou novamente sem aviso. Quando presente, demonstra cansaço excessivo e falta de atenção.",prio:"medium",data:"2025-05-04",termos:[],prof:"José Teixeira"},
-  ],
-  encaminhamentos: [
-    {id:1,alunoId:1,aluno:"Lucas Ferreira",tipo:"psico",urgencia:"alta",resp:"Psic. Fernanda Cruz",just:"Queda abrupta de rendimento e sinais de isolamento social.",data:"2025-05-10",status:"Em andamento"},
-    {id:2,alunoId:5,aluno:"Rafael Santos",tipo:"tutelar",urgencia:"alta",resp:"Conselho Tutelar",just:"Comportamento agressivo reiterado e frequência crítica.",data:"2025-05-08",status:"Pendente"},
-  ],
-  planos: [
-    {id:1,alunoId:1,aluno:"Lucas Ferreira",meta:"Recuperar média para 6.0 até o 3º Bimestre",est:"Aulas de reforço 2x/semana. Reunião com família. Acompanhamento psicológico.",prazo:"2025-08-01",status:"Em andamento"},
-  ],
-  alertas: [
-    {id:1,tipo:"critical",titulo:"Risco Crítico — Lucas Ferreira",desc:"Queda de nota de 9.0 para 4.5 em 3 semanas. Frequência em 58%.",data:"2025-05-10 09:15",lido:false},
-    {id:2,tipo:"critical",titulo:"Atenção em Observação — Rafael Santos",desc:"Aluno com frequência 45% e média 3.8. Intervenção recomendada.",data:"2025-05-09 14:22",lido:false},
-    {id:3,tipo:"medium",titulo:"5 Faltas Consecutivas — Ana Souza",desc:"Aluna da Turma 6B sem justificativas registradas. Média caindo para 6.2.",data:"2025-05-08 11:00",lido:false},
-    {id:4,tipo:"critical",titulo:"Queda Coletiva — Turma 7C",desc:"3 alunos com queda simultânea de desempenho e frequência na mesma semana.",data:"2025-05-07 16:30",lido:false},
-    {id:5,tipo:"medium",titulo:"Acompanhamento de Mateus Carvalho",desc:"Observação reforça necessidade de apoio individualizado.",data:"2025-05-06 09:45",lido:false},
-    {id:6,tipo:"low",titulo:"Queda Moderada — Gabriel Alves",desc:"Média caiu 0.8 pontos este bimestre. Sem outros fatores detectados.",data:"2025-05-05 13:00",lido:true},
-    {id:7,tipo:"low",titulo:"Frequência Abaixo de 75% — Ana Souza",desc:"Limite de atenção atingido. Notificação enviada para responsável.",data:"2025-05-03 08:30",lido:true},
-  ],
-  freqData: {
-    "8A": [
-      {id:1,nome:"Lucas Ferreira",status:"absent"},
-      {id:2,nome:"Isabela Rocha",status:"present"},
-      {id:3,nome:"Carlos Neto",status:"present"},
-      {id:4,nome:"Juliana Park",status:"justified"},
-      {id:5,nome:"Marcos Viana",status:"present"},
-      {id:6,nome:"Fernanda Dias",status:"present"},
-    ]
-  }
-};
 
-let currentUser = { role: 'gestor', nome: 'Ana Coordenadora' };
-let chartsCreated = {};
-let alunosFiltrados = [...DB.alunos];
-
-// ═══════════════════════════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════════════════════════
-function doLogin() {
-  const role = document.getElementById('loginRole').value;
-  const user = document.getElementById('loginUser').value;
-  currentUser = { role, nome: role === 'gestor' ? 'Ana Coordenadora' : role === 'professor' ? 'Prof. Carla' : 'João Responsável' };
-  document.getElementById('sidebar-name').textContent = currentUser.nome;
-  document.getElementById('sidebar-role').textContent = role === 'gestor' ? 'Gestão / Coordenação' : role === 'professor' ? 'Docente' : 'Responsável';
-  document.getElementById('sidebar-avatar').textContent = currentUser.nome[0];
-  document.getElementById('login-screen').classList.add('hidden');
-  document.getElementById('app').classList.add('visible');
-  setTimeout(() => { initApp(); showToast('Bem-vindo(a), ' + currentUser.nome + '!', 'success'); }, 600);
-}
-
-function doLogout() {
-  document.getElementById('app').classList.remove('visible');
-  document.getElementById('login-screen').classList.remove('hidden');
-  chartsCreated = {};
-}
-
-// ═══════════════════════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════════════════════
-const viewTitles = {
-  dashboard: ['Dashboard', 'Visão geral · Saúde Escolar'],
-  alunos: ['Gestão de Alunos', 'CRUD completo · Monitoramento individual'],
-  professores: ['Professores', 'Equipe docente'],
-  turmas: ['Turmas & Instituições', 'Estrutura escolar'],
-  frequencia: ['Frequência', 'Registro diário de presença'],
-  avaliacoes: ['Avaliações', 'Notas e observações comportamentais'],
-  alertas: ['Central de Alertas', 'Situações que requerem intervenção'],
-  encaminhamentos: ['Encaminhamentos', 'Psicólogos · Conselho Tutelar · Família'],
-  planos: ['Planos de Ação', 'Metas de recuperação individual'],
-  relatorios: ['Relatórios', 'Geração automática · Conselho de classe'],
-  lgpd: ['Segurança & LGPD', 'Conformidade · Criptografia · Anonimização'],
-};
-
-function showView(view) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('view-' + view).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => { if(n.textContent.trim().toLowerCase().startsWith(viewTitles[view]?.[0]?.toLowerCase()?.[0])) n.classList.add('active'); });
-  // fix active nav
-  document.querySelectorAll('.nav-item').forEach(n => {
-    const txt = n.textContent.toLowerCase();
-    const vt = viewTitles[view][0].toLowerCase();
-    if(txt.includes(vt.split(' ')[0])) n.classList.add('active');
-    else n.classList.remove('active');
-  });
-  document.getElementById('topbarTitle').textContent = viewTitles[view][0];
-  document.getElementById('topbarSub').textContent = viewTitles[view][1];
-  renderView(view);
-}
-
-function renderView(view) {
-  switch(view) {
-    case 'dashboard': renderDashboard(); break;
-    case 'alunos': renderAlunos(); break;
-    case 'professores': renderProfessores(); break;
-    case 'turmas': renderTurmas(); break;
-    case 'frequencia': renderFrequencia(); break;
-    case 'avaliacoes': renderAvaliacoes(); break;
-    case 'alertas': renderAlertas(); break;
-    case 'encaminhamentos': renderEncaminhamentos(); break;
-    case 'planos': renderPlanos(); break;
-    case 'relatorios': renderRelatorios(); break;
-    case 'lgpd': renderLGPD(); break;
-  }
-}
-
-function initApp() {
-  document.getElementById('freqDate').valueAsDate = new Date();
-  document.getElementById('n-data').valueAsDate = new Date();
-  renderDashboard();
-  populateSelectAlunos();
-}
-
-// ═══════════════════════════════════════════════════════════
-// DASHBOARD
-// ═══════════════════════════════════════════════════════════
-function renderDashboard() {
-  renderTurmaRanking();
-  setTimeout(() => {
-    createHealthDonut();
-    createMainChart();
-    createRiskPie();
-  }, 50);
-}
-
-function renderTurmaRanking() {
-  const sorted = [...DB.turmas].sort((a,b) => a.saude - b.saude);
-  const el = document.getElementById('turmaRanking');
-  if(!el) return;
-  el.innerHTML = sorted.map(t => `
-    <div style="margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:13px;font-weight:700">${t.nome} · ${t.serie}</span>
-        <span style="font-size:12px;font-weight:700;color:${t.saude < 65 ? 'var(--red)' : t.saude < 80 ? 'var(--amber)' : 'var(--green)'}">${t.saude}%</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill ${t.saude < 65 ? 'red' : t.saude < 80 ? 'amber' : 'green'}" style="width:${t.saude}%"></div>
-      </div>
-      <div style="font-size:11px;color:var(--text-muted);margin-top:4px">${t.alunos} alunos · ${t.turno}</div>
-    </div>
-  `).join('');
-}
-
-function createHealthDonut() {
-  const ctx = document.getElementById('healthDonut');
-  if(!ctx || chartsCreated.healthDonut) return;
-  chartsCreated.healthDonut = new Chart(ctx, {
-    type: 'doughnut',
-    data: { datasets: [{ data: [74, 26], backgroundColor: ['#FCD34D','rgba(255,255,255,0.1)'], borderWidth: 0 }] },
-    options: { cutout:'80%', plugins:{ legend:{display:false} }, responsive: false }
-  });
-}
-
-function createMainChart() {
-  const ctx = document.getElementById('mainChart');
-  if(!ctx || chartsCreated.mainChart) return;
-  chartsCreated.mainChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Dez', 'Jan', 'Fev', 'Mar', 'Abr', 'Mai'],
-      datasets: [
-        { label: 'Média Geral', data: [7.8, 7.5, 7.2, 6.9, 6.7, 7.1], borderColor: '#2563EB', backgroundColor: 'rgba(37,99,235,0.08)', fill:true, tension:0.4, pointRadius:5, pointBackgroundColor:'#2563EB' },
-        { label: 'Frequência %', data: [94, 91, 89, 87, 85, 88], borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.05)', fill:true, tension:0.4, pointRadius:5, pointBackgroundColor:'#10B981' },
-      ]
-    },
-    options: { responsive:true, plugins:{ legend:{ position:'bottom', labels:{font:{family:'Nunito'},boxWidth:12,padding:16} } }, scales:{ y:{ beginAtZero:false, min:60, grid:{ color:'rgba(0,0,0,0.05)' } }, x:{ grid:{display:false} } } }
-  });
-}
-
-function createRiskPie() {
-  const ctx = document.getElementById('riskPie');
-  if(!ctx || chartsCreated.riskPie) return;
-  chartsCreated.riskPie = new Chart(ctx, {
-    type: 'doughnut',
-    data: { labels:['Normal','Moderado','Crítico'], datasets:[{ data:[277,37,14], backgroundColor:['#10B981','#F59E0B','#EF4444'], borderWidth:3, borderColor:'#fff' }] },
-    options: { responsive:false, plugins:{ legend:{display:false} } }
-  });
-}
-
-// ═══════════════════════════════════════════════════════════
-// ALUNOS
-// ═══════════════════════════════════════════════════════════
-const avatarColors = ['td-avatar-blue','td-avatar-green','td-avatar-purple','td-avatar-amber','td-avatar-red'];
-function getAvatarColor(id) { return avatarColors[id % avatarColors.length]; }
-function getInitials(nome) { return nome.split(' ').slice(0,2).map(n=>n[0]).join(''); }
-
-function renderAlunos(list) {
-  const data = list || alunosFiltrados;
-  document.getElementById('alunosCount').textContent = data.length + ' alunos';
-  const tbody = document.getElementById('alunosTable');
-  if(!tbody) return;
-  tbody.innerHTML = data.map(a => {
-    const riskClass = a.risco === 'critical' ? 'critical' : a.risco === 'medium' ? 'medium' : 'normal';
-    const riskLabel = a.risco === 'critical' ? '🔴 Crítico' : a.risco === 'medium' ? '🟡 Moderado' : '🟢 Normal';
-    const freqColor = a.freq < 70 ? 'var(--red)' : a.freq < 85 ? 'var(--amber)' : 'var(--green)';
-    const mediaColor = a.media < 5 ? 'var(--red)' : a.media < 7 ? 'var(--amber)' : 'var(--green)';
-    return `<tr>
-      <td><div class="td-name"><div class="td-avatar ${getAvatarColor(a.id)}">${getInitials(a.nome)}</div><div><div style="font-weight:700;font-size:13.5px">${a.nome}</div><div style="font-size:11px;color:var(--text-muted)">${a.resp}</div></div></div></td>
-      <td><span class="tag blue">${a.turma}</span></td>
-      <td style="font-size:12px;color:var(--text-muted)">${a.mat}</td>
-      <td><span style="font-weight:700;color:${freqColor}">${a.freq}%</span></td>
-      <td><span style="font-weight:700;color:${mediaColor}">${a.media.toFixed(1)}</span></td>
-      <td><span class="risk-badge ${riskClass}">${riskLabel}</span></td>
-      <td><div style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="showAlunoDetalhe(${a.id})" title="Ver detalhes">👁️</button>
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="editAluno(${a.id})" title="Editar">✏️</button>
-        <button class="btn btn-ghost btn-sm btn-icon" style="color:var(--red)" onclick="deleteAluno(${a.id})" title="Excluir">🗑️</button>
-      </div></td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">🔍</div><p>Nenhum aluno encontrado.</p></div></td></tr>';
-}
-
-function filterAlunos(val) {
-  alunosFiltrados = DB.alunos.filter(a => a.nome.toLowerCase().includes(val.toLowerCase()) || a.mat.includes(val));
-  renderAlunos();
-}
-function filterAlunosTurma(turma) {
-  alunosFiltrados = turma ? DB.alunos.filter(a => a.turma === turma) : [...DB.alunos];
-  renderAlunos();
-}
-function filterAlunosRisco(risco) {
-  alunosFiltrados = risco ? DB.alunos.filter(a => a.risco === risco) : [...DB.alunos];
-  renderAlunos();
-}
-
-function saveAluno() {
-  const nome = document.getElementById('a-nome').value.trim();
-  if(!nome) { showToast('Nome é obrigatório!','danger'); return; }
-  const newA = {
-    id: DB.alunos.length + 1,
-    nome, turma: document.getElementById('a-turma').value,
-    mat: '2025' + String(DB.alunos.length+1).padStart(3,'0'),
-    nasc: document.getElementById('a-nasc').value,
-    resp: document.getElementById('a-resp').value,
-    tel: document.getElementById('a-tel').value,
-    freq: 100, media: 0, risco:'normal',
-    obs: document.getElementById('a-obs').value
-  };
-  DB.alunos.push(newA);
-  alunosFiltrados = [...DB.alunos];
-  closeModal('modal-aluno');
-  renderAlunos();
-  populateSelectAlunos();
-  showToast('Aluno ' + nome + ' cadastrado!', 'success');
-  ['a-nome','a-nasc','a-resp','a-tel','a-obs'].forEach(id => document.getElementById(id).value='');
-}
-
-function deleteAluno(id) {
-  if(!confirm('Excluir este aluno? Esta ação não pode ser desfeita.')) return;
-  const idx = DB.alunos.findIndex(a=>a.id===id);
-  if(idx>-1) { DB.alunos.splice(idx,1); alunosFiltrados = [...DB.alunos]; renderAlunos(); showToast('Aluno removido.','warning'); }
-}
-
-function editAluno(id) {
-  const a = DB.alunos.find(x=>x.id===id);
-  if(!a) return;
-  document.getElementById('a-nome').value = a.nome;
-  document.getElementById('a-turma').value = a.turma;
-  document.getElementById('a-resp').value = a.resp;
-  document.getElementById('a-tel').value = a.tel;
-  document.getElementById('a-obs').value = a.obs;
-  openModal('modal-aluno');
-}
-
-function showAlunoDetalhe(id) {
-  const a = DB.alunos.find(x=>x.id===id);
-  if(!a) return;
-  const notas = DB.notas.filter(n=>n.alunoId===id);
-  const obs = DB.observacoes.filter(o=>o.alunoId===id);
-  const riskClass = a.risco === 'critical' ? 'critical' : a.risco === 'medium' ? 'medium' : 'normal';
-  document.getElementById('alunoDetalheContent').innerHTML = `
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
-      <div class="td-avatar ${getAvatarColor(a.id)}" style="width:56px;height:56px;font-size:20px;border-radius:16px">${getInitials(a.nome)}</div>
-      <div>
-        <div style="font-family:'Sora',sans-serif;font-size:20px;font-weight:800">${a.nome}</div>
-        <div style="font-size:13px;color:var(--text-muted)">Turma ${a.turma} · Mat. ${a.mat}</div>
-      </div>
-      <div style="margin-left:auto"><span class="risk-badge ${riskClass} " style="font-size:13px;padding:6px 14px">${a.risco==='critical'?'🔴 Risco Crítico':a.risco==='medium'?'🟡 Atenção Moderada':'🟢 Normal'}</span></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
-      <div style="text-align:center;padding:14px;background:var(--gray-50);border-radius:10px">
-        <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:${a.freq<70?'var(--red)':a.freq<85?'var(--amber)':'var(--green)'}">${a.freq}%</div>
-        <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Frequência</div>
-      </div>
-      <div style="text-align:center;padding:14px;background:var(--gray-50);border-radius:10px">
-        <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:${a.media<5?'var(--red)':a.media<7?'var(--amber)':'var(--green)'}">${a.media.toFixed(1)}</div>
-        <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Média Geral</div>
-      </div>
-    </div>
-    ${notas.length ? `<div style="margin-bottom:16px"><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--text-muted)">AVALIAÇÕES RECENTES</div>${notas.map(n=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-100);font-size:13px"><span>${n.disciplina} · ${n.tipo}</span><span style="font-weight:700;color:${n.nota<5?'var(--red)':n.nota<7?'var(--amber)':'var(--green)'}">${n.nota}</span></div>`).join('')}</div>` : ''}
-    ${obs.length ? `<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--text-muted)">OBSERVAÇÕES</div>${obs.map(o=>`<div style="padding:10px;background:${o.prio==='high'?'var(--red-pale)':'var(--amber-pale)'};border-radius:8px;margin-bottom:8px;font-size:13px">${o.texto}<div style="font-size:11px;color:var(--text-muted);margin-top:4px">${o.prof} · ${o.data}</div></div>`).join('')}</div>` : ''}
-    <div style="margin-top:16px"><div style="font-weight:700;font-size:13px;margin-bottom:6px;color:var(--text-muted)">RESPONSÁVEL</div>
-    <div style="font-size:13px">${a.resp} · <a style="color:var(--blue)">${a.tel}</a></div></div>
-  `;
-  openModal('modal-aluno-detalhe');
-}
-
-// ═══════════════════════════════════════════════════════════
-// PROFESSORES
-// ═══════════════════════════════════════════════════════════
-function renderProfessores() {
-  const tbody = document.getElementById('professoresTable');
-  if(!tbody) return;
-  tbody.innerHTML = DB.professores.map(p => `<tr>
-    <td><div class="td-name"><div class="td-avatar td-avatar-blue">${getInitials(p.nome)}</div><div><div style="font-weight:700">${p.nome}</div><div style="font-size:11px;color:var(--text-muted)">${p.email}</div></div></div></td>
-    <td><span class="tag blue">${p.disciplina}</span></td>
-    <td>${p.turmas.map(t=>`<span class="tag gray" style="margin:1px">${t}</span>`).join('')}</td>
-    <td><span class="tag ${p.alertas > 3 ? 'red' : p.alertas > 1 ? 'amber' : 'green'}">${p.alertas} alertas</span></td>
-    <td style="font-size:12px;color:var(--text-muted)">${p.ultimo}</td>
-    <td><div style="display:flex;gap:6px">
-      <button class="btn btn-ghost btn-sm btn-icon">✏️</button>
-      <button class="btn btn-ghost btn-sm btn-icon" style="color:var(--red)" onclick="deleteProfessor(${p.id})">🗑️</button>
-    </div></td>
-  </tr>`).join('');
-}
-
-function saveProfessor() {
-  const nome = document.getElementById('p-nome').value.trim();
-  if(!nome) { showToast('Nome é obrigatório!','danger'); return; }
-  DB.professores.push({id:DB.professores.length+1,nome,disciplina:document.getElementById('p-disc').value,email:document.getElementById('p-email').value,reg:document.getElementById('p-reg').value,turmas:[],alertas:0,ultimo:'Hoje'});
-  closeModal('modal-professor'); renderProfessores();
-  showToast('Professor ' + nome + ' cadastrado!','success');
-}
-function deleteProfessor(id) { DB.professores.splice(DB.professores.findIndex(p=>p.id===id),1); renderProfessores(); showToast('Professor removido.','warning'); }
-
-// ═══════════════════════════════════════════════════════════
-// TURMAS
-// ═══════════════════════════════════════════════════════════
-function renderTurmas() {
-  const el = document.getElementById('turmasCards');
-  if(!el) return;
-  el.parentElement.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">${DB.turmas.map(t => {
-    const color = t.saude < 65 ? 'red' : t.saude < 80 ? 'amber' : 'green';
-    return `<div class="card stat-card ${color}" style="cursor:pointer" onclick="showView('alunos')">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div style="font-family:'Sora',sans-serif;font-size:24px;font-weight:800">${t.nome}</div>
-        <span class="tag ${color}">${t.saude}%</span>
-      </div>
-      <div style="font-size:12px;color:var(--text-muted)">${t.serie} · ${t.turno}</div>
-      <div style="margin:12px 0"><div class="progress-bar"><div class="progress-fill ${color}" style="width:${t.saude}%"></div></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)">
-        <span>👥 ${t.alunos} alunos</span>
-        <span>${t.sala}</span>
-      </div>
-    </div>`;
-  }).join('')}</div>`;
-}
-
-function saveTurma() {
-  const nome = document.getElementById('t-nome').value.trim();
-  if(!nome) { showToast('Nome é obrigatório!','danger'); return; }
-  DB.turmas.push({id:DB.turmas.length+1,nome,serie:document.getElementById('t-serie').value,turno:document.getElementById('t-turno').value,sala:document.getElementById('t-sala').value,alunos:0,saude:100});
-  closeModal('modal-turma'); renderTurmas(); showToast('Turma ' + nome + ' criada!','success');
-}
-
-// ═══════════════════════════════════════════════════════════
-// FREQUÊNCIA
-// ═══════════════════════════════════════════════════════════
-function loadFreqTurma() { renderFrequencia(); }
-function renderFrequencia() {
-  const turma = document.getElementById('freqTurma')?.value || '8A';
-  document.getElementById('freqTurmaLabel').textContent = turma;
-  const lista = DB.freqData[turma] || generateFreqList(turma);
-  DB.freqData[turma] = lista;
-  const el = document.getElementById('freqList');
-  if(!el) return;
-  el.innerHTML = lista.map(aluno => `
-    <div style="display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--gray-100)">
-      <div class="td-avatar ${getAvatarColor(aluno.id)}" style="width:36px;height:36px">${getInitials(aluno.nome)}</div>
-      <div style="flex:1;font-size:13.5px;font-weight:600">${aluno.nome}</div>
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-sm ${aluno.status==='present'?'btn-success':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','present')">✓ Presente</button>
-        <button class="btn btn-sm ${aluno.status==='absent'?'btn-danger':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','absent')">✗ Falta</button>
-        <button class="btn btn-sm ${aluno.status==='justified'?'btn-amber':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','justified')">📄 Justif.</button>
-      </div>
-    </div>
-  `).join('');
-  renderFreqSummary(lista);
-  createFreqChart();
-}
-
-function generateFreqList(turma) {
-  return DB.alunos.filter(a=>a.turma===turma).slice(0,8).map(a => ({id:a.id,nome:a.nome,status:'present'}));
-}
-
-function setFreq(id, turma, status) {
-  const item = DB.freqData[turma].find(x=>x.id===id);
-  if(item) item.status = status;
-  renderFrequencia();
-}
-
-function renderFreqSummary(lista) {
-  const p = lista.filter(x=>x.status==='present').length;
-  const a = lista.filter(x=>x.status==='absent').length;
-  const j = lista.filter(x=>x.status==='justified').length;
-  const total = lista.length;
-  document.getElementById('freqSummary').innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text-muted)">Total de Alunos</span><strong>${total}</strong></div>
-      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--green)">✓ Presentes</span><strong style="color:var(--green)">${p}</strong></div>
-      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--red)">✗ Ausentes</span><strong style="color:var(--red)">${a}</strong></div>
-      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--amber)">📄 Justificados</span><strong style="color:var(--amber)">${j}</strong></div>
-      <div style="margin-top:4px">
-        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Taxa de presença</div>
-        <div class="progress-bar">
-          <div class="progress-fill ${(p/total*100)>85?'green':'amber'}" style="width:${(p/total*100).toFixed(0)}%"></div>
-        </div>
-        <div style="font-size:12px;font-weight:700;margin-top:4px">${(p/total*100).toFixed(0)}%</div>
-      </div>
-    </div>
-  `;
-}
-
-function createFreqChart() {
-  const ctx = document.getElementById('freqChart');
-  if(!ctx) return;
-  if(chartsCreated.freqChart) { chartsCreated.freqChart.destroy(); }
-  chartsCreated.freqChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Sem 1','Sem 2','Sem 3','Sem 4'],
-      datasets: [{ label:'Presença %', data:[92,88,85,87], backgroundColor:'rgba(16,185,129,0.7)', borderRadius:6 }]
-    },
-    options: { responsive:true, plugins:{legend:{display:false}}, scales:{ y:{min:70,max:100,grid:{color:'rgba(0,0,0,0.05)'}}, x:{grid:{display:false}} } }
-  });
-}
-
-function saveFrequencia() {
-  showToast('Frequência salva com sucesso!','success');
-}
-
-// ═══════════════════════════════════════════════════════════
-// AVALIAÇÕES
-// ═══════════════════════════════════════════════════════════
-function renderAvaliacoes() {
-  renderNotas();
-  renderObservacoes();
-  populateHistoricoSelect();
-}
-
-function renderNotas() {
-  const tbody = document.getElementById('notasTable');
-  if(!tbody) return;
-  tbody.innerHTML = DB.notas.map(n => {
-    const varColor = n.var > 0 ? 'var(--green)' : n.var < -2 ? 'var(--red)' : 'var(--amber)';
-    const varIcon = n.var > 0 ? '↑' : '↓';
-    return `<tr>
-      <td><div class="td-name"><div class="td-avatar ${getAvatarColor(n.alunoId)}">${getInitials(n.aluno)}</div><span style="font-weight:700">${n.aluno}</span></div></td>
-      <td><span class="tag blue">${n.turma}</span></td>
-      <td>${n.disciplina}</td>
-      <td><span class="tag gray">${n.tipo}</span></td>
-      <td><strong style="font-size:16px;color:${n.nota<5?'var(--red)':n.nota<7?'var(--amber)':'var(--green)'}">${n.nota.toFixed(1)}</strong></td>
-      <td style="font-size:12px;color:var(--text-muted)">${n.data}</td>
-      <td><span style="font-weight:700;color:${varColor}">${varIcon} ${Math.abs(n.var).toFixed(1)}</span></td>
-    </tr>`;
-  }).join('');
-}
-
-function renderObservacoes() {
-  const el = document.getElementById('observacoesListView');
-  if(!el) return;
-  el.innerHTML = DB.observacoes.map(o => `
-    <div style="padding:16px;border-radius:12px;border:1px solid var(--gray-200);margin-bottom:12px;background:${o.prio==='high'?'var(--red-pale)':o.prio==='medium'?'var(--amber-pale)':'var(--gray-50)'}">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-        <div class="td-avatar ${getAvatarColor(o.alunoId)}" style="width:32px;height:32px">${getInitials(o.aluno)}</div>
-        <strong>${o.aluno}</strong>
-        <span class="tag ${o.prio==='high'?'red':o.prio==='medium'?'amber':'gray'}">${o.prio==='high'?'Alta':o.prio==='medium'?'Média':'Baixa'}</span>
-        <span style="margin-left:auto;font-size:11px;color:var(--text-muted)">${o.prof} · ${o.data}</span>
-      </div>
-      <div style="font-size:13.5px;color:var(--text);line-height:1.5">"${o.texto}"</div>
-    </div>
-  `).join('');
-}
-
-function saveNota() {
-  const alunoId = parseInt(document.getElementById('n-aluno').value);
-  const aluno = DB.alunos.find(a=>a.id===alunoId);
-  const nota = parseFloat(document.getElementById('n-valor').value);
-  if(!aluno || isNaN(nota)) { showToast('Preencha todos os campos!','danger'); return; }
-  const novaVar = nota - aluno.media;
-  DB.notas.unshift({id:DB.notas.length+1,alunoId,aluno:aluno.nome,turma:aluno.turma,disciplina:document.getElementById('n-disc').value,tipo:document.getElementById('n-tipo').value,nota,bim:document.getElementById('n-bim').value,data:document.getElementById('n-data').value,var:+novaVar.toFixed(1)});
-  aluno.media = +((aluno.media + nota)/2).toFixed(1);
-  if(novaVar < -2.5) { DB.alertas.unshift({id:Date.now(),tipo:'critical',titulo:'Queda Detectada — '+aluno.nome,desc:`Nota ${nota} registrada. Queda de ${Math.abs(novaVar).toFixed(1)} pontos.`,data:new Date().toLocaleDateString('pt-BR'),lido:false}); document.getElementById('badge-alertas').textContent = DB.alertas.filter(a=>!a.lido).length; showToast('Queda significativa detectada!','danger'); }
-  closeModal('modal-nota'); renderNotas(); showToast('Nota lançada!','success');
-}
-
-function saveObservacao() {
-  const alunoId = parseInt(document.getElementById('o-aluno').value);
-  const aluno = DB.alunos.find(a=>a.id===alunoId);
-  const texto = document.getElementById('o-texto').value.trim();
-  if(!aluno || !texto) { showToast('Preencha todos os campos!','danger'); return; }
-  DB.observacoes.unshift({id:DB.observacoes.length+1,alunoId,aluno:aluno.nome,texto,prio:document.getElementById('o-prio').value,data:new Date().toLocaleDateString('pt-BR'),termos:[],prof:currentUser.nome});
-  closeModal('modal-observacao'); renderObservacoes(); showToast('Observação salva!','success');
-  document.getElementById('o-texto').value = '';
-}
-
-function switchTab(btn, tabId) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  ['tab-notas','tab-observacoes','tab-historico'].forEach(id => document.getElementById(id).style.display = 'none');
-  document.getElementById(tabId).style.display = 'block';
-  if(tabId === 'tab-historico') renderHistoricoChart();
-}
-
-function populateHistoricoSelect() {
-  const sel = document.getElementById('historicoAlunoSelect');
-  if(!sel) return;
-  const cur = sel.value;
-  sel.innerHTML = '<option value="">Selecione um aluno</option>' + DB.alunos.map(a => `<option value="${a.id}">${a.nome}</option>`).join('');
-  if(cur) sel.value = cur;
-}
-
-function renderHistoricoChart(alunoId) {
-  alunoId = alunoId || document.getElementById('historicoAlunoSelect')?.value;
-  if(!alunoId) return;
-  const ctx = document.getElementById('historicoChart');
-  if(!ctx) return;
-  if(chartsCreated.historicoChart) chartsCreated.historicoChart.destroy();
-  const dados = [8.2, 7.9, 8.0, 7.5, 7.1, 6.8, 6.4, 6.1].map((v,i)=>+(v + (Math.random()-0.5)*0.8).toFixed(1));
-  chartsCreated.historicoChart = new Chart(ctx, {
-    type:'line',
-    data: { labels:['1ºBim/2023','2ºBim/2023','3ºBim/2023','4ºBim/2023','1ºBim/2024','2ºBim/2024','3ºBim/2024','4ºBim/2024'],
-      datasets:[{ label:'Média', data: dados, borderColor:'var(--blue)', backgroundColor:'rgba(37,99,235,0.08)', fill:true, tension:0.4, pointRadius:6 },
-      { label:'Frequência %', data:[96,94,92,90,88,85,82,80].map(v=>+(v+(Math.random()-0.5)*4).toFixed(0)), borderColor:'var(--green)', backgroundColor:'rgba(16,185,129,0.05)', fill:true, tension:0.4, pointRadius:6 }]
-    },
-    options:{ responsive:true, plugins:{legend:{position:'bottom'}}, scales:{ y:{min:40}, x:{grid:{display:false}} } }
-  });
-}
-
-// ═══════════════════════════════════════════════════════════
-// ═══════════════════════════════════════════════════════════
-// ALERTAS
-// ═══════════════════════════════════════════════════════════
-function renderAlertas() {
-  const el = document.getElementById('alertasList');
-  if(!el) return;
-  el.innerHTML = DB.alertas.map(a => `
-    <div class="alert-item ${a.tipo}" style="opacity:${a.lido?0.55:1}" onclick="markRead(${a.id})">
-      <div class="alert-dot ${a.tipo}"></div>
-      <div class="alert-content">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
-          <div class="alert-title">${a.titulo}</div>
-          ${!a.lido ? '<span class="tag red" style="font-size:10px">Novo</span>' : ''}
-        </div>
-        <div class="alert-desc">${a.desc}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-        <span class="alert-time">${a.data}</span>
-        ${!a.lido ? `<button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="event.stopPropagation();markRead(${a.id})">Marcar lido</button>` : ''}
-      </div>
-    </div>
-  `).join('');
-}
-
-function markRead(id) {
-  const a = DB.alertas.find(x=>x.id===id);
-  if(a) a.lido = true;
-  document.getElementById('badge-alertas').textContent = DB.alertas.filter(a=>!a.lido).length;
-  renderAlertas();
-}
-
-function markAllRead() {
-  DB.alertas.forEach(a=>a.lido=true);
-  document.getElementById('badge-alertas').textContent = '0';
-  renderAlertas();
-  showToast('Todos os alertas marcados como lidos.','success');
-}
-
-// ═══════════════════════════════════════════════════════════
-// ENCAMINHAMENTOS
-// ═══════════════════════════════════════════════════════════
-function renderEncaminhamentos() {
-  const el = document.getElementById('encaminhamentosList');
-  if(!el) return;
-  const tipoLabels = {psico:'🧠 Psicólogo Escolar',tutelar:'⚖️ Conselho Tutelar',familiar:'👨‍👩‍👧 Reunião Familiar',pedagogico:'📚 Reforço Pedagógico'};
-  const urgLabels = {normal:'Normal',media:'Média',alta:'⚠️ Alta'};
-  el.innerHTML = DB.encaminhamentos.map(e => `
-    <div class="intervencao-card ${e.tipo}">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-        <div class="td-avatar ${getAvatarColor(e.alunoId)}">${getInitials(e.aluno)}</div>
-        <div>
-          <div style="font-weight:700;font-size:14px">${e.aluno}</div>
-          <div style="font-size:12px;color:var(--text-muted)">${tipoLabels[e.tipo]}</div>
-        </div>
-        <span class="tag ${e.urgencia==='alta'?'red':e.urgencia==='media'?'amber':'gray'}" style="margin-left:auto">${urgLabels[e.urgencia]}</span>
-        <span class="tag ${e.status==='Em andamento'?'blue':'amber'}">${e.status}</span>
-      </div>
-      <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px">${e.just}</div>
-      <div style="font-size:12px;color:var(--text-muted)">Resp: ${e.resp} · ${e.data}</div>
-    </div>
-  `).join('') || '<div class="empty-state"><div class="empty-state-icon">✅</div><p>Nenhum encaminhamento registrado.</p></div>';
-}
-
-function saveEncaminhamento() {
-  const alunoId = parseInt(document.getElementById('enc-aluno').value);
-  const aluno = DB.alunos.find(a=>a.id===alunoId);
-  const just = document.getElementById('enc-just').value.trim();
-  if(!aluno||!just) { showToast('Preencha todos os campos!','danger'); return; }
-  DB.encaminhamentos.unshift({id:DB.encaminhamentos.length+1,alunoId,aluno:aluno.nome,tipo:document.getElementById('enc-tipo').value,urgencia:document.getElementById('enc-urg').value,resp:document.getElementById('enc-resp').value,just,data:new Date().toLocaleDateString('pt-BR'),status:'Pendente'});
-  closeModal('modal-encaminhamento'); renderEncaminhamentos(); showToast('Encaminhamento registrado!','success');
-}
-
-// ═══════════════════════════════════════════════════════════
-// PLANOS DE AÇÃO
-// ═══════════════════════════════════════════════════════════
-function renderPlanos() {
-  const el = document.getElementById('planosList');
-  if(!el) return;
-  el.innerHTML = DB.planos.map(p => `
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-body">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-          <div class="td-avatar td-avatar-blue">${getInitials(p.aluno)}</div>
-          <div>
-            <div style="font-weight:800;font-size:15px">${p.aluno}</div>
-            <div style="font-size:12px;color:var(--text-muted)">Prazo: ${p.prazo}</div>
-          </div>
-          <span class="tag ${p.status==='Concluído'?'green':'blue'}" style="margin-left:auto">${p.status}</span>
-        </div>
-        <div style="padding:12px;background:var(--blue-pale);border-radius:10px;margin-bottom:12px">
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--blue);margin-bottom:4px">META PRINCIPAL</div>
-          <div style="font-size:14px;font-weight:600">${p.meta}</div>
-        </div>
-        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">${p.est}</div>
-        <div style="margin-top:14px">
-          <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">PROGRESSO</div>
-          <div class="progress-bar"><div class="progress-fill blue" style="width:35%"></div></div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">35% concluído</div>
-        </div>
-      </div>
-    </div>
-  `).join('') || '<div class="empty-state"><div class="empty-state-icon">📋</div><p>Nenhum plano de ação criado.</p></div>';
-}
-
-function savePlano() {
-  const alunoId = parseInt(document.getElementById('pl-aluno').value);
-  const aluno = DB.alunos.find(a=>a.id===alunoId);
-  const meta = document.getElementById('pl-meta').value.trim();
-  if(!aluno||!meta) { showToast('Preencha todos os campos!','danger'); return; }
-  DB.planos.push({id:DB.planos.length+1,alunoId,aluno:aluno.nome,meta,est:document.getElementById('pl-est').value,prazo:document.getElementById('pl-prazo').value,status:'Em andamento'});
-  closeModal('modal-plano'); renderPlanos(); showToast('Plano de ação criado!','success');
-}
-
-// ═══════════════════════════════════════════════════════════
-// RELATÓRIOS
-// ═══════════════════════════════════════════════════════════
-function renderRelatorios() {
-  const el = document.getElementById('relatoriosGrid');
-  if(!el) return;
-  const reports = [
-    {icon:'📊',title:'Relatório de Desempenho',desc:'Médias por turma, disciplina e bimestre.',color:'blue',btn:'Gerar PDF'},
-    {icon:'📅',title:'Relatório de Frequência',desc:'Taxas de presença, ausência e justificativas.',color:'green',btn:'Gerar PDF'},
-    {icon:'🚨',title:'Alunos em Risco',desc:'Lista dos alunos com maior atenção e acompanhamento.',color:'red',btn:'Gerar PDF'},
-    {icon:'📈',title:'Análise de Desempenho',desc:'Indicadores de evolução, quedas e atenção pedagógica.',color:'purple',btn:'Gerar Relatório'},
-    {icon:'🔀',title:'Encaminhamentos',desc:'Registro de todos os encaminhamentos do período.',color:'amber',btn:'Gerar PDF'},
-    {icon:'📋',title:'Conselho de Classe',desc:'Relatório consolidado para reunião pedagógica.',color:'blue',btn:'Gerar PDF'},
-  ];
-  el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">` +
-    reports.map(r => `<div class="card stat-card ${r.color}">
-      <div style="font-size:36px;margin-bottom:10px">${r.icon}</div>
-      <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px">${r.title}</div>
-      <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:16px;flex:1">${r.desc}</div>
-      <button class="btn btn-ghost btn-sm" onclick="gerarRelatorio('${r.title}')">📄 ${r.btn}</button>
-    </div>`).join('') + '</div>';
-}
-
-function gerarRelatorio(title) {
-  showToast('📄 Gerando "' + title + '"…','info');
-  setTimeout(()=>showToast('✅ Relatório pronto! (Simulação)','success'),2000);
-}
-
-// ═══════════════════════════════════════════════════════════
-// LGPD
-// ═══════════════════════════════════════════════════════════
-function renderLGPD() {
-  const el = document.getElementById('lgpdContent');
-  if(!el) return;
-  el.innerHTML = `
-    <div class="grid-2">
-      <div>
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-header"><h3>🔒 Criptografia & Segurança</h3></div>
-          <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:12px">
-              ${[['AES-256','Dados sensíveis em repouso','green'],['TLS 1.3','Transmissão de dados','green'],['PBKDF2','Hash de senhas','green'],['JWT RS256','Tokens de autenticação','green']].map(([k,v,c])=>`
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--gray-50);border-radius:8px">
-                <div><div style="font-weight:700;font-size:13px">${k}</div><div style="font-size:11px;color:var(--text-muted)">${v}</div></div>
-                <span class="tag ${c}">✓ Ativo</span>
-              </div>`).join('')}
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><h3>👤 Controle de Acesso (RBAC)</h3></div>
-          <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:8px">
-              ${[['Gestor','Acesso total ao sistema','red'],['Professor','Apenas suas turmas e alunos','amber'],['Responsável','Apenas dados do próprio filho','blue'],['Psicólogo','Laudos e encaminhamentos','purple']].map(([r,d,c])=>`
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;border:1px solid var(--gray-200);border-radius:8px">
-                <div><div style="font-weight:700;font-size:13px">${r}</div><div style="font-size:11px;color:var(--text-muted)">${d}</div></div>
-                <span class="tag ${c}">${r}</span>
-              </div>`).join('')}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-header"><h3>🕵️ Anonimização de Dados</h3></div>
-          <div class="card-body">
-            <p style="font-size:13.5px;color:var(--text-muted);line-height:1.6;margin-bottom:16px">Relatórios estatísticos para diretoria e órgãos externos são gerados com dados anonimizados, impossibilitando identificação individual dos alunos em risco.</p>
-            <div style="padding:12px;background:var(--green-pale);border-radius:10px;font-size:13px;color:#065F46">
-              <strong>✓ LGPD Art. 12</strong> — Dados anonimizados não são considerados dados pessoais. Todos os relatórios de gestão seguem este princípio.
-            </div>
-            <button class="btn btn-ghost btn-sm" style="margin-top:12px;width:100%" onclick="showToast('Relatório anonimizado gerado!','success')">📊 Gerar Relatório Anonimizado</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><h3>📋 Log de Auditoria</h3></div>
-          <div class="card-body">
-            <div style="font-size:12px;font-family:monospace;background:var(--navy);color:#A5F3FC;padding:14px;border-radius:10px;line-height:1.8">
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:15] LOGIN — Ana Coordenadora (Gestor)</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:18] ACESSO — Perfil Lucas Ferreira</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:22] ALERTA — Alerta crítico registrado #007</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:25] ENCAMINHAMENTO — Criado para Rafael Santos</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:31] NOTA — Lançamento de avaliação</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:45] RELATORIO — Gerado (Anonimizado)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-// ═══════════════════════════════════════════════════════════
-// MODAL UTILS
-// ═══════════════════════════════════════════════════════════
-function openModal(id) {
-  document.getElementById(id).classList.add('open');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-document.querySelectorAll('.modal-overlay').forEach(m => {
-  m.addEventListener('click', function(e) { if(e.target === this) this.classList.remove('open'); });
-});
-
-function populateSelectAlunos() {
-  const selIds = ['n-aluno','o-aluno','enc-aluno','pl-aluno'];
-  selIds.forEach(id => {
-    const sel = document.getElementById(id);
-    if(sel) sel.innerHTML = DB.alunos.map(a=>`<option value="${a.id}">${a.nome} (${a.turma})</option>`).join('');
-  });
-}
-
-// ═══════════════════════════════════════════════════════════
-// SEARCH
-// ═══════════════════════════════════════════════════════════
-function handleSearch(val) {
-  if(val.length < 2) return;
-  const results = DB.alunos.filter(a=>a.nome.toLowerCase().includes(val.toLowerCase()));
-  if(results.length) { alunosFiltrados = results; showView('alunos'); }
-}
-
-// ═══════════════════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════════════════
-function showToast(msg, type='success') {
-  const icons = {success:'✅',danger:'🚨',warning:'⚠️',info:'ℹ️'};
-  const container = document.getElementById('toastContainer');
-  const t = document.createElement('div');
-  t.className = `toast ${type === 'danger' ? 'danger' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : ''}`;
-  t.innerHTML = `<span style="font-size:18px">${icons[type]||'✅'}</span><span>${msg}</span>`;
-  container.appendChild(t);
-  setTimeout(() => { t.style.animation='toastOut 0.3s ease forwards'; setTimeout(()=>t.remove(),300); }, 3500);
-}
-
-// ═══════════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════════
-window.addEventListener('DOMContentLoaded', () => {
-  // Pre-fill date
-  document.getElementById('freqDate').valueAsDate = new Date();
-  document.getElementById('n-data').valueAsDate = new Date();
-});
-</script>
 </body>
 </html>
