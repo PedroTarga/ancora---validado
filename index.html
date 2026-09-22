@@ -8,9 +8,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<<<<<<< HEAD
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
 <script src="script.js" defer></script>
 <link rel="stylesheet" href="style.css">
+=======
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+
+>>>>>>> 65449e2 (feature/ separação do js e reestruturação)
 </head>
 <body>
 
@@ -247,7 +253,11 @@
               </div>
             </div>
             <div class="card-body" style="padding:14px">
+<<<<<<< HEAD
               <div class="alert-item critical" onclick="showView('alertas')">
+=======
+              <div class="alert-item critical" onclick="showView('ia')">
+>>>>>>> 65449e2 (feature/ separação do js e reestruturação)
                 <div class="alert-dot critical"></div>
                 <div class="alert-content">
                   <div class="alert-title">Queda Crítica — Lucas Ferreira</div>
@@ -255,7 +265,7 @@
                 </div>
                 <div class="alert-time">2h</div>
               </div>
-              <div class="alert-item critical" onclick="showView('alertas')">
+              <div class="alert-item critical" onclick="showView('ia')">
                 <div class="alert-dot critical"></div>
                 <div class="alert-content">
                   <div class="alert-title">NLP: Termos sensíveis detectados</div>
@@ -271,7 +281,7 @@
                 </div>
                 <div class="alert-time">1d</div>
               </div>
-              <div class="alert-item low" onclick="showView('alertas')">
+              <div class="alert-item low" onclick="showView('ia')">
                 <div class="alert-dot low"></div>
                 <div class="alert-content">
                   <div class="alert-title">Padrão Incomum Detectado</div>
@@ -786,23 +796,6 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-plano">
-  <div class="modal">
-    <div class="modal-title">📋 Plano de Ação Individual</div>
-    <div class="modal-sub">Meta de recuperação e acompanhamento</div>
-    <div class="form-grid form-grid-2">
-      <div class="form-group"><label class="form-label">Aluno *</label><select class="form-select" id="pl-aluno"></select></div>
-      <div class="form-group"><label class="form-label">Prazo</label><input class="form-input" id="pl-prazo" type="date"></div>
-      <div class="form-group form-grid" style="grid-column:1/-1"><label class="form-label">Meta Principal *</label><input class="form-input" id="pl-meta" placeholder="Ex: Elevar média para 7.0 no 3º bimestre"></div>
-    </div>
-    <div class="form-group" style="margin-top:12px"><label class="form-label">Estratégias</label><textarea class="form-textarea" id="pl-est" placeholder="Descreva as ações planejadas…"></textarea></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('modal-plano')">Cancelar</button>
-      <button class="btn btn-primary" onclick="savePlano()">💾 Criar Plano</button>
-    </div>
-  </div>
-</div>
-
 <div class="modal-overlay" id="modal-aluno-detalhe">
   <div class="modal" style="max-width:700px">
     <div id="alunoDetalheContent"></div>
@@ -942,7 +935,11 @@
     </div>
   </div>
 </div>
+<script src="script.js"></script>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 65449e2 (feature/ separação do js e reestruturação)
 </body>
 </html>
