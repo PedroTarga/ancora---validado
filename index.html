@@ -42,27 +42,8 @@
         <option value="4">Prof. José Teixeira — História (8B · 9A)</option>
       </select>
     </div>
-    <div id="login-pais-row" style="display:none">
-      <label class="login-label">Identificar Filho(a)</label>
-      <select class="login-input" id="loginAlunoId">
-        <option value="1">Lucas Ferreira — Turma 8A</option>
-        <option value="2">Ana Souza — Turma 6B</option>
-        <option value="3">Pedro Lima — Turma 7A</option>
-        <option value="4">Mariana Costa — Turma 9A</option>
-        <option value="5">Rafael Santos — Turma 8B</option>
-        <option value="6">Beatriz Oliveira — Turma 7C</option>
-        <option value="7">Gabriel Alves — Turma 6A</option>
-        <option value="8">Isabela Rocha — Turma 8A</option>
-        <option value="9">Mateus Carvalho — Turma 7C</option>
-        <option value="10">Sofia Barbosa — Turma 9A</option>
-      </select>
-    </div>
-    <label class="login-label">Usuário</label>
-    <input class="login-input" type="text" id="loginUser" value="admin@escola.br" placeholder="seu@email.br">
-    <label class="login-label">Senha</label>
-    <input class="login-input" type="password" id="loginPass" value="••••••••" placeholder="Senha">
     <button class="login-btn" onclick="doLogin()">Entrar no Sistema</button>
-    <div class="login-hint">Acesso demo — todos os perfis estão disponíveis • LGPD compliant</div>
+    <div class="login-hint">Ambiente demonstrativo: selecionar um perfil não autentica identidade nem restringe dados no navegador. Não use informações reais ou sensíveis.</div>
   </div>
 </div>
 
@@ -79,51 +60,51 @@
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Principal</div>
-      <div class="nav-item active" onclick="showView('dashboard')">
+      <div class="nav-item active" data-view="dashboard" onclick="showView('dashboard')">
         <span class="nav-icon"></span> Dashboard
         <span class="nav-badge" id="badge-alertas">3</span>
       </div>
-      <div class="nav-item" onclick="showView('alertas')">
+      <div class="nav-item" data-view="alertas" onclick="showView('alertas')">
         <span class="nav-icon"></span> Alertas & Riscos
         <span class="nav-badge" id="badge-risk">5</span>
       </div>
 
       <div class="nav-section-label">Gestão Acadêmica</div>
-      <div class="nav-item" onclick="showView('alunos')">
+      <div class="nav-item" data-view="alunos" onclick="showView('alunos')">
         <span class="nav-icon"></span> Alunos
       </div>
-      <div class="nav-item" onclick="showView('professores')">
+      <div class="nav-item" data-view="professores" onclick="showView('professores')">
         <span class="nav-icon"></span> Professores
       </div>
-      <div class="nav-item" onclick="showView('disciplinas')">
+      <div class="nav-item" data-view="disciplinas" onclick="showView('disciplinas')">
         <span class="nav-icon"></span> Disciplinas
       </div>
-      <div class="nav-item" onclick="showView('turmas')">
+      <div class="nav-item" data-view="turmas" onclick="showView('turmas')">
         <span class="nav-icon"></span> Turmas
       </div>
-      <div class="nav-item" onclick="showView('frequencia')">
+      <div class="nav-item" data-view="frequencia" onclick="showView('frequencia')">
         <span class="nav-icon"></span> Frequência
       </div>
-      <div class="nav-item" onclick="showView('avaliacoes')">
+      <div class="nav-item" data-view="avaliacoes" onclick="showView('avaliacoes')">
         <span class="nav-icon"></span> Avaliações
       </div>
 
       <div class="nav-section-label">Intervenção</div>
-      <div class="nav-item" onclick="showView('encaminhamentos')">
+      <div class="nav-item" data-view="encaminhamentos" onclick="showView('encaminhamentos')">
         <span class="nav-icon"></span> Encaminhamentos
       </div>
-      <div class="nav-item" onclick="showView('casos')">
+      <div class="nav-item" data-view="casos" onclick="showView('casos')">
         <span class="nav-icon"></span> Acompanhamento de Casos
       </div>
-      <div class="nav-item" onclick="showView('laudos')">
+      <div class="nav-item" data-view="laudos" onclick="showView('laudos')">
         <span class="nav-icon"></span> Laudos
       </div>
 
       <div class="nav-section-label">Relatórios</div>
-      <div class="nav-item" onclick="showView('relatorios')">
+      <div class="nav-item" data-view="relatorios" onclick="showView('relatorios')">
         <span class="nav-icon"></span> Relatórios
       </div>
-      <div class="nav-item" onclick="showView('lgpd')">
+      <div class="nav-item" data-view="lgpd" onclick="showView('lgpd')">
         <span class="nav-icon"></span> Segurança & LGPD
       </div>
     </nav>
@@ -334,7 +315,7 @@
             <input type="date" class="form-input" id="freqDataIni" style="width:148px">
             <span style="color:var(--text-muted);font-size:12px;align-self:center">até</span>
             <input type="date" class="form-input" id="freqDataFim" style="width:148px">
-            <button class="btn btn-success" onclick="saveFrequencia()"> Salvar</button>
+            <button class="btn btn-success" id="freqSaveBtn" onclick="saveFrequencia()"> Salvar</button>
           </div>
         </div>
 
@@ -373,7 +354,7 @@
           <div class="page-header-icon purple"></div>
           <div><h2>Avaliações & Observações</h2>
           <p>Consulta por aluno · Lançamento de notas · Observações pedagógicas</p></div>
-          <div class="page-header-actions">
+          <div class="page-header-actions" id="avaliacoesActions">
             <button class="btn btn-primary" onclick="openModal('modal-nota')">+ Lançar Nota</button>
             <button class="btn btn-ghost" onclick="openModal('modal-observacao')"> Observação</button>
           </div>
@@ -415,8 +396,8 @@
 
         <div class="tabs">
           <button class="tab-btn active" onclick="switchTab(this,'tab-notas')"> Notas</button>
-          <button class="tab-btn" onclick="switchTab(this,'tab-observacoes')"> Observações</button>
-          <button class="tab-btn" onclick="switchTab(this,'tab-historico')"> Histórico</button>
+          <button class="tab-btn" id="observacoesTabButton" onclick="switchTab(this,'tab-observacoes')"> Observações</button>
+          <button class="tab-btn" id="historicoTabButton" onclick="switchTab(this,'tab-historico')"> Histórico</button>
         </div>
 
         <div id="tab-notas">

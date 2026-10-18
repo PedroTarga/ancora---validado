@@ -91,18 +91,39 @@ const DB = {
 // RBAC — Permissões por papel
 // ═══════════════════════════════════════════════════════════
 const RBAC = {
-  gestor:    { verAlunos:true,  editarAlunos:true,  verProfs:true,  editarProfs:true,  verDisc:true,  editarDisc:true,  verLaudos:true,  editarLaudos:true,  verCasos:true,  editarCasos:true,  verEnc:true,  editarEnc:true,  verRel:true,   verLGPD:true  },
-  professor: { verAlunos:true,  editarAlunos:false, verProfs:false, editarProfs:false, verDisc:true,  editarDisc:false, verLaudos:false, editarLaudos:false, verCasos:false, editarCasos:false, verEnc:false, editarEnc:false, verRel:false,  verLGPD:false },
-  psicologo: { verAlunos:true,  editarAlunos:false, verProfs:false, editarProfs:false, verDisc:false, editarDisc:false, verLaudos:true,  editarLaudos:true,  verCasos:true,  editarCasos:true,  verEnc:true,  editarEnc:true,  verRel:false,  verLGPD:false },
-  pais:      { verAlunos:false, editarAlunos:false, verProfs:false, editarProfs:false, verDisc:false, editarDisc:false, verLaudos:false, editarLaudos:false, verCasos:false, editarCasos:false, verEnc:false, editarEnc:false, verRel:false,  verLGPD:false },
+  gestor: {
+    verDashboard:true, verAlunos:true, editarAlunos:true, verAlunoDetalhe:true,
+    verProfs:true, editarProfs:true, verDisc:true, editarDisc:true, verTurmas:true, editarTurmas:true,
+    verFreq:true, editarFreq:true, verAvaliacoes:true, editarNotas:true, verObservacoes:true, editarObservacoes:true,
+    verAlertas:true, editarAlertas:true, verLaudos:true, editarLaudos:true, verCasos:true, editarCasos:true,
+    verEnc:true, editarEnc:true, verRel:true, verLGPD:true,
+  },
+  professor: {
+    verAlunos:true, verAlunoDetalhe:true, verFreq:true, editarFreq:true,
+    verAvaliacoes:true, editarNotas:true, verObservacoes:true, editarObservacoes:true,
+  },
+  psicologo: {
+    verAlunos:true, verAlunoDetalhe:true, verLaudos:true, editarLaudos:true,
+    verCasos:true, editarCasos:true, verEnc:true, editarEnc:true,
+  },
+  pais: {
+    verFreq:true, verAvaliacoes:true, verHistorico:true,
+  },
 };
+
+const viewPermissions = {
+  dashboard:'verDashboard', alunos:'verAlunos', professores:'verProfs', disciplinas:'verDisc',
+  turmas:'verTurmas', frequencia:'verFreq', avaliacoes:'verAvaliacoes', alertas:'verAlertas',
+  encaminhamentos:'verEnc', casos:'verCasos', laudos:'verLaudos', relatorios:'verRel', lgpd:'verLGPD',
+};
+const DEMO_PARENT_STUDENT_ID = 1;
 
 // ═══════════════════════════════════════════════════════════
 // ESTADO GLOBAL
 // ═══════════════════════════════════════════════════════════
-let currentUser = { role:'gestor', nome:'Ana Coordenadora', profId:null, alunoId:null, turmas:[] };
+let currentUser = { role:null, nome:'', profId:null, alunoId:null, turmas:[] };
 let chartsCreated = {};
-let alunosFiltrados = [...DB.alunos];
+let alunosFiltrados = [];
 
 // ═══════════════════════════════════════════════════════════
 // HELPERS
@@ -114,13 +135,42 @@ function getInitials(nome) { return nome.split(' ').slice(0,2).map(n=>n[0]).join
 function perm(key) { return RBAC[currentUser.role]?.[key] === true; }
 
 function getAlunosVisiveis() {
+  if(!currentUser.role) return [];
+  if(currentUser.role === 'gestor') return DB.alunos;
   if(currentUser.role === 'professor') return DB.alunos.filter(a => currentUser.turmas.includes(a.turma));
   if(currentUser.role === 'pais') return DB.alunos.filter(a => a.id === currentUser.alunoId);
-  return DB.alunos;
+  if(currentUser.role === 'psicologo') return DB.alunos;
+  return [];
+}
+
+function canAccessStudent(alunoId) {
+  return Number.isInteger(Number(alunoId)) &&
+    (perm('verAlunos') || perm('verAvaliacoes') || perm('verFreq')) &&
+    getAlunosVisiveis().some(aluno => aluno.id === Number(alunoId));
+}
+
+function requirePermission(permission) {
+  if(perm(permission)) return true;
+  showToast('Acesso não autorizado.','danger');
+  return false;
 }
 
 function getDiscNomes() {
-  return [...new Set(DB.disciplinas.map(d => d.nome))].sort();
+  const turmas = new Set(getAlunosVisiveis().map(aluno => aluno.turma));
+  return [...new Set(DB.disciplinas
+    .filter(disciplina => turmas.has(disciplina.turma) &&
+      (currentUser.role !== 'professor' || disciplina.profId === currentUser.profId))
+    .map(disciplina => disciplina.nome))].sort();
+}
+
+function canRecordGrade(alunoId, disciplina) {
+  const aluno = DB.alunos.find(item => item.id === Number(alunoId));
+  if(!aluno || !canAccessStudent(alunoId)) return false;
+  return DB.disciplinas.some(item =>
+    item.nome === disciplina &&
+    item.turma === aluno.turma &&
+    (currentUser.role !== 'professor' || item.profId === currentUser.profId)
+  );
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -128,11 +178,14 @@ function getDiscNomes() {
 // ═══════════════════════════════════════════════════════════
 function onLoginRoleChange(role) {
   document.getElementById('login-prof-row').style.display = role === 'professor' ? 'block' : 'none';
-  document.getElementById('login-pais-row').style.display = role === 'pais' ? 'block' : 'none';
 }
 
 function doLogin() {
   const role = document.getElementById('loginRole').value;
+  if(!Object.prototype.hasOwnProperty.call(RBAC, role)) {
+    showToast('Selecione um perfil de demonstração válido.','danger');
+    return;
+  }
   chartsCreated = {};
   let nome = 'Ana Coordenadora', profId = null, alunoId = null, turmas = [];
 
@@ -143,9 +196,13 @@ function doLogin() {
     profId = pid;
     turmas = p ? [...p.turmas] : [];
   } else if(role === 'pais') {
-    const aid = parseInt(document.getElementById('loginAlunoId').value);
+    const aid = DEMO_PARENT_STUDENT_ID;
     const a = DB.alunos.find(x => x.id === aid);
-    nome = a ? a.resp : 'Responsável';
+    if(!a) {
+      showToast('Selecione um aluno válido para a demonstração.','danger');
+      return;
+    }
+    nome = a.resp;
     alunoId = aid;
   } else if(role === 'psicologo') {
     nome = 'Dra. Fernanda Cruz';
@@ -154,6 +211,7 @@ function doLogin() {
   }
 
   currentUser = { role, nome, profId, alunoId, turmas };
+  alunosFiltrados = [...getAlunosVisiveis()];
   document.getElementById('sidebar-name').textContent = nome;
   document.getElementById('sidebar-role').textContent =
     role==='gestor' ? 'Gestão / Coordenação' :
@@ -169,44 +227,31 @@ function doLogin() {
   setTimeout(() => {
     initApp();
     showToast('Bem-vindo(a), ' + nome + '!', 'success');
+    showView(role === 'pais' ? 'avaliacoes' : role === 'professor' ? 'alunos' : role === 'psicologo' ? 'casos' : 'dashboard');
   }, 600);
 }
 
 function applyMenuRBAC() {
-  const role = currentUser.role;
-  // Professores: sem módulos administrativos
-  const hideForProf = ['professores','disciplinas-link','turmas','alertas','encaminhamentos','casos','laudos','relatorios','lgpd'];
-  // Pais: somente avaliações e frequência do filho
-  const showForPais = ['avaliacoes'];
-
-  document.querySelectorAll('.nav-item').forEach(el => {
-    const txt = el.textContent.trim().toLowerCase();
-    if(role === 'professor') {
-      if(txt.includes('professor') || txt.includes('disciplina') || txt.includes('alerta') ||
-         txt.includes('encaminhamento') || txt.includes('acompanhamento') || txt.includes('laudo') ||
-         txt.includes('relatório') || txt.includes('lgpd') || txt.includes('segurança')) {
-        el.style.display = 'none';
-      }
-    } else if(role === 'pais') {
-      if(!txt.includes('avalia') && !txt.includes('dashboard')) {
-        el.style.display = 'none';
-      }
-    } else {
-      el.style.display = '';
-    }
+  document.querySelectorAll('.nav-item[data-view]').forEach(el => {
+    const permission = viewPermissions[el.dataset.view];
+    el.style.display = permission && perm(permission) ? '' : 'none';
   });
+  const alertsButton = document.querySelector('.topbar-icon-btn');
+  if(alertsButton) alertsButton.style.display = perm('verAlertas') ? '' : 'none';
 }
 
 function doLogout() {
+  Object.values(chartsCreated).forEach(chart => chart?.destroy());
+  document.querySelectorAll('.modal-overlay.open').forEach(modal => modal.classList.remove('open'));
   document.getElementById('app').classList.remove('visible');
   document.getElementById('login-screen').classList.remove('hidden');
   document.getElementById('loginRole').value = 'gestor';
   document.getElementById('login-prof-row').style.display = 'none';
-  document.getElementById('login-pais-row').style.display = 'none';
   // Restaurar visibilidade de todos itens de menu
   document.querySelectorAll('.nav-item').forEach(el => el.style.display = '');
+  currentUser = { role:null, nome:'', profId:null, alunoId:null, turmas:[] };
   chartsCreated = {};
-  alunosFiltrados = [...DB.alunos];
+  alunosFiltrados = [];
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -229,25 +274,16 @@ const viewTitles = {
 };
 
 function showView(view) {
-  // Bloquear acesso não autorizado
-  if(view === 'professores' && !perm('verProfs'))   { showToast('Acesso não autorizado.','danger'); return; }
-  if(view === 'laudos'      && !perm('verLaudos'))  { showToast('Acesso restrito por LGPD.','danger'); return; }
-  if(view === 'casos'       && !perm('verCasos'))   { showToast('Acesso não autorizado.','danger'); return; }
-  if(view === 'relatorios'  && !perm('verRel'))     { showToast('Acesso não autorizado.','danger'); return; }
-  if(view === 'lgpd'        && !perm('verLGPD'))    { showToast('Acesso não autorizado.','danger'); return; }
-
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   const el = document.getElementById('view-' + view);
   if(!el) { showToast('Módulo não disponível.','warning'); return; }
+  const permission = viewPermissions[view];
+  if(!permission || !requirePermission(permission)) return;
+
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   el.classList.add('active');
 
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => {
-    const txt = n.textContent.toLowerCase();
-    const vt  = (viewTitles[view]||['',''])[0].toLowerCase();
-    if(txt.includes(vt.split(' ')[0])) n.classList.add('active');
-    else n.classList.remove('active');
-  });
+  document.querySelector(`.nav-item[data-view="${view}"]`)?.classList.add('active');
 
   document.getElementById('topbarTitle').textContent = (viewTitles[view]||[view,''])[0];
   document.getElementById('topbarSub').textContent   = (viewTitles[view]||['',''])[1];
@@ -281,7 +317,6 @@ function initApp() {
   if(document.getElementById('n-data')) document.getElementById('n-data').valueAsDate = new Date();
   if(document.getElementById('laud-data')) document.getElementById('laud-data').value = hoje;
 
-  renderDashboard();
   popularSelects();
 }
 
@@ -308,11 +343,30 @@ function popularSelects() {
     const base = id === 'freqDisc' ? '<option value="">Todas as disciplinas</option>' : '<option value="">Todas</option>';
     s.innerHTML = base + discNames.map(d => `<option value="${d}">${d}</option>`).join('');
   });
+  const notaDisc = document.getElementById('n-disc');
+  if(notaDisc) notaDisc.innerHTML = discNames.map(d => `<option value="${d}">${d}</option>`).join('');
+
+  const alunoTurma = document.getElementById('filterTurmaSelect');
+  if(alunoTurma) {
+    const classes = [...new Set(alunos.map(aluno => aluno.turma))].sort();
+    alunoTurma.innerHTML = '<option value="">Todas as turmas</option>' +
+      classes.map(turma => `<option value="${turma}">${turma}</option>`).join('');
+  }
+
+  const freqTurma = document.getElementById('freqTurma');
+  if(freqTurma) {
+    const classes = [...new Set(alunos.map(aluno => aluno.turma))].sort();
+    const selected = classes.includes(freqTurma.value) ? freqTurma.value : classes[0];
+    freqTurma.innerHTML = classes.map(turma =>
+      `<option value="${turma}"${turma === selected ? ' selected' : ''}>${turma}</option>`
+    ).join('');
+  }
 
   // Turmas filtro avaliações
   const at = document.getElementById('avalTurmaFiltro');
   if(at) {
-    at.innerHTML = '<option value="">Todas</option>' + DB.turmas.map(t => `<option>${t.nome}</option>`).join('');
+    const classes = [...new Set(alunos.map(aluno => aluno.turma))].sort();
+    at.innerHTML = '<option value="">Todas</option>' + classes.map(turma => `<option>${turma}</option>`).join('');
   }
 
   // Alunos filtro avaliações (geral inicialmente)
@@ -327,11 +381,13 @@ function popularSelects() {
 // DASHBOARD
 // ═══════════════════════════════════════════════════════════
 function renderDashboard() {
+  if(!requirePermission('verDashboard')) return;
   renderDashboardStats();
   setTimeout(() => { createMainChart(); }, 50);
 }
 
 function renderDashboardStats() {
+  if(!perm('verDashboard')) return;
   const alunos = getAlunosVisiveis();
   const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
   set('stat-total',    alunos.length);
@@ -356,8 +412,10 @@ function createMainChart() {
 // ALUNOS
 // ═══════════════════════════════════════════════════════════
 function renderAlunos(list) {
+  if(!requirePermission('verAlunos')) return;
   const canEdit = perm('editarAlunos');
-  const data = list || alunosFiltrados;
+  const allowedIds = new Set(getAlunosVisiveis().map(aluno => aluno.id));
+  const data = (list || alunosFiltrados).filter(aluno => allowedIds.has(aluno.id));
   document.getElementById('alunosCount').textContent = data.length + ' aluno(s)';
   const tbody = document.getElementById('alunosTable'); if(!tbody) return;
 
@@ -433,10 +491,14 @@ function editAluno(id) {
 }
 
 function showAlunoDetalhe(id) {
+  if(!perm('verAlunoDetalhe') || !canAccessStudent(id)) {
+    showToast('Acesso não autorizado.','danger');
+    return;
+  }
   const a = DB.alunos.find(x=>x.id===id); if(!a) return;
   const notas = DB.notas.filter(n=>n.alunoId===id);
-  const obs   = DB.observacoes.filter(o=>o.alunoId===id);
-  const laudo = DB.laudos.filter(l=>l.alunoId===id);
+  const obs   = perm('verObservacoes') ? DB.observacoes.filter(o=>o.alunoId===id) : [];
+  const laudo = perm('verLaudos') ? DB.laudos.filter(l=>l.alunoId===id) : [];
   const rc    = a.risco==='critical'?'critical':a.risco==='medium'?'medium':'normal';
   document.getElementById('alunoDetalheContent').innerHTML = `
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
@@ -461,6 +523,9 @@ function showAlunoDetalhe(id) {
     ${notas.length?`<div style="margin-bottom:16px"><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--text-muted)">AVALIAÇÕES RECENTES</div>${notas.slice(0,5).map(n=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-100);font-size:13px"><span>${n.disciplina} · ${n.tipo} · ${n.bim}</span><span style="font-weight:700;color:${n.nota<5?'var(--red)':n.nota<7?'var(--amber)':'var(--green)'}">${n.nota}</span></div>`).join('')}</div>`:''}
     ${obs.length?`<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--text-muted)">OBSERVAÇÕES</div>${obs.map(o=>`<div style="padding:10px;background:${o.prio==='high'?'var(--red-pale)':'var(--amber-pale)'};border-radius:8px;margin-bottom:8px;font-size:13px">${o.texto}<div style="font-size:11px;color:var(--text-muted);margin-top:4px">${o.prof} · ${o.data}</div></div>`).join('')}</div>`:''}
   `;
+  const detailActions = document.querySelectorAll('#modal-aluno-detalhe .modal-actions button');
+  if(detailActions[1]) detailActions[1].style.display = perm('editarEnc') ? '' : 'none';
+  if(detailActions[2]) detailActions[2].style.display = perm('verCasos') ? '' : 'none';
   openModal('modal-aluno-detalhe');
 }
 
@@ -476,6 +541,7 @@ function abrirCasoDoDetalhe() {
 // PROFESSORES (somente gestor)
 // ═══════════════════════════════════════════════════════════
 function renderProfessores() {
+  if(!requirePermission('verProfs')) return;
   const tbody = document.getElementById('professoresTable'); if(!tbody) return;
   const canEdit = perm('editarProfs');
   tbody.innerHTML = DB.professores.map(p => `<tr>
@@ -511,6 +577,7 @@ function deleteProfessor(id) {
 // DISCIPLINAS
 // ═══════════════════════════════════════════════════════════
 function renderDisciplinas() {
+  if(!requirePermission('verDisc')) return;
   const canEdit = perm('editarDisc');
   const el = document.getElementById('disciplinasBody'); if(!el) return;
 
@@ -564,7 +631,7 @@ function saveDisciplina() {
   ['disc-nome','disc-ch','disc-ano'].forEach(id=>document.getElementById(id).value='');
 }
 function deleteDisciplina(id) {
-  if(!perm('editarDisc')) return;
+  if(!requirePermission('editarDisc')) return;
   if(!confirm('Remover esta disciplina?')) return;
   const idx = DB.disciplinas.findIndex(d=>d.id===id);
   if(idx>-1){ DB.disciplinas.splice(idx,1); renderDisciplinas(); popularSelects(); showToast('Disciplina removida.','warning'); }
@@ -574,6 +641,7 @@ function deleteDisciplina(id) {
 // TURMAS
 // ═══════════════════════════════════════════════════════════
 function renderTurmas() {
+  if(!requirePermission('verTurmas')) return;
   const el = document.getElementById('turmasCards'); if(!el) return;
   el.parentElement.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">${
     DB.turmas.map(t => {
@@ -593,6 +661,7 @@ function renderTurmas() {
   }</div>`;
 }
 function saveTurma() {
+  if(!requirePermission('editarTurmas')) return;
   const nome = document.getElementById('t-nome').value.trim();
   if(!nome){ showToast('Nome é obrigatório!','danger'); return; }
   DB.turmas.push({id:DB.turmas.length+1,nome,serie:document.getElementById('t-serie').value,turno:document.getElementById('t-turno').value,sala:document.getElementById('t-sala').value,alunos:0});
@@ -604,7 +673,18 @@ function saveTurma() {
 // ═══════════════════════════════════════════════════════════
 function loadFreqTurma() { renderFrequencia(); }
 function renderFrequencia() {
-  const turma = document.getElementById('freqTurma')?.value||'8A';
+  if(!requirePermission('verFreq')) return;
+  const turmaSelect = document.getElementById('freqTurma');
+  const alunoDoResponsavel = currentUser.role === 'pais'
+    ? DB.alunos.find(aluno => aluno.id === currentUser.alunoId)
+    : null;
+  const turma = alunoDoResponsavel?.turma || turmaSelect?.value || '8A';
+  if(turmaSelect && alunoDoResponsavel) {
+    turmaSelect.value = turma;
+    turmaSelect.disabled = true;
+  } else if(turmaSelect) {
+    turmaSelect.disabled = false;
+  }
   const disc  = document.getElementById('freqDisc')?.value||'';
   const ini   = document.getElementById('freqDataIni')?.value||'';
   const fim   = document.getElementById('freqDataFim')?.value||'';
@@ -615,8 +695,9 @@ function renderFrequencia() {
   const pl = document.getElementById('freqPeriodoLabel');
   if(pl) pl.textContent = turma + discLabel + perLabel;
 
-  const lista = DB.freqData[turma] || generateFreqList(turma);
-  DB.freqData[turma] = lista;
+  const listaCompleta = DB.freqData[turma] || generateFreqList(turma);
+  DB.freqData[turma] = listaCompleta;
+  const lista = listaCompleta.filter(aluno => canAccessStudent(aluno.id));
   const el = document.getElementById('freqList'); if(!el) return;
 
   el.innerHTML = lista.map(aluno => `
@@ -626,24 +707,47 @@ function renderFrequencia() {
         <div style="font-size:13.5px;font-weight:600">${aluno.nome}</div>
         <div style="font-size:11px;color:var(--text-muted)">RA: ${DB.alunos.find(a=>a.id===aluno.id)?.mat||'—'}</div>
       </div>
-      <div style="display:flex;gap:6px">
+      ${perm('editarFreq')?`<div style="display:flex;gap:6px">
         <button class="btn btn-sm ${aluno.status==='present'?'btn-success':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','present')">Presente</button>
         <button class="btn btn-sm ${aluno.status==='absent'?'btn-danger':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','absent')">Falta</button>
-        <button class="btn btn-sm ${aluno.status==='justified'?'btn-amber':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','justified')"> Justif.</button>
-      </div>
+        <button class="btn btn-sm ${aluno.status==='justified'?'btn-amber':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','justified')">Justif.</button>
+      </div>`:''}
     </div>`).join('');
 
+  const saveButton = document.getElementById('freqSaveBtn');
+  if(saveButton) saveButton.style.display = perm('editarFreq') ? '' : 'none';
+  const historyCard = document.getElementById('freqChart')?.closest('.card');
+  if(currentUser.role === 'pais') {
+    if(historyCard) historyCard.style.display = 'none';
+    if(chartsCreated.freqChart) {
+      chartsCreated.freqChart.destroy();
+      delete chartsCreated.freqChart;
+    }
+  } else {
+    if(historyCard) historyCard.style.display = '';
+    createFreqChart();
+  }
   renderFreqSummary(lista);
-  createFreqChart();
 }
 function generateFreqList(turma) {
   return DB.alunos.filter(a=>a.turma===turma).map(a=>({id:a.id,nome:a.nome,status:'present'}));
 }
 function setFreq(id,turma,status) {
+  if(!requirePermission('editarFreq') || !canAccessStudent(id)) return;
+  if(!['present','absent','justified'].includes(status)) {
+    showToast('Status de frequência inválido.','danger');
+    return;
+  }
+  if(DB.alunos.find(aluno => aluno.id === Number(id))?.turma !== turma) {
+    showToast('A turma não corresponde ao aluno selecionado.','danger');
+    return;
+  }
   const item = DB.freqData[turma]?.find(x=>x.id===id);
   if(item){ item.status=status; renderFrequencia(); }
 }
 function renderFreqSummary(lista) {
+  if(!requirePermission('verFreq')) return;
+  lista = lista.filter(aluno => canAccessStudent(aluno.id));
   const p=lista.filter(x=>x.status==='present').length,
         a=lista.filter(x=>x.status==='absent').length,
         j=lista.filter(x=>x.status==='justified').length,
@@ -663,7 +767,10 @@ function createFreqChart() {
   if(chartsCreated.freqChart){ chartsCreated.freqChart.destroy(); delete chartsCreated.freqChart; }
   chartsCreated.freqChart = new Chart(ctx,{type:'bar',data:{labels:['Sem 1','Sem 2','Sem 3','Sem 4'],datasets:[{label:'Presença %',data:[92,88,85,87],backgroundColor:'rgba(16,185,129,0.7)',borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{min:70,max:100,grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false}}}}});
 }
-function saveFrequencia() { showToast('Frequência salva com sucesso!','success'); }
+function saveFrequencia() {
+  if(!requirePermission('editarFreq')) return;
+  showToast('Frequência salva com sucesso!','success');
+}
 
 // ═══════════════════════════════════════════════════════════
 // AVALIAÇÕES — Consulta por aluno
@@ -671,13 +778,40 @@ function saveFrequencia() { showToast('Frequência salva com sucesso!','success'
 function filtrarAvalAlunos() {
   const turma = document.getElementById('avalTurmaFiltro')?.value||'';
   const base  = getAlunosVisiveis();
-  const lista = turma ? base.filter(a=>a.turma===turma) : base;
+  const lista = currentUser.role === 'pais'
+    ? base
+    : turma ? base.filter(a=>a.turma===turma) : base;
   const sel   = document.getElementById('avalAlunoFiltro'); if(!sel) return;
   sel.innerHTML = '<option value="">Selecione um aluno</option>' + lista.map(a=>`<option value="${a.id}">${a.nome} · ${a.turma}</option>`).join('');
+  if(currentUser.role === 'pais') {
+    sel.value = String(currentUser.alunoId);
+    sel.disabled = true;
+    const turmaControl = document.getElementById('avalTurmaFiltro')?.parentElement?.parentElement;
+    if(turmaControl) turmaControl.style.display = 'none';
+  } else {
+    sel.disabled = false;
+    const turmaControl = document.getElementById('avalTurmaFiltro')?.parentElement?.parentElement;
+    if(turmaControl) turmaControl.style.display = '';
+  }
   renderAvaliacoesAluno();
 }
 
 function renderAvaliacoes() {
+  if(!requirePermission('verAvaliacoes')) return;
+  const actions = document.getElementById('avaliacoesActions');
+  if(actions) actions.style.display = perm('editarNotas') || perm('editarObservacoes') ? '' : 'none';
+  const obsTabButton = document.getElementById('observacoesTabButton');
+  const obsTab = document.getElementById('tab-observacoes');
+  if(obsTabButton) obsTabButton.style.display = perm('verObservacoes') ? '' : 'none';
+  if(obsTab) obsTab.style.display = 'none';
+  const historyTabButton = document.getElementById('historicoTabButton');
+  const historyTab = document.getElementById('tab-historico');
+  if(historyTabButton) historyTabButton.style.display = perm('verAvaliacoes') ? '' : 'none';
+  if(historyTab) historyTab.style.display = 'none';
+  document.querySelectorAll('#view-avaliacoes .tab-btn').forEach(button => button.classList.remove('active'));
+  document.querySelector('#view-avaliacoes .tab-btn')?.classList.add('active');
+  const notesTab = document.getElementById('tab-notas');
+  if(notesTab) notesTab.style.display = 'block';
   filtrarAvalAlunos();
   renderAvaliacoesAluno();
   renderObservacoes();
@@ -685,14 +819,18 @@ function renderAvaliacoes() {
 }
 
 function renderAvaliacoesAluno() {
-  const alunoId = parseInt(document.getElementById('avalAlunoFiltro')?.value||'0');
+  if(!perm('verAvaliacoes')) return;
+  const alunoSelect = document.getElementById('avalAlunoFiltro');
+  if(currentUser.role === 'pais' && alunoSelect) alunoSelect.value = String(currentUser.alunoId);
+  const alunoId = parseInt(alunoSelect?.value||'0');
   const bim     = document.getElementById('avalBimFiltro')?.value||'';
   const disc    = document.getElementById('avalDiscFiltro')?.value||'';
   const infoEl  = document.getElementById('avalAlunoInfo');
 
-  if(!alunoId) {
+  if(!alunoId || !canAccessStudent(alunoId)) {
     if(infoEl) infoEl.innerHTML = `<div class="aval-aluno-header"><span style="font-size:14px;color:var(--text-muted)"> Selecione um aluno para visualizar suas avaliações</span></div>`;
-    document.getElementById('notasTable').innerHTML = '';
+    const tbody = document.getElementById('notasTable');
+    if(tbody) tbody.innerHTML = '';
     return;
   }
 
@@ -735,9 +873,13 @@ function renderAvaliacoesAluno() {
 
 function renderObservacoes() {
   const el = document.getElementById('observacoesListView'); if(!el) return;
+  if(!perm('verObservacoes')) {
+    el.innerHTML = '<div class="empty-state"><p>Observações não disponíveis para este perfil.</p></div>';
+    return;
+  }
   const obs = DB.observacoes.filter(o => {
     if(currentUser.role==='professor') return currentUser.turmas.includes(DB.alunos.find(a=>a.id===o.alunoId)?.turma);
-    return true;
+    return canAccessStudent(o.alunoId);
   });
   el.innerHTML = obs.map(o=>`
     <div style="padding:16px;border-radius:12px;border:1px solid var(--gray-200);margin-bottom:12px;background:${o.prio==='high'?'var(--red-pale)':o.prio==='medium'?'var(--amber-pale)':'var(--gray-50)'}">
@@ -752,10 +894,15 @@ function renderObservacoes() {
 }
 
 function saveNota() {
+  if(!requirePermission('editarNotas')) return;
   const alunoId = parseInt(document.getElementById('n-aluno').value);
   const aluno   = DB.alunos.find(a=>a.id===alunoId);
   const nota    = parseFloat(document.getElementById('n-valor').value);
-  if(!aluno||isNaN(nota)){ showToast('Preencha todos os campos!','danger'); return; }
+  const disciplina = document.getElementById('n-disc').value;
+  if(!aluno || !canRecordGrade(alunoId, disciplina) || !Number.isFinite(nota) || nota < 0 || nota > 10) {
+    showToast('Selecione um aluno autorizado, uma disciplina válida e uma nota entre 0 e 10.','danger');
+    return;
+  }
   const novaVar = nota - aluno.media;
   DB.notas.unshift({id:DB.notas.length+1,alunoId,aluno:aluno.nome,turma:aluno.turma,disciplina:document.getElementById('n-disc').value,tipo:document.getElementById('n-tipo').value,nota,bim:document.getElementById('n-bim').value,data:document.getElementById('n-data').value,var:+novaVar.toFixed(1)});
   aluno.media = +((aluno.media+nota)/2).toFixed(1);
@@ -764,16 +911,19 @@ function saveNota() {
 }
 
 function saveObservacao() {
+  if(!requirePermission('editarObservacoes')) return;
   const alunoId = parseInt(document.getElementById('o-aluno').value);
   const aluno   = DB.alunos.find(a=>a.id===alunoId);
   const texto   = document.getElementById('o-texto').value.trim();
-  if(!aluno||!texto){ showToast('Preencha todos os campos!','danger'); return; }
+  if(!aluno || !canAccessStudent(alunoId) || !texto){ showToast('Selecione um aluno autorizado e preencha a observação.','danger'); return; }
   DB.observacoes.unshift({id:DB.observacoes.length+1,alunoId,aluno:aluno.nome,texto,prio:document.getElementById('o-prio').value,data:new Date().toLocaleDateString('pt-BR'),prof:currentUser.nome});
   closeModal('modal-observacao'); renderObservacoes(); showToast('Observação salva!','success');
   document.getElementById('o-texto').value='';
 }
 
 function switchTab(btn,tabId) {
+  if(tabId === 'tab-observacoes' && !requirePermission('verObservacoes')) return;
+  if(tabId === 'tab-historico' && !requirePermission('verAvaliacoes')) return;
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   ['tab-notas','tab-observacoes','tab-historico'].forEach(id=>{ const e=document.getElementById(id); if(e) e.style.display='none'; });
@@ -789,8 +939,15 @@ function populateHistoricoSelect() {
 }
 
 function renderHistoricoChart(alunoId) {
+  if(!perm('verHistorico') && !perm('verAvaliacoes')) {
+    showToast('Acesso não autorizado.','danger');
+    return;
+  }
   alunoId = parseInt(alunoId || document.getElementById('historicoAlunoSelect')?.value);
-  if(!alunoId) return;
+  if(!alunoId || !canAccessStudent(alunoId)) {
+    showToast('Acesso não autorizado ao histórico deste aluno.','danger');
+    return;
+  }
   const ctx = document.getElementById('historicoChart'); if(!ctx) return;
   if(chartsCreated.historicoChart){ chartsCreated.historicoChart.destroy(); delete chartsCreated.historicoChart; }
   const bims  = ['1º Bimestre','2º Bimestre','3º Bimestre','4º Bimestre'];
@@ -806,6 +963,7 @@ function renderHistoricoChart(alunoId) {
 // ALERTAS
 // ═══════════════════════════════════════════════════════════
 function renderAlertas() {
+  if(!requirePermission('verAlertas')) return;
   const el = document.getElementById('alertasList'); if(!el) return;
   el.innerHTML = DB.alertas.map(a=>`
     <div class="alert-item ${a.tipo}" style="opacity:${a.lido?0.55:1}" onclick="markRead(${a.id})">
@@ -823,8 +981,20 @@ function renderAlertas() {
       </div>
     </div>`).join('');
 }
-function markRead(id){ const a=DB.alertas.find(x=>x.id===id); if(a) a.lido=true; document.getElementById('badge-alertas').textContent=DB.alertas.filter(a=>!a.lido).length; renderAlertas(); }
-function markAllRead(){ DB.alertas.forEach(a=>a.lido=true); document.getElementById('badge-alertas').textContent='0'; renderAlertas(); showToast('Todos os alertas marcados como lidos.','success'); }
+function markRead(id){
+  if(!requirePermission('editarAlertas')) return;
+  const alerta=DB.alertas.find(x=>x.id===id);
+  if(alerta) alerta.lido=true;
+  document.getElementById('badge-alertas').textContent=DB.alertas.filter(item=>!item.lido).length;
+  renderAlertas();
+}
+function markAllRead(){
+  if(!requirePermission('editarAlertas')) return;
+  DB.alertas.forEach(a=>a.lido=true);
+  document.getElementById('badge-alertas').textContent='0';
+  renderAlertas();
+  showToast('Todos os alertas marcados como lidos.','success');
+}
 
 // ═══════════════════════════════════════════════════════════
 // ENCAMINHAMENTOS (com busca por RA/nome)
@@ -864,16 +1034,17 @@ function renderEncaminhamentos() {
 }
 
 function saveEncaminhamento() {
-  if(!perm('editarEnc')){ showToast('Sem permissão.','danger'); return; }
+  if(!requirePermission('editarEnc')) return;
   const alunoId = parseInt(document.getElementById('enc-aluno').value);
   const aluno   = DB.alunos.find(a=>a.id===alunoId);
   const just    = document.getElementById('enc-just').value.trim();
-  if(!aluno||!just){ showToast('Preencha todos os campos!','danger'); return; }
+  if(!aluno || !canAccessStudent(alunoId) || !just){ showToast('Selecione um aluno autorizado e preencha os campos.','danger'); return; }
   DB.encaminhamentos.unshift({id:DB.encaminhamentos.length+1,alunoId,aluno:aluno.nome,tipo:document.getElementById('enc-tipo').value,urgencia:document.getElementById('enc-urg').value,resp:document.getElementById('enc-resp').value,just,data:new Date().toLocaleDateString('pt-BR'),status:'Pendente'});
   closeModal('modal-encaminhamento'); renderEncaminhamentos(); showToast('Encaminhamento registrado!','success');
 }
 
 function encerrarEncaminhamento(id) {
+  if(!requirePermission('editarEnc')) return;
   const e = DB.encaminhamentos.find(x=>x.id===id); if(e) e.status='Encerrado';
   renderEncaminhamentos(); showToast('Encaminhamento encerrado.','success');
 }
@@ -943,7 +1114,11 @@ function renderCasos() {
 }
 
 function abrirCasoPlano(alunoId) {
-  if(!perm('editarCasos')){ showToast('Sem permissão para editar casos.','danger'); return; }
+  if(!requirePermission('editarCasos')) return;
+  if(!canAccessStudent(alunoId)) {
+    showToast('Acesso não autorizado ao caso deste aluno.','danger');
+    return;
+  }
   const aluno  = DB.alunos.find(a=>a.id===alunoId); if(!aluno) return;
   const caso   = DB.casos.find(c=>c.alunoId===alunoId);
   document.getElementById('casoPlanoTitulo').textContent = ` Plano de Ação — ${aluno.nome}`;
@@ -960,7 +1135,12 @@ function abrirCasoPlano(alunoId) {
 }
 
 function saveCasoPlano() {
+  if(!requirePermission('editarCasos')) return;
   const alunoId = parseInt(document.getElementById('caso-alunoId').value);
+  if(!canAccessStudent(alunoId)) {
+    showToast('Acesso não autorizado ao caso deste aluno.','danger');
+    return;
+  }
   const meta    = document.getElementById('caso-meta').value.trim();
   if(!meta){ showToast('A meta é obrigatória!','danger'); return; }
   let caso = DB.casos.find(c=>c.alunoId===alunoId);
@@ -982,7 +1162,7 @@ function saveCasoPlano() {
 // LAUDOS
 // ═══════════════════════════════════════════════════════════
 function renderLaudos() {
-  if(!perm('verLaudos')){ document.getElementById('laudosList').innerHTML='<div class="empty-state"><div class="empty-state-icon"></div><p>Acesso restrito por LGPD. Somente Gestores e Profissionais de Apoio.</p></div>'; return; }
+  if(!requirePermission('verLaudos')) return;
   const busca = (document.getElementById('laudosBusca')?.value||'').toLowerCase();
   const tipo  = document.getElementById('laudosTipoFiltro')?.value||'';
   const el    = document.getElementById('laudosList'); if(!el) return;
@@ -1022,7 +1202,7 @@ function saveLaudo() {
   ['laud-cid','laud-medico','laud-obs'].forEach(id=>document.getElementById(id).value='');
 }
 function deleteLaudo(id){
-  if(!perm('editarLaudos')) return;
+  if(!requirePermission('editarLaudos')) return;
   if(!confirm('Remover este laudo? Ação irreversível.')) return;
   const i = DB.laudos.findIndex(l=>l.id===id); if(i>-1){ DB.laudos.splice(i,1); renderLaudos(); showToast('Laudo removido.','warning'); }
 }
@@ -1031,6 +1211,7 @@ function deleteLaudo(id){
 // RELATÓRIOS
 // ═══════════════════════════════════════════════════════════
 function renderRelatorios() {
+  if(!requirePermission('verRel')) return;
   const el = document.getElementById('relatoriosGrid'); if(!el) return;
   const reports = [
     {icon:'',title:'Relatório de Desempenho',desc:'Médias por turma, disciplina e bimestre.',color:'blue'},
@@ -1048,12 +1229,17 @@ function renderRelatorios() {
       <button class="btn btn-ghost btn-sm" onclick="gerarRelatorio('${r.title}')"> Gerar PDF</button>
     </div>`).join('') + '</div>';
 }
-function gerarRelatorio(title){ showToast(' Gerando "'+title+'"…','info'); setTimeout(()=>showToast(' Relatório pronto! (Simulação)','success'),2000); }
+function gerarRelatorio(title){
+  if(!requirePermission('verRel')) return;
+  showToast(' Gerando "'+title+'"…','info');
+  setTimeout(()=>showToast(' Relatório pronto! (Simulação)','success'),2000);
+}
 
 // ═══════════════════════════════════════════════════════════
 // LGPD
 // ═══════════════════════════════════════════════════════════
 function renderLGPD() {
+  if(!requirePermission('verLGPD')) return;
   const el = document.getElementById('lgpdContent'); if(!el) return;
   el.innerHTML = `
     <div class="grid-2">
@@ -1061,10 +1247,10 @@ function renderLGPD() {
         <div class="card" style="margin-bottom:16px">
           <div class="card-header"><h3> Criptografia & Segurança</h3></div>
           <div class="card-body">
-            ${[['AES-256','Dados sensíveis em repouso','green'],['TLS 1.3','Transmissão de dados','green'],['PBKDF2','Hash de senhas','green'],['JWT RS256','Tokens de autenticação','green']].map(([k,v,c])=>`
+            ${[['Autenticação','Não implementada nesta demonstração','amber'],['Armazenamento','Dados mantidos apenas no navegador','amber'],['Autorização','Regras locais de demonstração','amber'],['Auditoria','Não persistida nem validada pelo servidor','amber']].map(([k,v,c])=>`
             <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--gray-50);border-radius:8px;margin-bottom:8px">
               <div><div style="font-weight:700;font-size:13px">${k}</div><div style="font-size:11px;color:var(--text-muted)">${v}</div></div>
-              <span class="tag green">Ativo</span>
+              <span class="tag amber">Demonstração</span>
             </div>`).join('')}
           </div>
         </div>
@@ -1088,23 +1274,18 @@ function renderLGPD() {
         <div class="card" style="margin-bottom:16px">
           <div class="card-header"><h3> Anonimização de Dados</h3></div>
           <div class="card-body">
-            <p style="font-size:13.5px;color:var(--text-muted);line-height:1.6;margin-bottom:16px">Relatórios para diretoria e órgãos externos são gerados com dados anonimizados. Laudos médicos são acessíveis apenas por Gestores e Profissionais de Apoio autorizados.</p>
+            <p style="font-size:13.5px;color:var(--text-muted);line-height:1.6;margin-bottom:16px">Esta tela demonstra políticas de acesso. Não há autenticação, anonimização, criptografia ou auditoria de servidor implementadas; não use dados reais.</p>
             <div style="padding:12px;background:var(--green-pale);border-radius:10px;font-size:13px;color:#065F46;margin-bottom:12px">
-              <strong>LGPD Art. 12</strong> — Dados anonimizados não são dados pessoais. Laudos e diagnósticos são dados sensíveis (Art. 11) com acesso controlado.
+              <strong>Atenção</strong> — As permissões do navegador não substituem controles de acesso e proteção implementados no servidor.
             </div>
-            <button class="btn btn-ghost btn-sm" style="width:100%" onclick="showToast('Relatório anonimizado gerado!','success')"> Gerar Relatório Anonimizado</button>
+            <button class="btn btn-ghost btn-sm" style="width:100%" onclick="showToast('Geração de relatório não implementada nesta demonstração.','warning')">Gerar Relatório Anonimizado</button>
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><h3> Log de Auditoria</h3></div>
+          <div class="card-header"><h3>Auditoria</h3></div>
           <div class="card-body">
             <div style="font-size:12px;font-family:monospace;background:var(--navy);color:#A5F3FC;padding:14px;border-radius:10px;line-height:1.9">
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:15] LOGIN — ${currentUser.nome} (${currentUser.role})</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:18] ACESSO — Perfil de aluno visualizado</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:22] ALERTA — Queda de rendimento detectada</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:25] ENCAMINHAMENTO — Criado (alunoId: 1)</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:31] NOTA — Avaliação lançada (alunoId: 3)</div>
-              <div>[${new Date().toLocaleDateString('pt-BR')} 09:45] LAUDO — Acesso restrito registrado</div>
+              <div>Registro de auditoria não implementado nesta demonstração.</div>
             </div>
           </div>
         </div>
@@ -1116,8 +1297,21 @@ function renderLGPD() {
 // MODAL UTILS
 // ═══════════════════════════════════════════════════════════
 function openModal(id) {
+  const modalPermissions = {
+    'modal-aluno':'editarAlunos', 'modal-professor':'editarProfs', 'modal-nota':'editarNotas',
+    'modal-observacao':'editarObservacoes', 'modal-encaminhamento':'editarEnc',
+    'modal-aluno-detalhe':'verAlunoDetalhe', 'modal-disciplina':'editarDisc',
+    'modal-laudo':'editarLaudos', 'modal-caso-plano':'editarCasos', 'modal-turma':'editarTurmas',
+  };
+  const permission = modalPermissions[id];
+  if(!permission || !requirePermission(permission)) return;
   popularSelects();
-  document.getElementById(id).classList.add('open');
+  const modal = document.getElementById(id);
+  if(!modal) {
+    showToast('Janela não disponível.','warning');
+    return;
+  }
+  modal.classList.add('open');
 }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.modal-overlay').forEach(m => {

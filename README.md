@@ -71,6 +71,12 @@ O sistema inclui acesso demo para:
 - Profissional de apoio / Psicólogo
 - Responsável / Pais
 
+Os perfis são personas de demonstração: escolher um perfil ou aluno não autentica uma pessoa nem comprova vínculo familiar. As verificações de acesso são executadas no navegador e podem ser alteradas por quem controla a página. Os dados estão incluídos no JavaScript do cliente; portanto, não insira dados reais, pessoais ou sensíveis.
+
+No fluxo demonstrativo, a persona de responsável fica vinculada a um único aluno fictício e pode consultar somente as avaliações e a frequência dele; não pode escolher outro aluno, lançar notas, criar observações, abrir o perfil detalhado ou consultar outros módulos. Professores ficam limitados às turmas atribuídas no exemplo.
+
+Este projeto não implementa autenticação, autorização confiável, criptografia, auditoria ou persistência em servidor. Antes de qualquer uso real, esses controles precisam ser implementados no backend: autenticar a conta, obter vínculos aluno-responsável de fonte confiável, aplicar autorização e escopo em cada consulta e gravação, proteger dados sensíveis e registrar auditoria. Ocultar botões ou rotas no cliente não constitui uma barreira de segurança.
+
 ## Funcionalidades principais
 
 ### Dashboard
@@ -89,9 +95,8 @@ O sistema inclui acesso demo para:
 - planos de ação individual
 
 ### Segurança e conformidade
-- políticas de acesso e autenticação demo
-- relatórios com dados anonimizados
-- área de LGPD e auditoria
+- demonstração visual de políticas de acesso por perfil
+- área informativa sobre os requisitos de segurança e LGPD
 
 ## Observações
 
