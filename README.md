@@ -28,6 +28,7 @@ O Âncora é uma interface web em HTML, CSS e JavaScript para apoiar coordenador
 ```text
 ancora---validado/
 ├── index.html
+├── script.js
 ├── assets/
 │   └── css/
 │       └── styles.css
@@ -61,6 +62,18 @@ Depois acesse:
 ```text
 http://localhost:8000
 ```
+
+## Publicação no GitHub Pages
+
+O projeto é publicado automaticamente no GitHub Pages quando há um push para a branch `main`, usando o workflow em `.github/workflows/pages.yml`.
+
+Após a conclusão do workflow, acesse:
+
+```text
+https://pedrotarga.github.io/ancora---validado/
+```
+
+O site é estático e não requer etapa de compilação. Se a publicação não iniciar automaticamente, em **Settings → Pages**, defina **Build and deployment → Source** como **GitHub Actions**.
 
 ## Perfis de demonstração
 
