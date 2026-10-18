@@ -6,7 +6,7 @@
 <title>Âncora — Sistema de Monitoramento Escolar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
 <script src="script.js" defer></script>
 <link rel="stylesheet" href="assets/css/styles.css">
@@ -22,16 +22,16 @@
   <div class="login-bg"></div>
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-icon">⚓</div>
+      <div class="login-logo-icon">A</div>
       <div class="login-logo-text">Âncora</div>
     </div>
     <div class="login-tagline">Sistema de Monitoramento e Proteção Escolar</div>
     <label class="login-label">Perfil de Acesso</label>
     <select class="login-input" id="loginRole" onchange="onLoginRoleChange(this.value)">
-      <option value="gestor">🏫 Gestor / Coordenador</option>
-      <option value="professor">📚 Professor</option>
-      <option value="psicologo">🩺 Profissional de Apoio / Psicólogo</option>
-      <option value="pais">👨‍👩‍👧 Responsável / Pais</option>
+      <option value="gestor">Gestor / Coordenador</option>
+      <option value="professor">Professor</option>
+      <option value="psicologo">Profissional de Apoio / Psicólogo</option>
+      <option value="pais">Responsável / Pais</option>
     </select>
     <div id="login-prof-row" style="display:none">
       <label class="login-label">Identificar Professor</label>
@@ -71,7 +71,7 @@
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <div class="sidebar-logo-icon">⚓</div>
+      <div class="sidebar-logo-icon">A</div>
       <div>
         <div class="sidebar-logo-text">Âncora</div>
         <div class="sidebar-logo-sub">Sistema Escolar</div>
@@ -80,51 +80,51 @@
     <nav class="sidebar-nav">
       <div class="nav-section-label">Principal</div>
       <div class="nav-item active" onclick="showView('dashboard')">
-        <span class="nav-icon">📊</span> Dashboard
+        <span class="nav-icon"></span> Dashboard
         <span class="nav-badge" id="badge-alertas">3</span>
       </div>
       <div class="nav-item" onclick="showView('alertas')">
-        <span class="nav-icon">🚨</span> Alertas & Riscos
+        <span class="nav-icon"></span> Alertas & Riscos
         <span class="nav-badge" id="badge-risk">5</span>
       </div>
 
       <div class="nav-section-label">Gestão Acadêmica</div>
       <div class="nav-item" onclick="showView('alunos')">
-        <span class="nav-icon">🎓</span> Alunos
+        <span class="nav-icon"></span> Alunos
       </div>
       <div class="nav-item" onclick="showView('professores')">
-        <span class="nav-icon">👩‍🏫</span> Professores
+        <span class="nav-icon"></span> Professores
       </div>
       <div class="nav-item" onclick="showView('disciplinas')">
-        <span class="nav-icon">📚</span> Disciplinas
+        <span class="nav-icon"></span> Disciplinas
       </div>
       <div class="nav-item" onclick="showView('turmas')">
-        <span class="nav-icon">🏛️</span> Turmas
+        <span class="nav-icon"></span> Turmas
       </div>
       <div class="nav-item" onclick="showView('frequencia')">
-        <span class="nav-icon">📅</span> Frequência
+        <span class="nav-icon"></span> Frequência
       </div>
       <div class="nav-item" onclick="showView('avaliacoes')">
-        <span class="nav-icon">📝</span> Avaliações
+        <span class="nav-icon"></span> Avaliações
       </div>
 
       <div class="nav-section-label">Intervenção</div>
       <div class="nav-item" onclick="showView('encaminhamentos')">
-        <span class="nav-icon">🔀</span> Encaminhamentos
+        <span class="nav-icon"></span> Encaminhamentos
       </div>
       <div class="nav-item" onclick="showView('casos')">
-        <span class="nav-icon">📋</span> Acompanhamento de Casos
+        <span class="nav-icon"></span> Acompanhamento de Casos
       </div>
       <div class="nav-item" onclick="showView('laudos')">
-        <span class="nav-icon">📎</span> Laudos
+        <span class="nav-icon"></span> Laudos
       </div>
 
       <div class="nav-section-label">Relatórios</div>
       <div class="nav-item" onclick="showView('relatorios')">
-        <span class="nav-icon">📄</span> Relatórios
+        <span class="nav-icon"></span> Relatórios
       </div>
       <div class="nav-item" onclick="showView('lgpd')">
-        <span class="nav-icon">🔐</span> Segurança & LGPD
+        <span class="nav-icon"></span> Segurança & LGPD
       </div>
     </nav>
     <div class="sidebar-footer">
@@ -135,7 +135,7 @@
           <div class="sidebar-user-role" id="sidebar-role">Coordenação</div>
         </div>
       </div>
-      <button class="btn-sair-full" onclick="doLogout()">↩ Sair / Trocar Perfil</button>
+      <button class="btn-sair-full" onclick="doLogout()">Sair / Trocar Perfil</button>
     </div>
   </aside>
 
@@ -148,80 +148,43 @@
       </div>
       <div class="topbar-spacer"></div>
       <div class="topbar-search">
-        <span>🔍</span>
         <input type="text" placeholder="Buscar aluno, turma…" id="globalSearch" oninput="handleSearch(this.value)">
       </div>
       <div class="topbar-icon-btn" onclick="showView('alertas')" title="Notificações">
-        🔔
+        Avisos
         <div class="notif-dot"></div>
       </div>
-      <button class="topbar-sair" onclick="doLogout()">↩ Sair</button>
+      <button class="topbar-sair" onclick="doLogout()">Sair</button>
     </header>
 
     <div class="page-content">
       <!-- ═══════════════ DASHBOARD ═══════════════ -->
       <div id="view-dashboard" class="view active">
-        <!-- HEALTH BANNER -->
-        <div class="school-health">
-          <div>
-            <div class="health-label">Saúde Escolar Geral</div>
-            <div class="health-score">74</div>
-            <div class="health-desc">⚠️ Atenção Necessária</div>
-            <div class="health-sub">Escola Municipal Prof. Antenor · 2025</div>
-          </div>
-          <div style="width:1px; height:80px; background:rgba(255,255,255,0.1);"></div>
-          <div class="health-bars">
-            <div class="health-bar-item">
-              <span class="h-label">Frequência</span>
-              <div class="h-bar"><div class="h-fill" style="width:88%;background:var(--green)"></div></div>
-              <span class="h-val">88%</span>
-            </div>
-            <div class="health-bar-item">
-              <span class="h-label">Desempenho</span>
-              <div class="h-bar"><div class="h-fill" style="width:71%;background:var(--amber)"></div></div>
-              <span class="h-val">7.1</span>
-            </div>
-            <div class="health-bar-item">
-              <span class="h-label">Bem-estar</span>
-              <div class="h-bar"><div class="h-fill" style="width:64%;background:var(--orange)"></div></div>
-              <span class="h-val">64%</span>
-            </div>
-            <div class="health-bar-item">
-              <span class="h-label">Engajamento</span>
-              <div class="h-bar"><div class="h-fill" style="width:79%;background:var(--blue-light)"></div></div>
-              <span class="h-val">79%</span>
-            </div>
-          </div>
-          <div style="margin-left:auto;">
-            <canvas id="healthDonut" width="110" height="110"></canvas>
-          </div>
-        </div>
-
         <!-- STATS -->
         <div class="stats-grid">
           <div class="stat-card blue">
             <div class="stat-label">Total de Alunos</div>
-            <div class="stat-value">328</div>
-            <div class="stat-meta"><span class="badge-up">↑ 12</span> vs ano anterior</div>
-            <div class="stat-icon">🎓</div>
+            <div class="stat-value" id="stat-total">0</div>
+            <div class="stat-meta">alunos cadastrados</div>
+            <div class="stat-icon"></div>
           </div>
           <div class="stat-card red">
             <div class="stat-label">Risco Crítico</div>
-            <div class="stat-value">14</div>
-            <div class="stat-meta"><span class="badge-down">↑ 3</span> esta semana</div>
-            <div class="stat-icon">🚨</div>
+            <div class="stat-value" id="stat-critico">0</div>
+            <div class="stat-meta">alunos com status crítico</div>
+            <div class="stat-icon"></div>
           </div>
           <div class="stat-card amber">
             <div class="stat-label">Atenção Moderada</div>
-            <div class="stat-value">37</div>
-            <div class="stat-meta"><span class="badge-down">↑ 5</span> este mês</div>
-            <div class="stat-icon">⚠️</div>
+            <div class="stat-value" id="stat-moderado">0</div>
+            <div class="stat-meta">alunos com status moderado</div>
+            <div class="stat-icon"></div>
           </div>
           <div class="stat-card green">
-            <div class="stat-label">Faltas Hoje</div>
-            <div class="stat-value">21</div>
-            <div class="stat-meta">6.4% de ausência</div>
-            <div class="stat-icon">📅</div>
+            <div class="stat-label">Encaminhamentos em Aberto</div>
+            <div class="stat-value" id="stat-enc">0</div>
+            <div class="stat-meta">pendentes ou em andamento</div>
+            <div class="stat-icon"></div>
           </div>
         </div>
 
@@ -242,7 +205,7 @@
           <div class="card">
             <div class="card-header">
               <div>
-                <h3>🚨 Alertas Ativos</h3>
+                <h3> Alertas Ativos</h3>
                 <div class="card-subtitle">Revisão necessária</div>
               </div>
             </div>
@@ -255,14 +218,6 @@
                 </div>
                 <div class="alert-time">2h</div>
               </div>
-              <div class="alert-item critical" onclick="showView('alertas')">
-                <div class="alert-dot critical"></div>
-                <div class="alert-content">
-                  <div class="alert-title">NLP: Termos sensíveis detectados</div>
-                  <div class="alert-desc">"Isolado", "agressivo" — observações Prof. Carla, T. 8A.</div>
-                </div>
-                <div class="alert-time">5h</div>
-              </div>
               <div class="alert-item medium" onclick="showView('alertas')">
                 <div class="alert-dot medium"></div>
                 <div class="alert-content">
@@ -271,51 +226,17 @@
                 </div>
                 <div class="alert-time">1d</div>
               </div>
-              <div class="alert-item low" onclick="showView('alertas')">
-                <div class="alert-dot low"></div>
-                <div class="alert-content">
-                  <div class="alert-title">Padrão Incomum Detectado</div>
-                  <div class="alert-desc">3 alunos da Turma 7C com queda simultânea.</div>
-                </div>
-                <div class="alert-time">2d</div>
-              </div>
               <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px" onclick="showView('alertas')">Ver todos os alertas →</button>
             </div>
           </div>
         </div>
 
-        <!-- TURMAS RANKING + PIE -->
-        <div class="grid-2" style="margin-top:20px">
-          <div class="card">
-            <div class="card-header">
-              <div><h3>Ranking de Turmas — Índice de Risco</h3>
-              <div class="card-subtitle">Menor pontuação = maior atenção necessária</div></div>
-            </div>
-            <div class="card-body">
-              <div id="turmaRanking"></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <div><h3>Distribuição de Risco</h3>
-              <div class="card-subtitle">Situação atual dos 328 alunos</div></div>
-            </div>
-            <div class="card-body" style="display:flex;align-items:center;justify-content:center;gap:24px">
-              <canvas id="riskPie" width="180" height="180"></canvas>
-              <div style="display:flex;flex-direction:column;gap:8px">
-                <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:var(--green)"></div><span style="font-size:13px">Normal (277)</span></div>
-                <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:var(--amber)"></div><span style="font-size:13px">Moderado (37)</span></div>
-                <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:var(--red)"></div><span style="font-size:13px">Crítico (14)</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- ═══════════════ ALUNOS ═══════════════ -->
       <div id="view-alunos" class="view">
         <div class="page-header">
-          <div class="page-header-icon blue">🎓</div>
+          <div class="page-header-icon blue"></div>
           <div>
             <h2>Gestão de Alunos</h2>
             <p>CRUD completo · Histórico longitudinal · Monitoramento individual</p>
@@ -328,7 +249,7 @@
         <div class="card" style="margin-bottom:20px">
           <div class="card-body" style="padding:14px 20px">
             <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-              <input class="form-input" style="width:220px" placeholder="🔍 Buscar aluno…" oninput="filterAlunos(this.value)">
+              <input class="form-input" style="width:220px" placeholder=" Buscar aluno…" oninput="filterAlunos(this.value)">
               <select class="form-select" style="width:160px" onchange="filterAlunosTurma(this.value)" id="filterTurmaSelect">
                 <option value="">Todas as turmas</option>
                 <option>6A</option><option>6B</option><option>7A</option><option>7C</option>
@@ -351,7 +272,7 @@
               <thead>
                 <tr>
                   <th>Aluno</th><th>Turma</th><th>Matrícula</th><th>Frequência</th>
-                  <th>Média</th><th>Índice IA</th><th>Status</th><th>Ações</th>
+                  <th>Média</th><th>Status</th><th>Ações</th>
                 </tr>
               </thead>
               <tbody id="alunosTable"></tbody>
@@ -363,7 +284,7 @@
       <!-- ═══════════════ PROFESSORES ═══════════════ -->
       <div id="view-professores" class="view">
         <div class="page-header">
-          <div class="page-header-icon green">👩‍🏫</div>
+          <div class="page-header-icon green"></div>
           <div><h2>Gestão de Professores</h2>
           <p>Cadastro e acompanhamento pedagógico</p></div>
           <div class="page-header-actions">
@@ -374,7 +295,7 @@
           <div class="table-wrapper">
             <table>
               <thead>
-                <tr><th>Professor</th><th>Disciplina</th><th>Turmas</th><th>Alertas Gerados</th><th>Último Registro</th><th>Ações</th></tr>
+                <tr><th>Professor</th><th>Disciplina</th><th>Turmas</th><th>Último Registro</th><th>Ações</th></tr>
               </thead>
               <tbody id="professoresTable"></tbody>
             </table>
@@ -385,7 +306,7 @@
       <!-- ═══════════════ TURMAS ═══════════════ -->
       <div id="view-turmas" class="view">
         <div class="page-header">
-          <div class="page-header-icon amber">🏛️</div>
+          <div class="page-header-icon amber"></div>
           <div><h2>Turmas & Instituições</h2>
           <p>Gestão de estrutura escolar</p></div>
           <div class="page-header-actions">
@@ -400,7 +321,7 @@
       <!-- ═══════════════ FREQUÊNCIA ═══════════════ -->
       <div id="view-frequencia" class="view">
         <div class="page-header">
-          <div class="page-header-icon amber">📅</div>
+          <div class="page-header-icon amber"></div>
           <div><h2>Módulo de Frequência</h2>
           <p>Registro diário de presença com justificativas</p></div>
           <div class="page-header-actions">
@@ -413,7 +334,7 @@
             <input type="date" class="form-input" id="freqDataIni" style="width:148px">
             <span style="color:var(--text-muted);font-size:12px;align-self:center">até</span>
             <input type="date" class="form-input" id="freqDataFim" style="width:148px">
-            <button class="btn btn-success" onclick="saveFrequencia()">💾 Salvar</button>
+            <button class="btn btn-success" onclick="saveFrequencia()"> Salvar</button>
           </div>
         </div>
 
@@ -421,7 +342,7 @@
           <div class="card">
             <div class="card-header">
               <div>
-                <h3>📋 Lista de Presença — <span id="freqTurmaLabel">8A</span></h3>
+                <h3> Lista de Presença — <span id="freqTurmaLabel">8A</span></h3>
                 <div class="card-subtitle" id="freqPeriodoLabel">Selecione turma, disciplina e período</div>
               </div>
             </div>
@@ -431,13 +352,13 @@
           </div>
           <div>
             <div class="card" style="margin-bottom:16px">
-              <div class="card-header"><h3>📊 Resumo do Dia</h3></div>
+              <div class="card-header"><h3> Resumo do Dia</h3></div>
               <div class="card-body">
                 <div id="freqSummary"></div>
               </div>
             </div>
             <div class="card">
-              <div class="card-header"><h3>📈 Histórico — 4 Semanas</h3></div>
+              <div class="card-header"><h3> Histórico — 4 Semanas</h3></div>
               <div class="card-body">
                 <canvas id="freqChart" height="140"></canvas>
               </div>
@@ -449,12 +370,12 @@
       <!-- ═══════════════ AVALIAÇÕES ═══════════════ -->
       <div id="view-avaliacoes" class="view">
         <div class="page-header">
-          <div class="page-header-icon purple">📝</div>
+          <div class="page-header-icon purple"></div>
           <div><h2>Avaliações & Observações</h2>
           <p>Consulta por aluno · Lançamento de notas · Observações pedagógicas</p></div>
           <div class="page-header-actions">
             <button class="btn btn-primary" onclick="openModal('modal-nota')">+ Lançar Nota</button>
-            <button class="btn btn-ghost" onclick="openModal('modal-observacao')">💬 Observação</button>
+            <button class="btn btn-ghost" onclick="openModal('modal-observacao')"> Observação</button>
           </div>
         </div>
 
@@ -493,9 +414,9 @@
         </div>
 
         <div class="tabs">
-          <button class="tab-btn active" onclick="switchTab(this,'tab-notas')">📊 Notas</button>
-          <button class="tab-btn" onclick="switchTab(this,'tab-observacoes')">💬 Observações</button>
-          <button class="tab-btn" onclick="switchTab(this,'tab-historico')">📈 Histórico</button>
+          <button class="tab-btn active" onclick="switchTab(this,'tab-notas')"> Notas</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-observacoes')"> Observações</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-historico')"> Histórico</button>
         </div>
 
         <div id="tab-notas">
@@ -533,11 +454,11 @@
       <!-- ═══════════════ ALERTAS ═══════════════ -->
       <div id="view-alertas" class="view">
         <div class="page-header">
-          <div class="page-header-icon red">🚨</div>
+          <div class="page-header-icon red"></div>
           <div><h2>Central de Alertas & Riscos</h2>
           <p>Todas as notificações e situações que requerem intervenção</p></div>
           <div class="page-header-actions">
-            <button class="btn btn-ghost btn-sm" onclick="markAllRead()">✓ Marcar todos como lidos</button>
+            <button class="btn btn-ghost btn-sm" onclick="markAllRead()">Marcar todos como lidos</button>
           </div>
         </div>
         <div id="alertasList"></div>
@@ -546,7 +467,7 @@
       <!-- ═══════════════ ENCAMINHAMENTOS ═══════════════ -->
       <div id="view-encaminhamentos" class="view">
         <div class="page-header">
-          <div class="page-header-icon purple">🔀</div>
+          <div class="page-header-icon purple"></div>
           <div><h2>Encaminhamentos</h2>
           <p>Psicólogos escolares · Conselho Tutelar · Família · Reforço Pedagógico</p></div>
           <div class="page-header-actions">
@@ -558,7 +479,7 @@
           <div class="card-body" style="padding:12px 20px">
             <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
               <div style="position:relative;flex:1;min-width:240px">
-                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted)">🔍</span>
+                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted)"></span>
                 <input class="form-input" style="padding-left:36px" placeholder="Buscar por nome completo ou RA (Registro do Aluno)…" id="encBusca" oninput="renderEncaminhamentos()">
               </div>
               <select class="form-select" style="width:170px" id="encTipoFiltro" onchange="renderEncaminhamentos()">
@@ -583,11 +504,11 @@
       <!-- ═══════════════ ACOMPANHAMENTO DE CASOS ═══════════════ -->
       <div id="view-casos" class="view">
         <div class="page-header">
-          <div class="page-header-icon blue">📋</div>
+          <div class="page-header-icon blue"></div>
           <div><h2>Acompanhamento de Casos</h2>
           <p>Histórico por aluno · Clique no aluno para registrar ou editar o plano de ação</p></div>
           <div class="page-header-actions">
-            <input class="form-input" style="width:230px" placeholder="🔍 Buscar aluno ou RA…" id="casosBusca" oninput="renderCasos()">
+            <input class="form-input" style="width:230px" placeholder=" Buscar aluno ou RA…" id="casosBusca" oninput="renderCasos()">
             <select class="form-select" style="width:150px" id="casosStatusFiltro" onchange="renderCasos()">
               <option value="">Todos os status</option>
               <option value="ativo">Crítico / Ativo</option>
@@ -602,7 +523,7 @@
       <!-- ═══════════════ LAUDOS ═══════════════ -->
       <div id="view-laudos" class="view">
         <div class="page-header">
-          <div class="page-header-icon purple">📎</div>
+          <div class="page-header-icon purple"></div>
           <div><h2>Laudos</h2>
           <p>Anexar e consultar laudos médicos e psicológicos dos alunos (TEA, TDAH, entre outros)</p></div>
           <div class="page-header-actions">
@@ -612,7 +533,7 @@
         <div class="card" style="margin-bottom:16px">
           <div class="card-body" style="padding:12px 20px">
             <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-              <input class="form-input" style="width:230px" placeholder="🔍 Buscar por aluno ou RA…" id="laudosBusca" oninput="renderLaudos()">
+              <input class="form-input" style="width:230px" placeholder=" Buscar por aluno ou RA…" id="laudosBusca" oninput="renderLaudos()">
               <select class="form-select" style="width:180px" id="laudosTipoFiltro" onchange="renderLaudos()">
                 <option value="">Todos os tipos</option>
                 <option value="TEA">TEA (Autismo)</option>
@@ -629,7 +550,7 @@
       <!-- ═══════════════ DISCIPLINAS ═══════════════ -->
       <div id="view-disciplinas" class="view">
         <div class="page-header">
-          <div class="page-header-icon blue">📚</div>
+          <div class="page-header-icon blue"></div>
           <div><h2>Disciplinas</h2>
           <p>Cadastro e vínculo de disciplinas com turmas e professores</p></div>
           <div class="page-header-actions">
@@ -642,7 +563,7 @@
       <!-- ═══════════════ RELATÓRIOS ═══════════════ -->
       <div id="view-relatorios" class="view">
         <div class="page-header">
-          <div class="page-header-icon amber">📄</div>
+          <div class="page-header-icon amber"></div>
           <div><h2>Relatórios Automáticos</h2>
           <p>Geração de PDFs, estatísticas e análises para conselho de classe</p></div>
         </div>
@@ -652,7 +573,7 @@
       <!-- ═══════════════ LGPD ═══════════════ -->
       <div id="view-lgpd" class="view">
         <div class="page-header">
-          <div class="page-header-icon green">🔐</div>
+          <div class="page-header-icon green"></div>
           <div><h2>Segurança & Conformidade LGPD</h2>
           <p>Criptografia · RBAC · Anonimização · Auditoria</p></div>
         </div>
@@ -665,7 +586,7 @@
 <!-- MODALS -->
 <div class="modal-overlay" id="modal-aluno">
   <div class="modal">
-    <div class="modal-title">➕ Cadastrar Aluno</div>
+    <div class="modal-title"> Cadastrar Aluno</div>
     <div class="modal-sub">Preencha os dados do novo aluno</div>
     <div class="form-grid form-grid-2">
       <div class="form-group"><label class="form-label">Nome Completo *</label><input class="form-input" id="a-nome" placeholder="Nome do aluno"></div>
@@ -680,14 +601,14 @@
     <div class="form-group" style="margin-top:12px"><label class="form-label">Observações Iniciais</label><textarea class="form-textarea" id="a-obs" placeholder="Observações relevantes…"></textarea></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-aluno')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveAluno()">💾 Salvar Aluno</button>
+      <button class="btn btn-primary" onclick="saveAluno()"> Salvar Aluno</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-professor">
   <div class="modal">
-    <div class="modal-title">➕ Cadastrar Professor</div>
+    <div class="modal-title"> Cadastrar Professor</div>
     <div class="modal-sub">Novo profissional docente</div>
     <div class="form-grid form-grid-2">
       <div class="form-group"><label class="form-label">Nome *</label><input class="form-input" id="p-nome" placeholder="Nome do professor"></div>
@@ -699,14 +620,14 @@
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-professor')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveProfessor()">💾 Salvar</button>
+      <button class="btn btn-primary" onclick="saveProfessor()"> Salvar</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-nota">
   <div class="modal">
-    <div class="modal-title">📝 Lançar Avaliação</div>
+    <div class="modal-title"> Lançar Avaliação</div>
     <div class="modal-sub">Nota quantitativa ou avaliação qualitativa</div>
     <div class="form-grid form-grid-2">
       <div class="form-group"><label class="form-label">Aluno *</label>
@@ -726,15 +647,15 @@
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-nota')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveNota()">💾 Salvar</button>
+      <button class="btn btn-primary" onclick="saveNota()"> Salvar</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-observacao">
   <div class="modal">
-    <div class="modal-title">💬 Observação Comportamental</div>
-    <div class="modal-sub">Análise qualitativa processada por NLP</div>
+    <div class="modal-title"> Observação Comportamental</div>
+    <div class="modal-sub">Registro qualitativo do comportamento do aluno em sala</div>
     <div class="form-grid">
       <div class="form-group"><label class="form-label">Aluno *</label><select class="form-select" id="o-aluno"></select></div>
       <div class="form-group"><label class="form-label">Observação *</label>
@@ -744,20 +665,16 @@
         <select class="form-select" id="o-prio"><option value="low">Baixa</option><option value="medium">Média</option><option value="high">Alta</option></select>
       </div>
     </div>
-    <div id="nlpPreview" style="display:none;margin-top:12px;padding:12px;background:var(--amber-pale);border-radius:10px;font-size:13px;color:#92400E">
-      <strong>⚡ IA Detectou:</strong> <span id="nlpPreviewText"></span>
-    </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-observacao')">Cancelar</button>
-      <button class="btn btn-amber" onclick="analyzeObservacao()">🧠 Analisar com IA</button>
-      <button class="btn btn-primary" onclick="saveObservacao()">💾 Salvar</button>
+      <button class="btn btn-primary" onclick="saveObservacao()"> Salvar</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-encaminhamento">
   <div class="modal">
-    <div class="modal-title">🔀 Novo Encaminhamento</div>
+    <div class="modal-title"> Novo Encaminhamento</div>
     <div class="modal-sub">Registro de encaminhamento para apoio especializado</div>
     <div class="form-grid form-grid-2">
       <div class="form-group"><label class="form-label">Aluno *</label><select class="form-select" id="enc-aluno"></select></div>
@@ -781,7 +698,7 @@
     <div class="form-group" style="margin-top:12px"><label class="form-label">Justificativa *</label><textarea class="form-textarea" id="enc-just" placeholder="Descreva os motivos do encaminhamento…"></textarea></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-encaminhamento')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveEncaminhamento()">💾 Registrar</button>
+      <button class="btn btn-primary" onclick="saveEncaminhamento()"> Registrar</button>
     </div>
   </div>
 </div>
@@ -791,8 +708,8 @@
     <div id="alunoDetalheContent"></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-aluno-detalhe')">Fechar</button>
-      <button class="btn btn-amber" onclick="closeModal('modal-aluno-detalhe');openModal('modal-encaminhamento')">🔀 Encaminhar</button>
-      <button class="btn btn-primary" onclick="abrirCasoDoDetalhe()">📋 Ver / Editar Caso</button>
+      <button class="btn btn-amber" onclick="closeModal('modal-aluno-detalhe');openModal('modal-encaminhamento')"> Encaminhar</button>
+      <button class="btn btn-primary" onclick="abrirCasoDoDetalhe()"> Ver / Editar Caso</button>
     </div>
   </div>
 </div>
@@ -800,7 +717,7 @@
 <!-- Modal Disciplina -->
 <div class="modal-overlay" id="modal-disciplina">
   <div class="modal">
-    <div class="modal-title">📚 Nova Disciplina</div>
+    <div class="modal-title"> Nova Disciplina</div>
     <div class="modal-sub">Cadastrar disciplina e vincular à turma e professor</div>
     <div class="form-grid form-grid-2">
       <div class="form-group"><label class="form-label">Nome da Disciplina *</label><input class="form-input" id="disc-nome" placeholder="Ex: Matemática"></div>
@@ -821,7 +738,7 @@
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-disciplina')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveDisciplina()">💾 Salvar</button>
+      <button class="btn btn-primary" onclick="saveDisciplina()"> Salvar</button>
     </div>
   </div>
 </div>
@@ -829,7 +746,7 @@
 <!-- Modal Laudo -->
 <div class="modal-overlay" id="modal-laudo">
   <div class="modal">
-    <div class="modal-title">📎 Anexar Laudo</div>
+    <div class="modal-title"> Anexar Laudo</div>
     <div class="modal-sub">Registro de laudo médico ou psicológico — acesso restrito conforme LGPD</div>
     <div class="form-grid form-grid-2">
       <div class="form-group"><label class="form-label">Aluno *</label><select class="form-select" id="laud-aluno"></select></div>
@@ -859,11 +776,11 @@
       <textarea class="form-textarea" id="laud-obs" placeholder="Descreva as necessidades de adaptação pedagógica indicadas no laudo…"></textarea>
     </div>
     <div style="margin-top:12px;padding:11px;background:var(--amber-pale);border-radius:10px;font-size:12.5px;color:#92400E">
-      🔒 <strong>LGPD:</strong> Dados de saúde são sensíveis. O acesso a este laudo é restrito a Gestores e Profissionais de Apoio autorizados.
+       <strong>LGPD:</strong> Dados de saúde são sensíveis. O acesso a este laudo é restrito a Gestores e Profissionais de Apoio autorizados.
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-laudo')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveLaudo()">💾 Registrar Laudo</button>
+      <button class="btn btn-primary" onclick="saveLaudo()"> Registrar Laudo</button>
     </div>
   </div>
 </div>
@@ -871,7 +788,7 @@
 <!-- Modal Caso / Plano de Ação (acessado a partir de Acompanhamento de Casos) -->
 <div class="modal-overlay" id="modal-caso-plano">
   <div class="modal" style="max-width:660px">
-    <div class="modal-title" id="casoPlanoTitulo">📋 Plano de Ação Individual</div>
+    <div class="modal-title" id="casoPlanoTitulo"> Plano de Ação Individual</div>
     <div class="modal-sub" id="casoPlanoSub">Clique em um aluno em Acompanhamento de Casos</div>
     <div class="form-grid form-grid-2">
       <div class="form-group" style="grid-column:1/-1">
@@ -900,14 +817,14 @@
     <input type="hidden" id="caso-alunoId">
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-caso-plano')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveCasoPlano()">💾 Salvar Plano</button>
+      <button class="btn btn-primary" onclick="saveCasoPlano()"> Salvar Plano</button>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-turma">
   <div class="modal">
-    <div class="modal-title">🏛️ Nova Turma</div>
+    <div class="modal-title"> Nova Turma</div>
     <div class="modal-sub">Cadastrar nova turma</div>
     <div class="form-grid form-grid-2">
       <div class="form-group"><label class="form-label">Nome da Turma *</label><input class="form-input" id="t-nome" placeholder="Ex: 8A"></div>
@@ -921,7 +838,7 @@
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-turma')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveTurma()">💾 Salvar</button>
+      <button class="btn btn-primary" onclick="saveTurma()"> Salvar</button>
     </div>
   </div>
 </div>

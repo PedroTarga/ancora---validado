@@ -15,19 +15,19 @@ const DB = {
     {id:10,nome:"Sofia Barbosa",turma:"9A",mat:"2024010",nasc:"2011-06-14",resp:"Antônio Barbosa",tel:"(15)98765-0123",freq:97,media:9.5,risco:"normal",obs:""},
   ],
   professores: [
-    {id:1,nome:"Carla Mendes",disciplina:"Matemática",email:"carla@escola.br",reg:"REG001",turmas:["8A","8B","9A"],alertas:5,ultimo:"Hoje"},
-    {id:2,nome:"Paulo Andrade",disciplina:"Português",email:"paulo@escola.br",reg:"REG002",turmas:["7A","7C","8A"],alertas:3,ultimo:"Ontem"},
-    {id:3,nome:"Marina Ramos",disciplina:"Ciências",email:"marina@escola.br",reg:"REG003",turmas:["6A","6B","7A"],alertas:2,ultimo:"Há 2 dias"},
-    {id:4,nome:"José Teixeira",disciplina:"História",email:"jose@escola.br",reg:"REG004",turmas:["8B","9A"],alertas:1,ultimo:"Há 3 dias"},
+    {id:1,nome:"Carla Mendes",disciplina:"Matemática",email:"carla@escola.br",reg:"REG001",turmas:["8A","8B","9A"],ultimo:"Hoje"},
+    {id:2,nome:"Paulo Andrade",disciplina:"Português",email:"paulo@escola.br",reg:"REG002",turmas:["7A","7C","8A"],ultimo:"Ontem"},
+    {id:3,nome:"Marina Ramos",disciplina:"Ciências",email:"marina@escola.br",reg:"REG003",turmas:["6A","6B","7A"],ultimo:"Há 2 dias"},
+    {id:4,nome:"José Teixeira",disciplina:"História",email:"jose@escola.br",reg:"REG004",turmas:["8B","9A"],ultimo:"Há 3 dias"},
   ],
   turmas: [
-    {id:1,nome:"6A",serie:"6º Ano",turno:"Matutino",sala:"Sala 01",alunos:32,saude:82},
-    {id:2,nome:"6B",serie:"6º Ano",turno:"Vespertino",sala:"Sala 02",alunos:30,saude:75},
-    {id:3,nome:"7A",serie:"7º Ano",turno:"Matutino",sala:"Sala 05",alunos:35,saude:88},
-    {id:4,nome:"7C",serie:"7º Ano",turno:"Vespertino",sala:"Sala 07",alunos:29,saude:64},
-    {id:5,nome:"8A",serie:"8º Ano",turno:"Matutino",sala:"Sala 09",alunos:33,saude:58},
-    {id:6,nome:"8B",serie:"8º Ano",turno:"Vespertino",sala:"Sala 10",alunos:31,saude:71},
-    {id:7,nome:"9A",serie:"9º Ano",turno:"Matutino",sala:"Sala 12",alunos:38,saude:91},
+    {id:1,nome:"6A",serie:"6º Ano",turno:"Matutino",sala:"Sala 01",alunos:32},
+    {id:2,nome:"6B",serie:"6º Ano",turno:"Vespertino",sala:"Sala 02",alunos:30},
+    {id:3,nome:"7A",serie:"7º Ano",turno:"Matutino",sala:"Sala 05",alunos:35},
+    {id:4,nome:"7C",serie:"7º Ano",turno:"Vespertino",sala:"Sala 07",alunos:29},
+    {id:5,nome:"8A",serie:"8º Ano",turno:"Matutino",sala:"Sala 09",alunos:33},
+    {id:6,nome:"8B",serie:"8º Ano",turno:"Vespertino",sala:"Sala 10",alunos:31},
+    {id:7,nome:"9A",serie:"9º Ano",turno:"Matutino",sala:"Sala 12",alunos:38},
   ],
   disciplinas: [
     {id:1,nome:"Matemática",turma:"8A",profId:1,ch:5,ano:"2025",area:"Matemática"},
@@ -52,10 +52,10 @@ const DB = {
     {id:8,alunoId:7,aluno:"Gabriel Alves",turma:"6A",disciplina:"Matemática",tipo:"Prova",nota:5.8,bim:"2º Bimestre",data:"2025-05-04",var:-1.0},
   ],
   observacoes: [
-    {id:1,alunoId:1,aluno:"Lucas Ferreira",texto:"O aluno está cada vez mais isolado em sala. Não interage com os colegas e parece triste e desmotivado.",prio:"high",data:"2025-05-10",termos:["isolado","triste","desmotivado"],prof:"Carla Mendes"},
-    {id:2,alunoId:5,aluno:"Rafael Santos",texto:"Rafael apresentou comportamento agressivo durante a aula de hoje, xingando colega e recusando seguir orientações.",prio:"high",data:"2025-05-08",termos:["agressivo"],prof:"Paulo Andrade"},
-    {id:3,alunoId:9,aluno:"Mateus Carvalho",texto:"Notei que o Mateus parece bem triste ultimamente e desmotivado. Perguntei se estava bem e desconversou.",prio:"medium",data:"2025-05-06",termos:["triste","desmotivado"],prof:"Marina Ramos"},
-    {id:4,alunoId:2,aluno:"Ana Souza",texto:"Ana faltou novamente sem aviso. Quando presente, demonstra cansaço excessivo e falta de atenção.",prio:"medium",data:"2025-05-04",termos:[],prof:"José Teixeira"},
+    {id:1,alunoId:1,aluno:"Lucas Ferreira",texto:"O aluno está cada vez mais isolado em sala. Não interage com os colegas e parece triste e desmotivado.",prio:"high",data:"2025-05-10",prof:"Carla Mendes"},
+    {id:2,alunoId:5,aluno:"Rafael Santos",texto:"Rafael apresentou comportamento agressivo durante a aula de hoje, xingando colega e recusando seguir orientações.",prio:"high",data:"2025-05-08",prof:"Paulo Andrade"},
+    {id:3,alunoId:9,aluno:"Mateus Carvalho",texto:"Notei que o Mateus parece bem triste ultimamente e desmotivado. Perguntei se estava bem e desconversou.",prio:"medium",data:"2025-05-06",prof:"Marina Ramos"},
+    {id:4,alunoId:2,aluno:"Ana Souza",texto:"Ana faltou novamente sem aviso. Quando presente, demonstra cansaço excessivo e falta de atenção.",prio:"medium",data:"2025-05-04",prof:"José Teixeira"},
   ],
   encaminhamentos: [
     {id:1,alunoId:1,aluno:"Lucas Ferreira",tipo:"psico",urgencia:"alta",resp:"Psic. Fernanda Cruz",just:"Queda abrupta de rendimento e sinais de isolamento social.",data:"2025-05-10",status:"Em andamento"},
@@ -73,9 +73,8 @@ const DB = {
   ],
   alertas: [
     {id:1,tipo:"critical",titulo:"Risco Crítico — Lucas Ferreira",desc:"Queda de nota de 9.0 para 4.5 em 3 semanas. Frequência em 58%.",data:"2025-05-10 09:15",lido:false},
-    {id:2,tipo:"critical",titulo:"Termos Sensíveis Detectados — Rafael Santos",desc:"Observações contêm: 'agressivo'. Frequência 45% e média 3.8.",data:"2025-05-09 14:22",lido:false},
+    {id:2,tipo:"critical",titulo:"Comportamento Agressivo Relatado — Rafael Santos",desc:"Observação de professor registra comportamento agressivo. Frequência 45% e média 3.8.",data:"2025-05-09 14:22",lido:false},
     {id:3,tipo:"medium",titulo:"5 Faltas Consecutivas — Ana Souza",desc:"Turma 6B sem justificativas. Média caindo para 6.2.",data:"2025-05-08 11:00",lido:false},
-    {id:4,tipo:"critical",titulo:"Anomalia Coletiva — Turma 7C",desc:"3 alunos com queda simultânea de desempenho e frequência.",data:"2025-05-07 16:30",lido:false},
     {id:5,tipo:"medium",titulo:"Observação Pedagógica — Mateus Carvalho",desc:"Tristeza e desmotivação relatadas. Recomendado acompanhamento.",data:"2025-05-06 09:45",lido:false},
     {id:6,tipo:"low",titulo:"Queda Moderada — Gabriel Alves",desc:"Média caiu 1.0 ponto este bimestre.",data:"2025-05-05 13:00",lido:true},
     {id:7,tipo:"low",titulo:"Frequência Abaixo de 75% — Ana Souza",desc:"Responsável notificado.",data:"2025-05-03 08:30",lido:true},
@@ -111,19 +110,6 @@ let alunosFiltrados = [...DB.alunos];
 const avatarColors = ['td-avatar-blue','td-avatar-green','td-avatar-purple','td-avatar-amber','td-avatar-red'];
 function getAvatarColor(id) { return avatarColors[id % avatarColors.length]; }
 function getInitials(nome) { return nome.split(' ').slice(0,2).map(n=>n[0]).join(''); }
-
-function calcIAIndex(a) {
-  let score = 100;
-  if(a.freq < 70) score -= 30; else if(a.freq < 85) score -= 15;
-  if(a.media < 5) score -= 35; else if(a.media < 7) score -= 15;
-  if(a.obs && /isolado|agressiv|triste|desmotivad/i.test(a.obs)) score -= 20;
-  return Math.max(5, score);
-}
-
-function detectNLP(texto) {
-  const sensivel = ['isolado','isolada','agressiv','triste','desmotivad','chorando','brigou','xingou','desapareceu','recusa','apático','apática','ameaçou','machucou','abusado'];
-  return sensivel.filter(t => texto.toLowerCase().includes(t));
-}
 
 function perm(key) { return RBAC[currentUser.role]?.[key] === true; }
 
@@ -227,7 +213,7 @@ function doLogout() {
 // NAVEGAÇÃO
 // ═══════════════════════════════════════════════════════════
 const viewTitles = {
-  dashboard:        ['Dashboard', 'Visão geral · Saúde Escolar'],
+  dashboard:        ['Dashboard', 'Visão geral da escola'],
   alunos:           ['Gestão de Alunos', 'CRUD completo · Monitoramento individual'],
   professores:      ['Professores', 'Equipe docente'],
   disciplinas:      ['Disciplinas', 'Cadastro e vínculo com turmas e professores'],
@@ -341,28 +327,19 @@ function popularSelects() {
 // DASHBOARD
 // ═══════════════════════════════════════════════════════════
 function renderDashboard() {
-  renderTurmaRanking();
-  setTimeout(() => { createHealthDonut(); createMainChart(); createRiskPie(); }, 50);
+  renderDashboardStats();
+  setTimeout(() => { createMainChart(); }, 50);
 }
 
-function renderTurmaRanking() {
-  const el = document.getElementById('turmaRanking'); if(!el) return;
-  const sorted = [...DB.turmas].sort((a,b) => a.saude - b.saude);
-  el.innerHTML = sorted.map(t => `
-    <div style="margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:13px;font-weight:700">${t.nome} · ${t.serie}</span>
-        <span style="font-size:12px;font-weight:700;color:${t.saude<65?'var(--red)':t.saude<80?'var(--amber)':'var(--green)'}">${t.saude}%</span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill ${t.saude<65?'red':t.saude<80?'amber':'green'}" style="width:${t.saude}%"></div></div>
-      <div style="font-size:11px;color:var(--text-muted);margin-top:4px">${t.alunos} alunos · ${t.turno}</div>
-    </div>`).join('');
+function renderDashboardStats() {
+  const alunos = getAlunosVisiveis();
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  set('stat-total',    alunos.length);
+  set('stat-critico',  alunos.filter(a => a.risco === 'critical').length);
+  set('stat-moderado', alunos.filter(a => a.risco === 'medium').length);
+  set('stat-enc',      DB.encaminhamentos.filter(e => e.status !== 'Encerrado').length);
 }
 
-function createHealthDonut() {
-  const ctx = document.getElementById('healthDonut'); if(!ctx||chartsCreated.healthDonut) return;
-  chartsCreated.healthDonut = new Chart(ctx, { type:'doughnut', data:{ datasets:[{data:[74,26],backgroundColor:['#FCD34D','rgba(255,255,255,0.1)'],borderWidth:0}]}, options:{cutout:'80%',plugins:{legend:{display:false}},responsive:false}});
-}
 function createMainChart() {
   const ctx = document.getElementById('mainChart'); if(!ctx||chartsCreated.mainChart) return;
   chartsCreated.mainChart = new Chart(ctx, {
@@ -371,12 +348,8 @@ function createMainChart() {
       {label:'Média Geral',data:[7.8,7.5,7.2,6.9,6.7,7.1],borderColor:'#2563EB',backgroundColor:'rgba(37,99,235,0.08)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'#2563EB'},
       {label:'Frequência %',data:[94,91,89,87,85,88],borderColor:'#10B981',backgroundColor:'rgba(16,185,129,0.05)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'#10B981'},
     ]},
-    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{family:'Nunito'},boxWidth:12,padding:16}}},scales:{y:{min:60,grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false}}}}
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{family:'Inter'},boxWidth:12,padding:16}}},scales:{y:{min:60,grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false}}}}
   });
-}
-function createRiskPie() {
-  const ctx = document.getElementById('riskPie'); if(!ctx||chartsCreated.riskPie) return;
-  chartsCreated.riskPie = new Chart(ctx, { type:'doughnut', data:{labels:['Normal','Moderado','Crítico'],datasets:[{data:[277,37,14],backgroundColor:['#10B981','#F59E0B','#EF4444'],borderWidth:3,borderColor:'#fff'}]}, options:{responsive:false,plugins:{legend:{display:false}}}});
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -394,11 +367,9 @@ function renderAlunos(list) {
 
   tbody.innerHTML = data.map(a => {
     const rc  = a.risco==='critical'?'critical':a.risco==='medium'?'medium':'normal';
-    const rl  = a.risco==='critical'?'🔴 Crítico':a.risco==='medium'?'🟡 Moderado':'🟢 Normal';
+    const rl  = a.risco==='critical'?'Crítico':a.risco==='medium'?'Moderado':'Normal';
     const fc  = a.freq<70?'var(--red)':a.freq<85?'var(--amber)':'var(--green)';
     const mc  = a.media<5?'var(--red)':a.media<7?'var(--amber)':'var(--green)';
-    const ia  = calcIAIndex(a);
-    const iac = a.risco==='critical'?'critical':a.risco==='medium'?'medium':'low';
     return `<tr>
       <td><div class="td-name"><div class="td-avatar ${getAvatarColor(a.id)}">${getInitials(a.nome)}</div>
         <div><div style="font-weight:700;font-size:13.5px">${a.nome}</div>
@@ -407,15 +378,14 @@ function renderAlunos(list) {
       <td style="font-size:12px;color:var(--text-muted)">${a.mat}</td>
       <td><span style="font-weight:700;color:${fc}">${a.freq}%</span></td>
       <td><span style="font-weight:700;color:${mc}">${a.media.toFixed(1)}</span></td>
-      <td><div class="ai-score ${iac}" style="width:46px;height:46px"><div class="ai-score-val" style="font-size:15px">${ia}</div><div class="ai-score-label">IDX</div></div></td>
       <td><span class="risk-badge ${rc}">${rl}</span></td>
       <td><div style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="showAlunoDetalhe(${a.id})" title="Ver detalhes">👁️</button>
-        ${canEdit?`<button class="btn btn-ghost btn-sm btn-icon" onclick="editAluno(${a.id})" title="Editar">✏️</button>
-        <button class="btn btn-ghost btn-sm btn-icon" style="color:var(--red)" onclick="deleteAluno(${a.id})" title="Excluir">🗑️</button>`:''}
+        <button class="btn btn-ghost btn-sm" onclick="showAlunoDetalhe(${a.id})">Ver</button>
+        ${canEdit?`<button class="btn btn-ghost btn-sm" onclick="editAluno(${a.id})">Editar</button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="deleteAluno(${a.id})">Excluir</button>`:''}
       </div></td>
     </tr>`;
-  }).join('') || '<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">🔍</div><p>Nenhum aluno encontrado.</p></div></td></tr>';
+  }).join('') || '<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon"></div><p>Nenhum aluno encontrado.</p></div></td></tr>';
 }
 
 function filterAlunos(val) {
@@ -471,25 +441,21 @@ function showAlunoDetalhe(id) {
   document.getElementById('alunoDetalheContent').innerHTML = `
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
       <div class="td-avatar ${getAvatarColor(a.id)}" style="width:56px;height:56px;font-size:20px;border-radius:16px">${getInitials(a.nome)}</div>
-      <div><div style="font-family:'Sora',sans-serif;font-size:20px;font-weight:800">${a.nome}</div>
+      <div><div style="font-family:'Inter',sans-serif;font-size:20px;font-weight:800">${a.nome}</div>
         <div style="font-size:13px;color:var(--text-muted)">Turma ${a.turma} · RA: ${a.mat} · ${a.resp} · ${a.tel}</div>
-        ${laudo.length?`<div style="margin-top:6px">${laudo.map(l=>`<span class="tag amber">📎 ${l.tipo}</span>`).join(' ')}</div>`:''}
+        ${laudo.length?`<div style="margin-top:6px">${laudo.map(l=>`<span class="tag amber"> ${l.tipo}</span>`).join(' ')}</div>`:''}
       </div>
       <div style="margin-left:auto"><span class="risk-badge ${rc}" style="font-size:13px;padding:6px 14px">
-        ${a.risco==='critical'?'🔴 Risco Crítico':a.risco==='medium'?'🟡 Atenção Moderada':'🟢 Normal'}</span></div>
+        ${a.risco==='critical'?' Risco Crítico':a.risco==='medium'?' Atenção Moderada':' Normal'}</span></div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
       <div style="text-align:center;padding:14px;background:var(--gray-50);border-radius:10px">
-        <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:${a.freq<70?'var(--red)':a.freq<85?'var(--amber)':'var(--green)'}">${a.freq}%</div>
+        <div style="font-family:'Inter',sans-serif;font-size:28px;font-weight:800;color:${a.freq<70?'var(--red)':a.freq<85?'var(--amber)':'var(--green)'}">${a.freq}%</div>
         <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Frequência</div>
       </div>
       <div style="text-align:center;padding:14px;background:var(--gray-50);border-radius:10px">
-        <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:${a.media<5?'var(--red)':a.media<7?'var(--amber)':'var(--green)'}">${a.media.toFixed(1)}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:28px;font-weight:800;color:${a.media<5?'var(--red)':a.media<7?'var(--amber)':'var(--green)'}">${a.media.toFixed(1)}</div>
         <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Média Geral</div>
-      </div>
-      <div style="text-align:center;padding:14px;background:var(--gray-50);border-radius:10px">
-        <div style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:var(--blue)">${calcIAIndex(a)}</div>
-        <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Índice</div>
       </div>
     </div>
     ${notas.length?`<div style="margin-bottom:16px"><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--text-muted)">AVALIAÇÕES RECENTES</div>${notas.slice(0,5).map(n=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-100);font-size:13px"><span>${n.disciplina} · ${n.tipo} · ${n.bim}</span><span style="font-weight:700;color:${n.nota<5?'var(--red)':n.nota<7?'var(--amber)':'var(--green)'}">${n.nota}</span></div>`).join('')}</div>`:''}
@@ -517,11 +483,9 @@ function renderProfessores() {
       <div><div style="font-weight:700">${p.nome}</div><div style="font-size:11px;color:var(--text-muted)">${p.email}</div></div></div></td>
     <td><span class="tag blue">${p.disciplina}</span></td>
     <td>${p.turmas.map(t=>`<span class="tag gray" style="margin:1px">${t}</span>`).join('')}</td>
-    <td><span class="tag ${p.alertas>3?'red':p.alertas>1?'amber':'green'}">${p.alertas} alertas</span></td>
     <td style="font-size:12px;color:var(--text-muted)">${p.ultimo}</td>
     <td><div style="display:flex;gap:6px">
-      ${canEdit?`<button class="btn btn-ghost btn-sm btn-icon">✏️</button>
-      <button class="btn btn-ghost btn-sm btn-icon" style="color:var(--red)" onclick="deleteProfessor(${p.id})">🗑️</button>`:'<span style="font-size:12px;color:var(--text-muted)">Somente leitura</span>'}
+      ${canEdit?`<button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="deleteProfessor(${p.id})">Excluir</button>`:'<span style="font-size:12px;color:var(--text-muted)">Somente leitura</span>'}
     </div></td>
   </tr>`).join('');
   // Botão novo professor visível somente ao gestor
@@ -533,7 +497,7 @@ function saveProfessor() {
   if(!perm('editarProfs')) { showToast('Sem permissão.','danger'); return; }
   const nome = document.getElementById('p-nome').value.trim();
   if(!nome) { showToast('Nome é obrigatório!','danger'); return; }
-  DB.professores.push({id:DB.professores.length+1,nome,disciplina:document.getElementById('p-disc').value,email:document.getElementById('p-email').value,reg:document.getElementById('p-reg').value,turmas:[],alertas:0,ultimo:'Hoje'});
+  DB.professores.push({id:DB.professores.length+1,nome,disciplina:document.getElementById('p-disc').value,email:document.getElementById('p-email').value,reg:document.getElementById('p-reg').value,turmas:[],ultimo:'Hoje'});
   closeModal('modal-professor'); renderProfessores(); popularSelects();
   showToast('Professor '+nome+' cadastrado!','success');
 }
@@ -551,7 +515,7 @@ function renderDisciplinas() {
   const el = document.getElementById('disciplinasBody'); if(!el) return;
 
   if(!canEdit) {
-    el.innerHTML = `<div class="rbac-notice">🔒 Você tem acesso somente de leitura às disciplinas cadastradas.</div>`;
+    el.innerHTML = `<div class="rbac-notice"> Você tem acesso somente de leitura às disciplinas cadastradas.</div>`;
   }
 
   // Agrupar por turma
@@ -613,17 +577,16 @@ function renderTurmas() {
   const el = document.getElementById('turmasCards'); if(!el) return;
   el.parentElement.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">${
     DB.turmas.map(t => {
-      const color = t.saude<65?'red':t.saude<80?'amber':'green';
+      const color = 'blue';
       const discs = DB.disciplinas.filter(d=>d.nome && d.turma===t.nome).length;
       return `<div class="card stat-card ${color}" style="cursor:pointer" onclick="showView('alunos');filterAlunosTurma('${t.nome}')">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div style="font-family:'Sora',sans-serif;font-size:24px;font-weight:800">${t.nome}</div>
-          <span class="tag ${color}">${t.saude}%</span>
+          <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:800">${t.nome}</div>
         </div>
         <div style="font-size:12px;color:var(--text-muted)">${t.serie} · ${t.turno}</div>
-        <div style="margin:12px 0"><div class="progress-bar"><div class="progress-fill ${color}" style="width:${t.saude}%"></div></div></div>
+        <div style="height:14px"></div>
         <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)">
-          <span>👥 ${t.alunos} alunos</span><span>📚 ${discs} disc.</span><span>${t.sala}</span>
+          <span> ${t.alunos} alunos</span><span> ${discs} disc.</span><span>${t.sala}</span>
         </div>
       </div>`;
     }).join('')
@@ -632,7 +595,7 @@ function renderTurmas() {
 function saveTurma() {
   const nome = document.getElementById('t-nome').value.trim();
   if(!nome){ showToast('Nome é obrigatório!','danger'); return; }
-  DB.turmas.push({id:DB.turmas.length+1,nome,serie:document.getElementById('t-serie').value,turno:document.getElementById('t-turno').value,sala:document.getElementById('t-sala').value,alunos:0,saude:100});
+  DB.turmas.push({id:DB.turmas.length+1,nome,serie:document.getElementById('t-serie').value,turno:document.getElementById('t-turno').value,sala:document.getElementById('t-sala').value,alunos:0});
   closeModal('modal-turma'); renderTurmas(); showToast('Turma '+nome+' criada!','success');
 }
 
@@ -664,9 +627,9 @@ function renderFrequencia() {
         <div style="font-size:11px;color:var(--text-muted)">RA: ${DB.alunos.find(a=>a.id===aluno.id)?.mat||'—'}</div>
       </div>
       <div style="display:flex;gap:6px">
-        <button class="btn btn-sm ${aluno.status==='present'?'btn-success':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','present')">✓ Presente</button>
-        <button class="btn btn-sm ${aluno.status==='absent'?'btn-danger':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','absent')">✗ Falta</button>
-        <button class="btn btn-sm ${aluno.status==='justified'?'btn-amber':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','justified')">📄 Justif.</button>
+        <button class="btn btn-sm ${aluno.status==='present'?'btn-success':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','present')">Presente</button>
+        <button class="btn btn-sm ${aluno.status==='absent'?'btn-danger':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','absent')">Falta</button>
+        <button class="btn btn-sm ${aluno.status==='justified'?'btn-amber':'btn-ghost'}" onclick="setFreq(${aluno.id},'${turma}','justified')"> Justif.</button>
       </div>
     </div>`).join('');
 
@@ -688,9 +651,9 @@ function renderFreqSummary(lista) {
   document.getElementById('freqSummary').innerHTML = `
     <div style="display:flex;flex-direction:column;gap:10px">
       <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text-muted)">Total</span><strong>${tot}</strong></div>
-      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--green)">✓ Presentes</span><strong style="color:var(--green)">${p}</strong></div>
-      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--red)">✗ Ausentes</span><strong style="color:var(--red)">${a}</strong></div>
-      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--amber)">📄 Justificados</span><strong style="color:var(--amber)">${j}</strong></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--green)">Presentes</span><strong style="color:var(--green)">${p}</strong></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--red)">Ausentes</span><strong style="color:var(--red)">${a}</strong></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--amber)"> Justificados</span><strong style="color:var(--amber)">${j}</strong></div>
       <div class="progress-bar" style="margin-top:4px"><div class="progress-fill ${(p/tot*100)>85?'green':'amber'}" style="width:${(p/tot*100).toFixed(0)}%"></div></div>
       <div style="font-size:12px;font-weight:700">${(p/tot*100).toFixed(0)}% de presença</div>
     </div>`;
@@ -728,7 +691,7 @@ function renderAvaliacoesAluno() {
   const infoEl  = document.getElementById('avalAlunoInfo');
 
   if(!alunoId) {
-    if(infoEl) infoEl.innerHTML = `<div class="aval-aluno-header"><span style="font-size:14px;color:var(--text-muted)">👆 Selecione um aluno para visualizar suas avaliações</span></div>`;
+    if(infoEl) infoEl.innerHTML = `<div class="aval-aluno-header"><span style="font-size:14px;color:var(--text-muted)"> Selecione um aluno para visualizar suas avaliações</span></div>`;
     document.getElementById('notasTable').innerHTML = '';
     return;
   }
@@ -765,9 +728,9 @@ function renderAvaliacoesAluno() {
       <td style="font-size:12px">${n.bim}</td>
       <td style="font-size:12px;color:var(--text-muted)">${n.data}</td>
       <td><span style="font-weight:700;color:${vc}">${vi} ${Math.abs(n.var).toFixed(1)}</span>
-        ${n.var<-2?' <span class="tag red" style="font-size:10px">⚠️ Queda</span>':''}</td>
+        ${n.var<-2?' <span class="tag red" style="font-size:10px"> Queda</span>':''}</td>
     </tr>`;
-  }).join('') || '<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon">📊</div><p>Nenhuma avaliação encontrada para os filtros selecionados.</p></div></td></tr>';
+  }).join('') || '<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon"></div><p>Nenhuma avaliação encontrada para os filtros selecionados.</p></div></td></tr>';
 }
 
 function renderObservacoes() {
@@ -782,11 +745,10 @@ function renderObservacoes() {
         <div class="td-avatar ${getAvatarColor(o.alunoId)}" style="width:32px;height:32px">${getInitials(o.aluno)}</div>
         <strong>${o.aluno}</strong>
         <span class="tag ${o.prio==='high'?'red':o.prio==='medium'?'amber':'gray'}">${o.prio==='high'?'Alta':o.prio==='medium'?'Média':'Baixa'}</span>
-        ${o.termos.length?`<div>${o.termos.map(t=>`<span class="nlp-tag negative">⚠️ ${t}</span>`).join('')}</div>`:''}
         <span style="margin-left:auto;font-size:11px;color:var(--text-muted)">${o.prof} · ${o.data}</span>
       </div>
       <div style="font-size:13.5px;color:var(--text);line-height:1.5">"${o.texto}"</div>
-    </div>`).join('') || '<div class="empty-state"><div class="empty-state-icon">💬</div><p>Nenhuma observação registrada.</p></div>';
+    </div>`).join('') || '<div class="empty-state"><div class="empty-state-icon"></div><p>Nenhuma observação registrada.</p></div>';
 }
 
 function saveNota() {
@@ -797,7 +759,7 @@ function saveNota() {
   const novaVar = nota - aluno.media;
   DB.notas.unshift({id:DB.notas.length+1,alunoId,aluno:aluno.nome,turma:aluno.turma,disciplina:document.getElementById('n-disc').value,tipo:document.getElementById('n-tipo').value,nota,bim:document.getElementById('n-bim').value,data:document.getElementById('n-data').value,var:+novaVar.toFixed(1)});
   aluno.media = +((aluno.media+nota)/2).toFixed(1);
-  if(novaVar<-2.5){ DB.alertas.unshift({id:Date.now(),tipo:'critical',titulo:'⚠️ Queda Detectada — '+aluno.nome,desc:`Nota ${nota} registrada. Queda de ${Math.abs(novaVar).toFixed(1)} pontos.`,data:new Date().toLocaleDateString('pt-BR'),lido:false}); document.getElementById('badge-alertas').textContent=DB.alertas.filter(a=>!a.lido).length; showToast('⚠️ Queda significativa detectada para '+aluno.nome,'danger'); }
+  if(novaVar<-2.5){ DB.alertas.unshift({id:Date.now(),tipo:'critical',titulo:' Queda Detectada — '+aluno.nome,desc:`Nota ${nota} registrada. Queda de ${Math.abs(novaVar).toFixed(1)} pontos.`,data:new Date().toLocaleDateString('pt-BR'),lido:false}); document.getElementById('badge-alertas').textContent=DB.alertas.filter(a=>!a.lido).length; showToast(' Queda significativa detectada para '+aluno.nome,'danger'); }
   closeModal('modal-nota'); renderAvaliacoesAluno(); showToast('Nota lançada!','success');
 }
 
@@ -806,20 +768,9 @@ function saveObservacao() {
   const aluno   = DB.alunos.find(a=>a.id===alunoId);
   const texto   = document.getElementById('o-texto').value.trim();
   if(!aluno||!texto){ showToast('Preencha todos os campos!','danger'); return; }
-  const termos  = detectNLP(texto);
-  DB.observacoes.unshift({id:DB.observacoes.length+1,alunoId,aluno:aluno.nome,texto,prio:document.getElementById('o-prio').value,data:new Date().toLocaleDateString('pt-BR'),termos,prof:currentUser.nome});
-  if(termos.length) showToast('⚠️ Termos de atenção detectados: '+termos.join(', '),'warning');
+  DB.observacoes.unshift({id:DB.observacoes.length+1,alunoId,aluno:aluno.nome,texto,prio:document.getElementById('o-prio').value,data:new Date().toLocaleDateString('pt-BR'),prof:currentUser.nome});
   closeModal('modal-observacao'); renderObservacoes(); showToast('Observação salva!','success');
   document.getElementById('o-texto').value='';
-  document.getElementById('nlpPreview').style.display='none';
-}
-
-function analyzeObservacao() {
-  const texto  = document.getElementById('o-texto').value;
-  const termos = detectNLP(texto);
-  const el     = document.getElementById('nlpPreview');
-  if(termos.length){ el.style.display='block'; document.getElementById('nlpPreviewText').innerHTML=termos.map(t=>`<span class="nlp-tag negative">${t}</span>`).join(''); }
-  else { el.style.display='block'; el.style.background='var(--green-pale)'; el.style.color='#065F46'; document.getElementById('nlpPreviewText').textContent='Nenhum termo de atenção detectado ✓'; }
 }
 
 function switchTab(btn,tabId) {
@@ -838,12 +789,17 @@ function populateHistoricoSelect() {
 }
 
 function renderHistoricoChart(alunoId) {
-  alunoId = alunoId || document.getElementById('historicoAlunoSelect')?.value;
+  alunoId = parseInt(alunoId || document.getElementById('historicoAlunoSelect')?.value);
   if(!alunoId) return;
   const ctx = document.getElementById('historicoChart'); if(!ctx) return;
-  if(chartsCreated.historicoChart) chartsCreated.historicoChart.destroy();
-  const dados = [8.2,7.9,8.0,7.5,7.1,6.8,6.4,6.1].map((v)=>+(v+(Math.random()-0.5)*0.8).toFixed(1));
-  chartsCreated.historicoChart = new Chart(ctx,{type:'line',data:{labels:['1ºBim/23','2ºBim/23','3ºBim/23','4ºBim/23','1ºBim/24','2ºBim/24','3ºBim/24','4ºBim/24'],datasets:[{label:'Média',data:dados,borderColor:'var(--blue)',backgroundColor:'rgba(37,99,235,0.08)',fill:true,tension:0.4,pointRadius:6},{label:'Frequência %',data:[96,94,92,90,88,85,82,80].map(v=>+(v+(Math.random()-0.5)*4).toFixed(0)),borderColor:'var(--green)',backgroundColor:'rgba(16,185,129,0.05)',fill:true,tension:0.4,pointRadius:6}]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{min:40},x:{grid:{display:false}}}}});
+  if(chartsCreated.historicoChart){ chartsCreated.historicoChart.destroy(); delete chartsCreated.historicoChart; }
+  const bims  = ['1º Bimestre','2º Bimestre','3º Bimestre','4º Bimestre'];
+  const notas = DB.notas.filter(n => n.alunoId === alunoId);
+  const dados = bims.map(b => {
+    const ns = notas.filter(n => n.bim === b);
+    return ns.length ? +(ns.reduce((s,n) => s + n.nota, 0) / ns.length).toFixed(1) : null;
+  });
+  chartsCreated.historicoChart = new Chart(ctx,{type:'line',data:{labels:bims,datasets:[{label:'Média das notas lançadas',data:dados,borderColor:'#2563EB',backgroundColor:'rgba(37,99,235,0.08)',fill:true,tension:0.4,pointRadius:6,spanGaps:true}]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{min:0,max:10},x:{grid:{display:false}}}}});
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -879,8 +835,8 @@ function renderEncaminhamentos() {
   const tipo   = document.getElementById('encTipoFiltro')?.value||'';
   const status = document.getElementById('encStatusFiltro')?.value||'';
   const el     = document.getElementById('encaminhamentosList'); if(!el) return;
-  const TL     = {psico:'🧠 Psicólogo Escolar',tutelar:'⚖️ Conselho Tutelar',familiar:'👨‍👩‍👧 Reunião Familiar',pedagogico:'📚 Reforço Pedagógico'};
-  const UL     = {normal:'Normal',media:'Média',alta:'⚠️ Alta'};
+  const TL     = {psico:' Psicólogo Escolar',tutelar:' Conselho Tutelar',familiar:' Reunião Familiar',pedagogico:' Reforço Pedagógico'};
+  const UL     = {normal:'Normal',media:'Média',alta:' Alta'};
 
   let lista = [...DB.encaminhamentos];
   if(busca) lista = lista.filter(e => {
@@ -900,11 +856,11 @@ function renderEncaminhamentos() {
         </div>
         <span class="tag ${e.urgencia==='alta'?'red':e.urgencia==='media'?'amber':'gray'}" style="margin-left:auto">${UL[e.urgencia]}</span>
         <span class="tag ${e.status==='Em andamento'?'blue':e.status==='Encerrado'?'green':'amber'}">${e.status}</span>
-        ${perm('editarEnc')?`<button class="btn btn-ghost btn-sm" onclick="encerrarEncaminhamento(${e.id})">✓ Encerrar</button>`:''}
+        ${perm('editarEnc')?`<button class="btn btn-ghost btn-sm" onclick="encerrarEncaminhamento(${e.id})">Encerrar</button>`:''}
       </div>
       <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px">${e.just}</div>
       <div style="font-size:12px;color:var(--text-muted)">Resp: <strong>${e.resp}</strong> · ${e.data}</div>
-    </div>`).join('') || '<div class="empty-state"><div class="empty-state-icon">✅</div><p>Nenhum encaminhamento encontrado.</p></div>';
+    </div>`).join('') || '<div class="empty-state"><div class="empty-state-icon"></div><p>Nenhum encaminhamento encontrado.</p></div>';
 }
 
 function saveEncaminhamento() {
@@ -947,7 +903,7 @@ function renderCasos() {
     return termoBusca && termoStatus;
   });
 
-  const statusLabel = {ativo:'🔴 Crítico / Ativo', andamento:'🟡 Em andamento', encerrado:'🟢 Encerrado'};
+  const statusLabel = {ativo:' Crítico / Ativo', andamento:' Em andamento', encerrado:' Encerrado'};
   const statusClass = {ativo:'ativo', andamento:'andamento', encerrado:'encerrado'};
 
   el.innerHTML = lista.map(c => {
@@ -963,34 +919,34 @@ function renderCasos() {
           <div style="font-size:12px;color:var(--text-muted)">Turma ${a.turma} · RA: ${a.mat} · Freq: <span style="font-weight:700;color:${a.freq<70?'var(--red)':'var(--amber)'}">${a.freq}%</span> · Média: <span style="font-weight:700;color:${a.media<5?'var(--red)':'var(--amber)'}">${a.media.toFixed(1)}</span></div>
         </div>
         <span class="caso-status ${statusClass[c.status]}">${statusLabel[c.status]||c.status}</span>
-        ${laudo.length?`<span class="tag amber" style="margin-left:6px">📎 ${laudo.map(l=>l.tipo).join(', ')}</span>`:''}
+        ${laudo.length?`<span class="tag amber" style="margin-left:6px"> ${laudo.map(l=>l.tipo).join(', ')}</span>`:''}
       </div>
       <div class="caso-card-body">
         ${c.meta?`<div style="padding:12px;background:var(--blue-pale);border-radius:10px;margin-bottom:12px">
           <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--blue);margin-bottom:4px">META DO PLANO DE AÇÃO</div>
           <div style="font-size:13.5px;font-weight:600">${c.meta}</div>
-        </div>`:`<div style="padding:12px;background:var(--gray-100);border-radius:10px;margin-bottom:12px;font-size:13px;color:var(--text-muted)">⚠️ Nenhum plano de ação registrado. <button class="btn btn-ghost btn-sm" onclick="abrirCasoPlano(${c.alunoId})" style="margin-left:8px">+ Criar Plano</button></div>`}
+        </div>`:`<div style="padding:12px;background:var(--gray-100);border-radius:10px;margin-bottom:12px;font-size:13px;color:var(--text-muted)"> Nenhum plano de ação registrado. <button class="btn btn-ghost btn-sm" onclick="abrirCasoPlano(${c.alunoId})" style="margin-left:8px">+ Criar Plano</button></div>`}
         ${c.meta?`<div style="margin-bottom:12px">
           <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:5px">PROGRESSO</div>
           <div class="progress-bar"><div class="progress-fill ${c.progresso>=70?'green':c.progresso>=30?'amber':'red'}" style="width:${c.progresso}%"></div></div>
           <div style="font-size:12px;color:var(--text-muted);margin-top:3px">${c.progresso}% concluído · Prazo: ${c.prazo||'—'} · Resp: ${c.resp||'—'}</div>
         </div>`:''}
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-primary btn-sm" onclick="abrirCasoPlano(${c.alunoId})">📋 ${c.meta?'Editar Plano':'Criar Plano'}</button>
-          <button class="btn btn-amber btn-sm" onclick="openModal('modal-encaminhamento')">🔀 Encaminhar</button>
-          <button class="btn btn-ghost btn-sm" onclick="showAlunoDetalhe(${c.alunoId})">👁️ Ver Perfil</button>
+          <button class="btn btn-primary btn-sm" onclick="abrirCasoPlano(${c.alunoId})"> ${c.meta?'Editar Plano':'Criar Plano'}</button>
+          <button class="btn btn-amber btn-sm" onclick="openModal('modal-encaminhamento')"> Encaminhar</button>
+          <button class="btn btn-ghost btn-sm" onclick="showAlunoDetalhe(${c.alunoId})"> Ver Perfil</button>
           ${enc.length?`<span class="tag blue">${enc.length} encaminhamento(s)</span>`:''}
         </div>
       </div>
     </div>`;
-  }).join('') || '<div class="empty-state"><div class="empty-state-icon">📋</div><p>Nenhum caso encontrado.</p></div>';
+  }).join('') || '<div class="empty-state"><div class="empty-state-icon"></div><p>Nenhum caso encontrado.</p></div>';
 }
 
 function abrirCasoPlano(alunoId) {
   if(!perm('editarCasos')){ showToast('Sem permissão para editar casos.','danger'); return; }
   const aluno  = DB.alunos.find(a=>a.id===alunoId); if(!aluno) return;
   const caso   = DB.casos.find(c=>c.alunoId===alunoId);
-  document.getElementById('casoPlanoTitulo').textContent = `📋 Plano de Ação — ${aluno.nome}`;
+  document.getElementById('casoPlanoTitulo').textContent = ` Plano de Ação — ${aluno.nome}`;
   document.getElementById('casoPlanoSub').textContent    = `Turma ${aluno.turma} · RA: ${aluno.mat}`;
   document.getElementById('caso-alunoId').value          = alunoId;
   document.getElementById('caso-meta').value             = caso?.meta||'';
@@ -1026,7 +982,7 @@ function saveCasoPlano() {
 // LAUDOS
 // ═══════════════════════════════════════════════════════════
 function renderLaudos() {
-  if(!perm('verLaudos')){ document.getElementById('laudosList').innerHTML='<div class="empty-state"><div class="empty-state-icon">🔒</div><p>Acesso restrito por LGPD. Somente Gestores e Profissionais de Apoio.</p></div>'; return; }
+  if(!perm('verLaudos')){ document.getElementById('laudosList').innerHTML='<div class="empty-state"><div class="empty-state-icon"></div><p>Acesso restrito por LGPD. Somente Gestores e Profissionais de Apoio.</p></div>'; return; }
   const busca = (document.getElementById('laudosBusca')?.value||'').toLowerCase();
   const tipo  = document.getElementById('laudosTipoFiltro')?.value||'';
   const el    = document.getElementById('laudosList'); if(!el) return;
@@ -1035,24 +991,18 @@ function renderLaudos() {
   if(busca) lista = lista.filter(l=>{ const a=DB.alunos.find(x=>x.id===l.alunoId); return a && (a.nome.toLowerCase().includes(busca)||a.mat.includes(busca)); });
   if(tipo) lista = lista.filter(l=>l.tipo===tipo);
 
-  const tipoIco = {TEA:'🧩',TDAH:'⚡',Dislexia:'📖','Deficiência Intelectual':'🧠','Deficiência Auditiva':'👂','Deficiência Visual':'👁','Outro':'📎'};
-  const tipoClass = {TEA:'tea',TDAH:'tdah',Dislexia:'tdah',Outro:'outro'};
-
   el.innerHTML = lista.length?lista.map(l=>{
     const a   = DB.alunos.find(x=>x.id===l.alunoId)||{};
-    const ico = tipoIco[l.tipo]||'📎';
-    const cls = tipoClass[l.tipo]||'outro';
     const val = l.validade==='indefinida'?'Validade indeterminada':l.validade==='anual'?'Renovação anual necessária':'Renovação bienal';
     return `<div class="laudo-item">
-      <div class="laudo-icon ${cls}">${ico}</div>
       <div style="flex:1">
         <div style="font-weight:700;font-size:14px">${a.nome||'—'} <span class="tag amber" style="margin-left:6px">${l.tipo}</span></div>
         <div style="font-size:12px;color:var(--text-muted)">RA: ${a.mat||'—'} · Turma: ${a.turma||'—'} · CID: ${l.cid} · ${l.medico} · ${l.data}</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:3px">${val} · <em>${l.obs}</em></div>
       </div>
-      ${perm('editarLaudos')?`<button class="btn btn-ghost btn-sm btn-icon" style="color:var(--red)" onclick="deleteLaudo(${l.id})" title="Remover">🗑️</button>`:''}
+      ${perm('editarLaudos')?`<button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="deleteLaudo(${l.id})">Remover</button>`:''}
     </div>`;
-  }).join('') : '<div class="empty-state"><div class="empty-state-icon">📎</div><p>Nenhum laudo encontrado.</p></div>';
+  }).join('') : '<div class="empty-state"><div class="empty-state-icon"></div><p>Nenhum laudo encontrado.</p></div>';
 }
 
 function saveLaudo() {
@@ -1083,22 +1033,22 @@ function deleteLaudo(id){
 function renderRelatorios() {
   const el = document.getElementById('relatoriosGrid'); if(!el) return;
   const reports = [
-    {icon:'📊',title:'Relatório de Desempenho',desc:'Médias por turma, disciplina e bimestre.',color:'blue'},
-    {icon:'📅',title:'Relatório de Frequência',desc:'Taxas de presença, ausência e justificativas por período.',color:'green'},
-    {icon:'🚨',title:'Alunos em Risco',desc:'Lista anonimizada de alunos com indicadores críticos.',color:'red'},
-    {icon:'🔀',title:'Encaminhamentos',desc:'Registro de todos os encaminhamentos do período.',color:'amber'},
-    {icon:'📋',title:'Acompanhamento de Casos',desc:'Status de todos os planos de ação ativos.',color:'blue'},
-    {icon:'📄',title:'Conselho de Classe',desc:'Relatório consolidado para reunião pedagógica.',color:'green'},
+    {icon:'',title:'Relatório de Desempenho',desc:'Médias por turma, disciplina e bimestre.',color:'blue'},
+    {icon:'',title:'Relatório de Frequência',desc:'Taxas de presença, ausência e justificativas por período.',color:'green'},
+    {icon:'',title:'Alunos em Risco',desc:'Lista anonimizada de alunos com indicadores críticos.',color:'red'},
+    {icon:'',title:'Encaminhamentos',desc:'Registro de todos os encaminhamentos do período.',color:'amber'},
+    {icon:'',title:'Acompanhamento de Casos',desc:'Status de todos os planos de ação ativos.',color:'blue'},
+    {icon:'',title:'Conselho de Classe',desc:'Relatório consolidado para reunião pedagógica.',color:'green'},
   ];
   el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">` +
     reports.map(r=>`<div class="card stat-card ${r.color}">
       <div style="font-size:36px;margin-bottom:10px">${r.icon}</div>
-      <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px">${r.title}</div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px">${r.title}</div>
       <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:16px;flex:1">${r.desc}</div>
-      <button class="btn btn-ghost btn-sm" onclick="gerarRelatorio('${r.title}')">📄 Gerar PDF</button>
+      <button class="btn btn-ghost btn-sm" onclick="gerarRelatorio('${r.title}')"> Gerar PDF</button>
     </div>`).join('') + '</div>';
 }
-function gerarRelatorio(title){ showToast('📄 Gerando "'+title+'"…','info'); setTimeout(()=>showToast('✅ Relatório pronto! (Simulação)','success'),2000); }
+function gerarRelatorio(title){ showToast(' Gerando "'+title+'"…','info'); setTimeout(()=>showToast(' Relatório pronto! (Simulação)','success'),2000); }
 
 // ═══════════════════════════════════════════════════════════
 // LGPD
@@ -1109,17 +1059,17 @@ function renderLGPD() {
     <div class="grid-2">
       <div>
         <div class="card" style="margin-bottom:16px">
-          <div class="card-header"><h3>🔒 Criptografia & Segurança</h3></div>
+          <div class="card-header"><h3> Criptografia & Segurança</h3></div>
           <div class="card-body">
             ${[['AES-256','Dados sensíveis em repouso','green'],['TLS 1.3','Transmissão de dados','green'],['PBKDF2','Hash de senhas','green'],['JWT RS256','Tokens de autenticação','green']].map(([k,v,c])=>`
             <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--gray-50);border-radius:8px;margin-bottom:8px">
               <div><div style="font-weight:700;font-size:13px">${k}</div><div style="font-size:11px;color:var(--text-muted)">${v}</div></div>
-              <span class="tag green">✓ Ativo</span>
+              <span class="tag green">Ativo</span>
             </div>`).join('')}
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><h3>👤 Controle de Acesso RBAC</h3></div>
+          <div class="card-header"><h3> Controle de Acesso RBAC</h3></div>
           <div class="card-body">
             ${[
               ['Gestor','CRUD completo · Todos os módulos · LGPD · Relatórios','red'],
@@ -1136,17 +1086,17 @@ function renderLGPD() {
       </div>
       <div>
         <div class="card" style="margin-bottom:16px">
-          <div class="card-header"><h3>🕵️ Anonimização de Dados</h3></div>
+          <div class="card-header"><h3> Anonimização de Dados</h3></div>
           <div class="card-body">
             <p style="font-size:13.5px;color:var(--text-muted);line-height:1.6;margin-bottom:16px">Relatórios para diretoria e órgãos externos são gerados com dados anonimizados. Laudos médicos são acessíveis apenas por Gestores e Profissionais de Apoio autorizados.</p>
             <div style="padding:12px;background:var(--green-pale);border-radius:10px;font-size:13px;color:#065F46;margin-bottom:12px">
-              <strong>✓ LGPD Art. 12</strong> — Dados anonimizados não são dados pessoais. Laudos e diagnósticos são dados sensíveis (Art. 11) com acesso controlado.
+              <strong>LGPD Art. 12</strong> — Dados anonimizados não são dados pessoais. Laudos e diagnósticos são dados sensíveis (Art. 11) com acesso controlado.
             </div>
-            <button class="btn btn-ghost btn-sm" style="width:100%" onclick="showToast('Relatório anonimizado gerado!','success')">📊 Gerar Relatório Anonimizado</button>
+            <button class="btn btn-ghost btn-sm" style="width:100%" onclick="showToast('Relatório anonimizado gerado!','success')"> Gerar Relatório Anonimizado</button>
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><h3>📋 Log de Auditoria</h3></div>
+          <div class="card-header"><h3> Log de Auditoria</h3></div>
           <div class="card-body">
             <div style="font-size:12px;font-family:monospace;background:var(--navy);color:#A5F3FC;padding:14px;border-radius:10px;line-height:1.9">
               <div>[${new Date().toLocaleDateString('pt-BR')} 09:15] LOGIN — ${currentUser.nome} (${currentUser.role})</div>
@@ -1188,11 +1138,10 @@ function handleSearch(val) {
 // TOAST
 // ═══════════════════════════════════════════════════════════
 function showToast(msg, type='success') {
-  const icons = {success:'✅',danger:'🚨',warning:'⚠️',info:'ℹ️'};
   const container = document.getElementById('toastContainer');
   const t = document.createElement('div');
   t.className = `toast ${type==='danger'?'danger':type==='warning'?'warning':type==='info'?'info':''}`;
-  t.innerHTML = `<span style="font-size:18px">${icons[type]||'✅'}</span><span>${msg}</span>`;
+  t.innerHTML = `<span>${msg}</span>`;
   container.appendChild(t);
   setTimeout(()=>{ t.style.animation='toastOut 0.3s ease forwards'; setTimeout(()=>t.remove(),300); }, 3500);
 }
