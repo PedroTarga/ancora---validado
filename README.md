@@ -117,14 +117,15 @@ Este projeto foi desenvolvido como uma aplicação estática de demonstração, 
 
 ## Integração com Supabase
 
-O projeto usa o Supabase como fonte de dados. A configuração publica está em `supabase-config.js`.
+O projeto usa o Supabase como fonte de dados. A configuração pública está em `supabase-config.js`.
 
-1. Execute o código SQL do anexo no SQL Editor do Supabase.
-2. Execute `supabase-policies.sql` para permitir o acesso do cliente demonstração.
+Para recriar o banco completamente:
+
+1. Abra o SQL Editor do Supabase.
+2. Execute `supabase-schema.sql`. Este arquivo apaga e recria todas as tabelas do projeto.
 3. Sirva o projeto por HTTP (`python -m http.server 8000`) e recarregue a página.
 
-`supabase-cascade.sql` é opcional. A exclusão de professores já é feita pelo sistema,
-desvinculando antes o professor das disciplinas e turmas.
+O esquema não cria dados iniciais, triggers, Cascade, RLS ou policies.
 
 **Importante:** as políticas de `supabase-policies.sql` permitem acesso público a todos os registros e operações para fins exclusivamente demonstrativos. Dados reais exigem Supabase Auth, tabelas de perfis/vínculos e políticas RLS por usuário. Nunca utilize a chave `service_role` no navegador.
 

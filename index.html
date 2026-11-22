@@ -38,10 +38,7 @@
     <div id="login-prof-row" style="display:none">
       <label class="login-label">Identificar Professor</label>
       <select class="login-input" id="loginProfId">
-        <option value="1">Prof. Carla Mendes — Matemática (8A · 8B · 9A)</option>
-        <option value="2">Prof. Paulo Andrade — Português (7A · 7C · 8A)</option>
-        <option value="3">Prof. Marina Ramos — Ciências (6A · 6B · 7A)</option>
-        <option value="4">Prof. José Teixeira — História (8B · 9A)</option>
+        <option value="">Selecione um professor</option>
       </select>
     </div>
     <button class="login-btn" onclick="doLogin()">Entrar no Sistema</button>
@@ -188,18 +185,18 @@
               <div class="alert-item critical" onclick="showView('alertas')">
                 <div class="alert-dot critical"></div>
                 <div class="alert-content">
-                  <div class="alert-title">Queda Crítica — Lucas Ferreira</div>
-                  <div class="alert-desc">Nota 9 → 4.5 em 3 semanas. Frequência caiu 30%.</div>
+                  <div class="alert-title">Nenhum alerta crítico inicial</div>
+                  <div class="alert-desc">Os alertas serão carregados do banco.</div>
                 </div>
-                <div class="alert-time">2h</div>
+                <div class="alert-time"></div>
               </div>
               <div class="alert-item medium" onclick="showView('alertas')">
                 <div class="alert-dot medium"></div>
                 <div class="alert-content">
-                  <div class="alert-title">5 faltas consecutivas — Ana Souza</div>
-                  <div class="alert-desc">Sem justificativa registrada. Turma 6B.</div>
+                  <div class="alert-title">Nenhum alerta moderado inicial</div>
+                  <div class="alert-desc">Os alertas serão carregados do banco.</div>
                 </div>
-                <div class="alert-time">1d</div>
+                <div class="alert-time"></div>
               </div>
               <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px" onclick="showView('alertas')">Ver todos os alertas →</button>
             </div>

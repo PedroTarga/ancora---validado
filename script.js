@@ -2,89 +2,18 @@
 // DATA LAYER
 // ═══════════════════════════════════════════════════════════
 const DB = {
-  alunos: [
-    {id:1,nome:"Lucas Ferreira",turma:"8A",mat:"2024001",nasc:"2012-03-15",resp:"Maria Ferreira",tel:"(15)98765-1234",freq:58,media:4.5,risco:"critical",obs:"Apresenta sinais de isolamento social"},
-    {id:2,nome:"Ana Souza",turma:"6B",mat:"2024002",nasc:"2013-07-22",resp:"João Souza",tel:"(15)98765-2345",freq:72,media:6.2,risco:"medium",obs:"Ausências frequentes sem justificativa"},
-    {id:3,nome:"Pedro Lima",turma:"7A",mat:"2024003",nasc:"2012-11-08",resp:"Sandra Lima",tel:"(15)98765-3456",freq:91,media:8.7,risco:"normal",obs:"Aluno dedicado e participativo"},
-    {id:4,nome:"Mariana Costa",turma:"9A",mat:"2024004",nasc:"2011-04-30",resp:"Roberto Costa",tel:"(15)98765-4567",freq:85,media:7.9,risco:"normal",obs:"Ótima socialização com colegas"},
-    {id:5,nome:"Rafael Santos",turma:"8B",mat:"2024005",nasc:"2012-09-12",resp:"Cláudia Santos",tel:"(15)98765-5678",freq:45,media:3.8,risco:"critical",obs:"Comportamento agressivo relatado por professores"},
-    {id:6,nome:"Beatriz Oliveira",turma:"7C",mat:"2024006",nasc:"2013-01-25",resp:"Fábio Oliveira",tel:"(15)98765-6789",freq:88,media:8.1,risco:"normal",obs:""},
-    {id:7,nome:"Gabriel Alves",turma:"6A",mat:"2024007",nasc:"2013-05-17",resp:"Letícia Alves",tel:"(15)98765-7890",freq:76,media:6.8,risco:"medium",obs:"Dificuldade em matemática"},
-    {id:8,nome:"Isabela Rocha",turma:"8A",mat:"2024008",nasc:"2012-08-03",resp:"Nelson Rocha",tel:"(15)98765-8901",freq:93,media:9.2,risco:"normal",obs:""},
-    {id:9,nome:"Mateus Carvalho",turma:"7C",mat:"2024009",nasc:"2012-12-20",resp:"Vera Carvalho",tel:"(15)98765-9012",freq:62,media:5.1,risco:"medium",obs:"Tristeza e desmotivação notada"},
-    {id:10,nome:"Sofia Barbosa",turma:"9A",mat:"2024010",nasc:"2011-06-14",resp:"Antônio Barbosa",tel:"(15)98765-0123",freq:97,media:9.5,risco:"normal",obs:""},
-  ],
-  professores: [
-    {id:1,nome:"Carla Mendes",disciplina:"Matemática",email:"carla@escola.br",reg:"REG001",turmas:["8A","8B","9A"],ultimo:"Hoje"},
-    {id:2,nome:"Paulo Andrade",disciplina:"Português",email:"paulo@escola.br",reg:"REG002",turmas:["7A","7C","8A"],ultimo:"Ontem"},
-    {id:3,nome:"Marina Ramos",disciplina:"Ciências",email:"marina@escola.br",reg:"REG003",turmas:["6A","6B","7A"],ultimo:"Há 2 dias"},
-    {id:4,nome:"José Teixeira",disciplina:"História",email:"jose@escola.br",reg:"REG004",turmas:["8B","9A"],ultimo:"Há 3 dias"},
-  ],
-  turmas: [
-    {id:1,nome:"6A",serie:"6º Ano",turno:"Matutino",sala:"Sala 01",alunos:32},
-    {id:2,nome:"6B",serie:"6º Ano",turno:"Vespertino",sala:"Sala 02",alunos:30},
-    {id:3,nome:"7A",serie:"7º Ano",turno:"Matutino",sala:"Sala 05",alunos:35},
-    {id:4,nome:"7C",serie:"7º Ano",turno:"Vespertino",sala:"Sala 07",alunos:29},
-    {id:5,nome:"8A",serie:"8º Ano",turno:"Matutino",sala:"Sala 09",alunos:33},
-    {id:6,nome:"8B",serie:"8º Ano",turno:"Vespertino",sala:"Sala 10",alunos:31},
-    {id:7,nome:"9A",serie:"9º Ano",turno:"Matutino",sala:"Sala 12",alunos:38},
-  ],
-  disciplinas: [
-    {id:1,nome:"Matemática",turma:"8A",profId:1,ch:5,ano:"2025",area:"Matemática"},
-    {id:2,nome:"Português",turma:"8A",profId:2,ch:5,ano:"2025",area:"Linguagens"},
-    {id:3,nome:"Ciências",turma:"7A",profId:3,ch:3,ano:"2025",area:"Ciências da Natureza"},
-    {id:4,nome:"História",turma:"9A",profId:4,ch:3,ano:"2025",area:"Ciências Humanas"},
-    {id:5,nome:"Matemática",turma:"8B",profId:1,ch:5,ano:"2025",area:"Matemática"},
-    {id:6,nome:"Português",turma:"7C",profId:2,ch:5,ano:"2025",area:"Linguagens"},
-    {id:7,nome:"Ciências",turma:"6A",profId:3,ch:3,ano:"2025",area:"Ciências da Natureza"},
-    {id:8,nome:"História",turma:"8B",profId:4,ch:3,ano:"2025",area:"Ciências Humanas"},
-    {id:9,nome:"Matemática",turma:"9A",profId:1,ch:5,ano:"2025",area:"Matemática"},
-    {id:10,nome:"Português",turma:"6B",profId:2,ch:5,ano:"2025",area:"Linguagens"},
-  ],
-  notas: [
-    {id:1,alunoId:1,aluno:"Lucas Ferreira",turma:"8A",disciplina:"Matemática",tipo:"Prova",nota:4.5,bim:"2º Bimestre",data:"2025-05-10",var:-4.5},
-    {id:2,alunoId:2,aluno:"Ana Souza",turma:"6B",disciplina:"Português",tipo:"Trabalho",nota:6.2,bim:"2º Bimestre",data:"2025-05-09",var:-1.8},
-    {id:3,alunoId:3,aluno:"Pedro Lima",turma:"7A",disciplina:"Ciências",tipo:"Prova",nota:8.7,bim:"2º Bimestre",data:"2025-05-08",var:+0.5},
-    {id:4,alunoId:5,aluno:"Rafael Santos",turma:"8B",disciplina:"Matemática",tipo:"Prova",nota:3.8,bim:"2º Bimestre",data:"2025-05-07",var:-3.2},
-    {id:5,alunoId:8,aluno:"Isabela Rocha",turma:"8A",disciplina:"Português",tipo:"Prova",nota:9.2,bim:"2º Bimestre",data:"2025-05-06",var:+0.8},
-    {id:6,alunoId:9,aluno:"Mateus Carvalho",turma:"7C",disciplina:"Ciências",tipo:"Exercício",nota:5.1,bim:"2º Bimestre",data:"2025-05-05",var:-2.1},
-    {id:7,alunoId:1,aluno:"Lucas Ferreira",turma:"8A",disciplina:"Português",tipo:"Trabalho",nota:5.5,bim:"1º Bimestre",data:"2025-03-10",var:-1.5},
-    {id:8,alunoId:7,aluno:"Gabriel Alves",turma:"6A",disciplina:"Matemática",tipo:"Prova",nota:5.8,bim:"2º Bimestre",data:"2025-05-04",var:-1.0},
-  ],
-  observacoes: [
-    {id:1,alunoId:1,aluno:"Lucas Ferreira",texto:"O aluno está cada vez mais isolado em sala. Não interage com os colegas e parece triste e desmotivado.",prio:"high",data:"2025-05-10",prof:"Carla Mendes"},
-    {id:2,alunoId:5,aluno:"Rafael Santos",texto:"Rafael apresentou comportamento agressivo durante a aula de hoje, xingando colega e recusando seguir orientações.",prio:"high",data:"2025-05-08",prof:"Paulo Andrade"},
-    {id:3,alunoId:9,aluno:"Mateus Carvalho",texto:"Notei que o Mateus parece bem triste ultimamente e desmotivado. Perguntei se estava bem e desconversou.",prio:"medium",data:"2025-05-06",prof:"Marina Ramos"},
-    {id:4,alunoId:2,aluno:"Ana Souza",texto:"Ana faltou novamente sem aviso. Quando presente, demonstra cansaço excessivo e falta de atenção.",prio:"medium",data:"2025-05-04",prof:"José Teixeira"},
-  ],
-  encaminhamentos: [
-    {id:1,alunoId:1,aluno:"Lucas Ferreira",tipo:"psico",urgencia:"alta",resp:"Psic. Fernanda Cruz",just:"Queda abrupta de rendimento e sinais de isolamento social.",data:"2025-05-10",status:"Em andamento"},
-    {id:2,alunoId:5,aluno:"Rafael Santos",tipo:"tutelar",urgencia:"alta",resp:"Conselho Tutelar",just:"Comportamento agressivo reiterado e frequência crítica.",data:"2025-05-08",status:"Pendente"},
-  ],
-  // Casos = planos de ação por aluno (um por aluno, editável)
-  casos: [
-    {id:1,alunoId:1,meta:"Recuperar média para 6.0 até o 3º Bimestre",est:"Aulas de reforço 2x/semana. Reunião com família. Acompanhamento psicológico semanal.",prazo:"2025-08-01",status:"ativo",progresso:35,resp:"Ana Coordenadora",updatedAt:"2025-05-10"},
-    {id:2,alunoId:5,meta:"Reduzir ocorrências de comportamento agressivo e aumentar frequência para acima de 75%",est:"Atendimento com psicólogo escolar quinzenal. Contato semanal com responsável.",prazo:"2025-07-01",status:"andamento",progresso:20,resp:"Ana Coordenadora",updatedAt:"2025-05-08"},
-    {id:3,alunoId:9,meta:"Reverter queda de motivação e elevar frequência",est:"Conversa individual com aluno. Relatório enviado aos pais. Encaminhamento para psicólogo.",prazo:"2025-06-30",status:"andamento",progresso:10,resp:"Ana Coordenadora",updatedAt:"2025-05-06"},
-  ],
-  laudos: [
-    {id:1,alunoId:5,tipo:"TDAH",cid:"F90.0",data:"2024-03-15",medico:"Dr. Carlos Henrique",validade:"anual",obs:"Necessita adaptações no tempo de prova e sala reduzida."},
-    {id:2,alunoId:9,tipo:"TEA",cid:"F84.0",data:"2023-11-20",medico:"Dra. Paula Meirelles",validade:"indefinida",obs:"Nível 1 de suporte. Recomendado reforço visual e rotina estruturada."},
-  ],
-  alertas: [
-    {id:1,tipo:"critical",titulo:"Risco Crítico — Lucas Ferreira",desc:"Queda de nota de 9.0 para 4.5 em 3 semanas. Frequência em 58%.",data:"2025-05-10 09:15",lido:false},
-    {id:2,tipo:"critical",titulo:"Comportamento Agressivo Relatado — Rafael Santos",desc:"Observação de professor registra comportamento agressivo. Frequência 45% e média 3.8.",data:"2025-05-09 14:22",lido:false},
-    {id:3,tipo:"medium",titulo:"5 Faltas Consecutivas — Ana Souza",desc:"Turma 6B sem justificativas. Média caindo para 6.2.",data:"2025-05-08 11:00",lido:false},
-    {id:5,tipo:"medium",titulo:"Observação Pedagógica — Mateus Carvalho",desc:"Tristeza e desmotivação relatadas. Recomendado acompanhamento.",data:"2025-05-06 09:45",lido:false},
-    {id:6,tipo:"low",titulo:"Queda Moderada — Gabriel Alves",desc:"Média caiu 1.0 ponto este bimestre.",data:"2025-05-05 13:00",lido:true},
-    {id:7,tipo:"low",titulo:"Frequência Abaixo de 75% — Ana Souza",desc:"Responsável notificado.",data:"2025-05-03 08:30",lido:true},
-  ],
-  freqData: {
-    "8A": [
-      {id:1,nome:"Lucas Ferreira",status:"absent"},
-      {id:8,nome:"Isabela Rocha",status:"present"},
-    ]
-  }
+  alunos: [],
+  professores: [],
+  turmas: [],
+  disciplinas: [],
+  notas: [],
+  observacoes: [],
+  encaminhamentos: [],
+  casos: [],
+  laudos: [],
+  freqData: {},
+  frequencia: [],
+  alertas: []
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -116,7 +45,7 @@ const viewPermissions = {
   turmas:'verTurmas', frequencia:'verFreq', avaliacoes:'verAvaliacoes', alertas:'verAlertas',
   encaminhamentos:'verEnc', casos:'verCasos', laudos:'verLaudos', relatorios:'verRel', lgpd:'verLGPD',
 };
-const DEMO_PARENT_STUDENT_ID = 1;
+let DEMO_PARENT_STUDENT_ID = null;
 
 // ═══════════════════════════════════════════════════════════
 // SUPABASE DATA LAYER
@@ -138,7 +67,7 @@ async function loadSupabaseData() {
   try {
     const [
       turmas, professores, professorTurmas, alunos, disciplinas,
-      notas, observacoes, encaminhamentos, casos, laudos, alertas
+      notas, observacoes, encaminhamentos, casos, laudos, alertas, frequencia
     ] = await Promise.all([
       fetchSupabaseTable('turmas'),
       fetchSupabaseTable('professores'),
@@ -150,7 +79,8 @@ async function loadSupabaseData() {
       fetchSupabaseTable('encaminhamentos'),
       fetchSupabaseTable('casos'),
       fetchSupabaseTable('laudos'),
-      fetchSupabaseTable('alertas')
+      fetchSupabaseTable('alertas'),
+      fetchSupabaseTable('frequencia')
     ]);
 
     if (!turmas) return;
@@ -160,7 +90,7 @@ async function loadSupabaseData() {
 
     DB.turmas = turmas.map(t => ({
       id: t.id, nome: t.nome, serie: t.serie, turno: t.turno,
-      sala: t.sala, alunos: t.qtd_alunos ?? 0
+      sala: t.sala, alunos: alunos.filter(a => a.turma_id === t.id).length
     }));
 
     DB.professores = professores.map(p => ({
@@ -220,11 +150,27 @@ async function loadSupabaseData() {
       data: a.data ? new Date(a.data).toLocaleDateString('pt-BR') : '',
       lido: Boolean(a.lido)
     }));
+    DB.frequencia = frequencia.map(f => ({
+      alunoId: f.aluno_id, turmaId: f.turma_id,
+      data: f.data, status: f.status
+    }));
+    DB.freqData = {};
+    for (const turma of DB.turmas) {
+      DB.freqData[turma.nome] = DB.alunos
+        .filter(a => a.turma === turma.nome)
+        .map(a => {
+          const registro = frequencia.find(f =>
+            f.aluno_id === a.id &&
+            document.getElementById('freqDataFim')?.value === f.data
+          );
+          return { id: a.id, nome: a.nome, status: registro?.status || 'present' };
+        });
+    }
 
     alunosFiltrados = [...getAlunosVisiveis()];
   } catch (error) {
     console.error('Erro ao carregar dados do Supabase:', error);
-    showToast('Não foi possível carregar os dados do Supabase. Verifique as políticas RLS.', 'danger');
+    showToast('Não foi possível carregar os dados do Supabase.', 'danger');
   } finally {
     supabaseLoading = false;
   }
@@ -236,6 +182,8 @@ async function loadSupabaseData() {
 let currentUser = { role:null, nome:'', profId:null, alunoId:null, turmas:[] };
 let chartsCreated = {};
 let alunosFiltrados = [];
+let editingAlunoId = null;
+let editingTurmaId = null;
 
 // ═══════════════════════════════════════════════════════════
 // HELPERS
@@ -308,6 +256,7 @@ function doLogin() {
     profId = pid;
     turmas = p ? [...p.turmas] : [];
   } else if(role === 'pais') {
+    DEMO_PARENT_STUDENT_ID = DB.alunos[0]?.id ?? null;
     const aid = DEMO_PARENT_STUDENT_ID;
     const a = DB.alunos.find(x => x.id === aid);
     if(!a) {
@@ -438,6 +387,15 @@ async function initApp() {
 // ═══════════════════════════════════════════════════════════
 function popularSelects() {
   const alunos = getAlunosVisiveis();
+
+  const loginProf = document.getElementById('loginProfId');
+  if(loginProf) {
+    loginProf.innerHTML = '<option value="">Selecione um professor</option>' +
+      DB.professores.map(p => {
+        const turmas = p.turmas.length ? ` (${p.turmas.join(' · ')})` : '';
+        return `<option value="${p.id}">${p.nome} — ${p.disciplina || 'Sem disciplina'}${turmas}</option>`;
+      }).join('');
+  }
 
   // Aluno nos modals
   ['n-aluno','o-aluno','enc-aluno','laud-aluno'].forEach(id => {
@@ -591,12 +549,19 @@ async function saveAluno() {
     freq: 100, media: 0, risco: 'normal',
     obs: document.getElementById('a-obs').value
   };
-  const { error } = await window.supabaseClient.from('alunos').insert(payload);
-  if(error){ console.error(error); showToast('Erro ao cadastrar aluno no Supabase.','danger'); return; }
+  let error;
+  const isEditing = Boolean(editingAlunoId);
+  if(editingAlunoId) {
+    ({ error } = await window.supabaseClient.from('alunos').update(payload).eq('id', editingAlunoId));
+  } else {
+    ({ error } = await window.supabaseClient.from('alunos').insert(payload));
+  }
+  if(error){ console.error(error); showToast('Erro ao salvar aluno no Supabase.','danger'); return; }
   await loadSupabaseData();
   alunosFiltrados = [...getAlunosVisiveis()];
+  editingAlunoId = null;
   closeModal('modal-aluno'); renderAlunos(); popularSelects();
-  showToast('Aluno '+ nome +' cadastrado!','success');
+  showToast(isEditing ? 'Aluno atualizado!' : 'Aluno '+ nome +' cadastrado!','success');
   ['a-nome','a-nasc','a-mat','a-resp','a-tel','a-obs'].forEach(id=>document.getElementById(id).value='');
 }
 async function deleteAluno(id) {
@@ -612,7 +577,10 @@ async function deleteAluno(id) {
 function editAluno(id) {
   if(!perm('editarAlunos')) { showToast('Sem permissão.','danger'); return; }
   const a = DB.alunos.find(x=>x.id===id); if(!a) return;
+  editingAlunoId = id;
   document.getElementById('a-nome').value = a.nome; document.getElementById('a-turma').value = a.turma;
+  document.getElementById('a-nasc').value = a.nasc || '';
+  document.getElementById('a-mat').value = a.mat || '';
   document.getElementById('a-resp').value = a.resp; document.getElementById('a-tel').value = a.tel;
   document.getElementById('a-obs').value = a.obs; openModal('modal-aluno');
 }
@@ -704,9 +672,7 @@ async function saveProfessor() {
 async function deleteProfessor(id) {
   if(!perm('editarProfs')) { showToast('Sem permissão.','danger'); return; }
   if(!window.supabaseClient) {
-    DB.professores.splice(DB.professores.findIndex(p=>p.id===id),1);
-    renderProfessores();
-    showToast('Professor removido.','warning');
+    showToast('Supabase não está conectado.','danger');
     return;
   }
   if(!confirm('Excluir este professor? Esta ação não pode ser desfeita.')) return;
@@ -819,9 +785,13 @@ function renderTurmas() {
     DB.turmas.map(t => {
       const color = 'blue';
       const discs = DB.disciplinas.filter(d=>d.nome && d.turma===t.nome).length;
-      return `<div class="card stat-card ${color}" style="cursor:pointer" onclick="showView('alunos');filterAlunosTurma('${t.nome}')">
+      return `<div class="card stat-card ${color}">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:800">${t.nome}</div>
+          <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:800;cursor:pointer" onclick="showView('alunos');filterAlunosTurma('${t.nome}')">${t.nome}</div>
+          ${perm('editarTurmas') ? `<div style="display:flex;gap:6px">
+            <button class="btn btn-ghost btn-sm" onclick="editTurma(${t.id})">Editar</button>
+            <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="deleteTurma(${t.id})">Excluir</button>
+          </div>` : ''}
         </div>
         <div style="font-size:12px;color:var(--text-muted)">${t.serie} · ${t.turno}</div>
         <div style="height:14px"></div>
@@ -841,10 +811,43 @@ async function saveTurma() {
     turno: document.getElementById('t-turno').value,
     sala: document.getElementById('t-sala').value, qtd_alunos: 0
   };
-  const { error } = await window.supabaseClient.from('turmas').insert(payload);
-  if(error){ console.error(error); showToast('Erro ao criar turma no Supabase.','danger'); return; }
+  let error;
+  if(editingTurmaId) {
+    ({ error } = await window.supabaseClient.from('turmas').update(payload).eq('id', editingTurmaId));
+  } else {
+    ({ error } = await window.supabaseClient.from('turmas').insert(payload));
+  }
+  if(error){ console.error(error); showToast('Erro ao salvar turma no Supabase.','danger'); return; }
   await loadSupabaseData();
-  closeModal('modal-turma'); renderTurmas(); showToast('Turma '+nome+' criada!','success');
+  closeModal('modal-turma');
+  editingTurmaId = null;
+  renderTurmas();
+  showToast('Turma '+nome+' salva!','success');
+}
+
+function editTurma(id) {
+  const turma = DB.turmas.find(t => t.id === id);
+  if(!turma) return;
+  editingTurmaId = id;
+  document.getElementById('t-nome').value = turma.nome;
+  document.getElementById('t-serie').value = turma.serie || '6º Ano';
+  document.getElementById('t-turno').value = turma.turno || 'Matutino';
+  document.getElementById('t-sala').value = turma.sala || '';
+  openModal('modal-turma');
+}
+
+async function deleteTurma(id) {
+  if(!requirePermission('editarTurmas')) return;
+  if(!confirm('Excluir esta turma?')) return;
+  const { error } = await window.supabaseClient.from('turmas').delete().eq('id', id);
+  if(error){
+    console.error(error);
+    showToast('Não foi possível excluir: remova primeiro os registros vinculados a esta turma.','danger');
+    return;
+  }
+  await loadSupabaseData();
+  renderTurmas();
+  showToast('Turma removida!','warning');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -946,8 +949,35 @@ function createFreqChart() {
   if(chartsCreated.freqChart){ chartsCreated.freqChart.destroy(); delete chartsCreated.freqChart; }
   chartsCreated.freqChart = new Chart(ctx,{type:'bar',data:{labels:['Sem 1','Sem 2','Sem 3','Sem 4'],datasets:[{label:'Presença %',data:[92,88,85,87],backgroundColor:'rgba(16,185,129,0.7)',borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{min:70,max:100,grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false}}}}});
 }
-function saveFrequencia() {
+async function saveFrequencia() {
   if(!requirePermission('editarFreq')) return;
+  const turmaNome = document.getElementById('freqTurma')?.value;
+  const turma = DB.turmas.find(t => t.nome === turmaNome);
+  const data = document.getElementById('freqDataFim')?.value;
+  if(!turma || !data) {
+    showToast('Selecione uma turma e uma data.','danger');
+    return;
+  }
+  const registros = (DB.freqData[turmaNome] || []).map(item => ({
+    aluno_id: item.id,
+    turma_id: turma.id,
+    data,
+    status: item.status
+  }));
+  if(!registros.length) {
+    showToast('Nenhum aluno nesta turma.','warning');
+    return;
+  }
+  const { error } = await window.supabaseClient
+    .from('frequencia')
+    .upsert(registros, { onConflict: 'aluno_id,data' });
+  if(error){
+    console.error(error);
+    showToast('Erro ao salvar frequência no Supabase.','danger');
+    return;
+  }
+  await loadSupabaseData();
+  renderFrequencia();
   showToast('Frequência salva com sucesso!','success');
 }
 
@@ -1096,7 +1126,18 @@ async function saveNota() {
   const novaMedia = +((aluno.media+nota)/2).toFixed(1);
   await window.supabaseClient.from('alunos').update({ media: novaMedia }).eq('id', alunoId);
   await loadSupabaseData();
-  if(novaVar<-2.5){ DB.alertas.unshift({id:Date.now(),tipo:'critical',titulo:' Queda Detectada — '+aluno.nome,desc:`Nota ${nota} registrada. Queda de ${Math.abs(novaVar).toFixed(1)} pontos.`,data:new Date().toLocaleDateString('pt-BR'),lido:false}); document.getElementById('badge-alertas').textContent=DB.alertas.filter(a=>!a.lido).length; showToast(' Queda significativa detectada para '+aluno.nome,'danger'); }
+  if(novaVar<-2.5){
+    await window.supabaseClient.from('alertas').insert({
+      tipo:'critical',
+      titulo:'Queda Detectada — '+aluno.nome,
+      descr:`Nota ${nota} registrada. Queda de ${Math.abs(novaVar).toFixed(1)} pontos.`,
+      data:new Date().toISOString(),
+      lido:false
+    });
+    await loadSupabaseData();
+    document.getElementById('badge-alertas').textContent=DB.alertas.filter(a=>!a.lido).length;
+    showToast(' Queda significativa detectada para '+aluno.nome,'danger');
+  }
   closeModal('modal-nota'); renderAvaliacoesAluno(); showToast('Nota lançada!','success');
 }
 
@@ -1265,15 +1306,6 @@ function renderCasos() {
   const busca  = (document.getElementById('casosBusca')?.value||'').toLowerCase();
   const status = document.getElementById('casosStatusFiltro')?.value||'';
   const el     = document.getElementById('casosList'); if(!el) return;
-
-  // Montar lista: todos alunos em risco + alunos com caso registrado
-  const alunosEmRisco = DB.alunos.filter(a => a.risco !== 'normal');
-  // Garantir que todos tenham um caso (criar vazio se não existir)
-  alunosEmRisco.forEach(a => {
-    if(!DB.casos.find(c=>c.alunoId===a.id)){
-      DB.casos.push({id:DB.casos.length+1,alunoId:a.id,meta:'',est:'',prazo:'',status:'ativo',progresso:0,resp:'',updatedAt:''});
-    }
-  });
 
   let lista = DB.casos.filter(c => {
     const a = DB.alunos.find(x=>x.id===c.alunoId); if(!a) return false;
@@ -1526,6 +1558,12 @@ function renderLGPD() {
 // MODAL UTILS
 // ═══════════════════════════════════════════════════════════
 function openModal(id) {
+  if(id === 'modal-turma' && !editingTurmaId) {
+    ['t-nome','t-sala'].forEach(field => {
+      const el = document.getElementById(field);
+      if(el) el.value = '';
+    });
+  }
   const modalPermissions = {
     'modal-aluno':'editarAlunos', 'modal-professor':'editarProfs', 'modal-nota':'editarNotas',
     'modal-observacao':'editarObservacoes', 'modal-encaminhamento':'editarEnc',
@@ -1542,7 +1580,11 @@ function openModal(id) {
   }
   modal.classList.add('open');
 }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModal(id) {
+  document.getElementById(id)?.classList.remove('open');
+  if(id === 'modal-turma') editingTurmaId = null;
+  if(id === 'modal-aluno') editingAlunoId = null;
+}
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
 });
@@ -1574,4 +1616,5 @@ function showToast(msg, type='success') {
 // ═══════════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('n-data').valueAsDate = new Date();
+  loadSupabaseData().then(() => popularSelects());
 });

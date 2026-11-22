@@ -1,5 +1,5 @@
-window.SUPABASE_URL = 'https://cjeswtssbtgljutswzkw.supabase.co';
-window.SUPABASE_ANON_KEY = 'sb_publishable_y4kUdPu-5acwqO10us7bOQ_54FV9iZx';
+window.SUPABASE_URL = 'https://caqlefawaeevvozhdxgc.supabase.co';
+window.SUPABASE_ANON_KEY = 'sb_publishable_5WyjbWQGDHYN0Wy2lID6lA_iznlcGbG';
 
 window.supabaseClient = null;
 
