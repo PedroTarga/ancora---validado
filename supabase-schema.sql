@@ -1,5 +1,3 @@
--- Banco mínimo do Âncora para Supabase
--- Executar no SQL Editor recria apenas o banco usado pelo sistema.
 
 DROP TABLE IF EXISTS frequencia;
 DROP TABLE IF EXISTS alertas;
