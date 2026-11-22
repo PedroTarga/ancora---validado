@@ -123,6 +123,9 @@ O projeto usa o Supabase como fonte de dados. A configuração publica está em 
 2. Execute `supabase-policies.sql` para permitir o acesso do cliente demonstração.
 3. Sirva o projeto por HTTP (`python -m http.server 8000`) e recarregue a página.
 
+`supabase-cascade.sql` é opcional. A exclusão de professores já é feita pelo sistema,
+desvinculando antes o professor das disciplinas e turmas.
+
 **Importante:** as políticas de `supabase-policies.sql` permitem acesso público a todos os registros e operações para fins exclusivamente demonstrativos. Dados reais exigem Supabase Auth, tabelas de perfis/vínculos e políticas RLS por usuário. Nunca utilize a chave `service_role` no navegador.
 
 ## Licença

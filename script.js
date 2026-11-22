@@ -703,6 +703,34 @@ async function saveProfessor() {
 }
 async function deleteProfessor(id) {
   if(!perm('editarProfs')) { showToast('Sem permissão.','danger'); return; }
+  if(!window.supabaseClient) {
+    DB.professores.splice(DB.professores.findIndex(p=>p.id===id),1);
+    renderProfessores();
+    showToast('Professor removido.','warning');
+    return;
+  }
+  if(!confirm('Excluir este professor? Esta ação não pode ser desfeita.')) return;
+
+  const unlinkDisc = await window.supabaseClient
+    .from('disciplinas')
+    .update({ professor_id: null })
+    .eq('professor_id', id);
+  if(unlinkDisc.error){
+    console.error(unlinkDisc.error);
+    showToast('Erro ao desvincular disciplinas do professor.','danger');
+    return;
+  }
+
+  const unlinkTurmas = await window.supabaseClient
+    .from('professor_turmas')
+    .delete()
+    .eq('professor_id', id);
+  if(unlinkTurmas.error){
+    console.error(unlinkTurmas.error);
+    showToast('Erro ao desvincular turmas do professor.','danger');
+    return;
+  }
+
   const { error } = await window.supabaseClient.from('professores').delete().eq('id', id);
   if(error){ console.error(error); showToast('Erro ao remover professor no Supabase.','danger'); return; }
   await loadSupabaseData();
