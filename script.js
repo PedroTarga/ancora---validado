@@ -119,6 +119,118 @@ const viewPermissions = {
 const DEMO_PARENT_STUDENT_ID = 1;
 
 // ═══════════════════════════════════════════════════════════
+// SUPABASE DATA LAYER
+// ═══════════════════════════════════════════════════════════
+let supabaseLoading = false;
+
+async function fetchSupabaseTable(table) {
+  if (!window.supabaseClient) return null;
+  const { data, error } = await window.supabaseClient
+    .from(table)
+    .select('*');
+  if (error) throw error;
+  return data || [];
+}
+
+async function loadSupabaseData() {
+  if (!window.supabaseClient || supabaseLoading) return;
+  supabaseLoading = true;
+  try {
+    const [
+      turmas, professores, professorTurmas, alunos, disciplinas,
+      notas, observacoes, encaminhamentos, casos, laudos, alertas
+    ] = await Promise.all([
+      fetchSupabaseTable('turmas'),
+      fetchSupabaseTable('professores'),
+      fetchSupabaseTable('professor_turmas'),
+      fetchSupabaseTable('alunos'),
+      fetchSupabaseTable('disciplinas'),
+      fetchSupabaseTable('notas'),
+      fetchSupabaseTable('observacoes'),
+      fetchSupabaseTable('encaminhamentos'),
+      fetchSupabaseTable('casos'),
+      fetchSupabaseTable('laudos'),
+      fetchSupabaseTable('alertas')
+    ]);
+
+    if (!turmas) return;
+    const turmaById = new Map(turmas.map(t => [t.id, t.nome]));
+    const professorById = new Map(professores.map(p => [p.id, p.nome]));
+    const alunoById = new Map(alunos.map(a => [a.id, a.nome]));
+
+    DB.turmas = turmas.map(t => ({
+      id: t.id, nome: t.nome, serie: t.serie, turno: t.turno,
+      sala: t.sala, alunos: t.qtd_alunos ?? 0
+    }));
+
+    DB.professores = professores.map(p => ({
+      id: p.id, nome: p.nome, disciplina: p.disciplina,
+      email: p.email, reg: p.reg, ultimo: p.ultimo,
+      turmas: professorTurmas
+        .filter(pt => pt.professor_id === p.id)
+        .map(pt => turmaById.get(pt.turma_id))
+        .filter(Boolean)
+    }));
+
+    DB.alunos = alunos.map(a => ({
+      id: a.id, nome: a.nome, turma: turmaById.get(a.turma_id) || '',
+      mat: a.mat, nasc: a.nasc, resp: a.resp, tel: a.tel,
+      freq: Number(a.freq ?? 100), media: Number(a.media ?? 0),
+      risco: a.risco || 'normal', obs: a.obs || ''
+    }));
+
+    DB.disciplinas = disciplinas.map(d => ({
+      id: d.id, nome: d.nome, turma: turmaById.get(d.turma_id) || '',
+      profId: d.professor_id, ch: d.ch, ano: String(d.ano ?? ''),
+      area: d.area || ''
+    }));
+
+    DB.notas = notas.map(n => ({
+      id: n.id, alunoId: n.aluno_id, aluno: alunoById.get(n.aluno_id) || '',
+      turma: turmaById.get(alunos.find(a => a.id === n.aluno_id)?.turma_id) || '',
+      disciplina: n.disciplina, tipo: n.tipo, nota: Number(n.nota),
+      bim: n.bim, data: n.data, var: Number(n.variacao ?? 0)
+    }));
+
+    DB.observacoes = observacoes.map(o => ({
+      id: o.id, alunoId: o.aluno_id, aluno: alunoById.get(o.aluno_id) || '',
+      texto: o.texto, prio: o.prio, data: o.data,
+      prof: professorById.get(o.professor_id) || ''
+    }));
+
+    DB.encaminhamentos = encaminhamentos.map(e => ({
+      id: e.id, alunoId: e.aluno_id, aluno: alunoById.get(e.aluno_id) || '',
+      tipo: e.tipo, urgencia: e.urgencia, resp: e.resp,
+      just: e.just, data: e.data, status: e.status
+    }));
+
+    DB.casos = casos.map(c => ({
+      id: c.id, alunoId: c.aluno_id, meta: c.meta, est: c.est,
+      prazo: c.prazo, status: c.status, progresso: c.progresso,
+      resp: c.resp, updatedAt: c.updated_at
+    }));
+
+    DB.laudos = laudos.map(l => ({
+      id: l.id, alunoId: l.aluno_id, tipo: l.tipo, cid: l.cid,
+      data: l.data, medico: l.medico, validade: l.validade, obs: l.obs
+    }));
+
+    DB.alertas = alertas.map(a => ({
+      id: a.id, tipo: a.tipo, titulo: a.titulo, desc: a.descr,
+      data: a.data ? new Date(a.data).toLocaleDateString('pt-BR') : '',
+      lido: Boolean(a.lido)
+    }));
+
+    alunosFiltrados = [...getAlunosVisiveis()];
+  } catch (error) {
+    console.error('Erro ao carregar dados do Supabase:', error);
+    showToast('Não foi possível carregar os dados do Supabase. Verifique as políticas RLS.', 'danger');
+  } finally {
+    supabaseLoading = false;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
 // ESTADO GLOBAL
 // ═══════════════════════════════════════════════════════════
 let currentUser = { role:null, nome:'', profId:null, alunoId:null, turmas:[] };
@@ -308,7 +420,8 @@ function renderView(view) {
   }
 }
 
-function initApp() {
+async function initApp() {
+  await loadSupabaseData();
   // Preencher datas padrão
   const hoje = new Date().toISOString().slice(0,10);
   const semAnt = new Date(Date.now()-7*864e5).toISOString().slice(0,10);
@@ -462,25 +575,39 @@ function filterAlunosRisco(risco) {
   renderAlunos();
 }
 
-function saveAluno() {
+async function saveAluno() {
   if(!perm('editarAlunos')) { showToast('Sem permissão.','danger'); return; }
   const nome = document.getElementById('a-nome').value.trim();
   if(!nome) { showToast('Nome é obrigatório!','danger'); return; }
-  DB.alunos.push({ id:DB.alunos.length+1, nome, turma:document.getElementById('a-turma').value,
-    mat:'2025'+String(DB.alunos.length+1).padStart(3,'0'),
-    nasc:document.getElementById('a-nasc').value, resp:document.getElementById('a-resp').value,
-    tel:document.getElementById('a-tel').value, freq:100, media:0, risco:'normal',
-    obs:document.getElementById('a-obs').value });
+  const turmaNome = document.getElementById('a-turma').value;
+  const turma = DB.turmas.find(t => t.nome === turmaNome);
+  if(!turma) { showToast('Turma não encontrada.','danger'); return; }
+  const payload = {
+    nome, turma_id: turma.id,
+    mat: document.getElementById('a-mat').value.trim() || ('2025'+String(DB.alunos.length+1).padStart(3,'0')),
+    nasc: document.getElementById('a-nasc').value || null,
+    resp: document.getElementById('a-resp').value,
+    tel: document.getElementById('a-tel').value,
+    freq: 100, media: 0, risco: 'normal',
+    obs: document.getElementById('a-obs').value
+  };
+  const { error } = await window.supabaseClient.from('alunos').insert(payload);
+  if(error){ console.error(error); showToast('Erro ao cadastrar aluno no Supabase.','danger'); return; }
+  await loadSupabaseData();
   alunosFiltrados = [...getAlunosVisiveis()];
   closeModal('modal-aluno'); renderAlunos(); popularSelects();
   showToast('Aluno '+ nome +' cadastrado!','success');
-  ['a-nome','a-nasc','a-resp','a-tel','a-obs'].forEach(id=>document.getElementById(id).value='');
+  ['a-nome','a-nasc','a-mat','a-resp','a-tel','a-obs'].forEach(id=>document.getElementById(id).value='');
 }
-function deleteAluno(id) {
+async function deleteAluno(id) {
   if(!perm('editarAlunos')) { showToast('Sem permissão.','danger'); return; }
   if(!confirm('Excluir este aluno? Esta ação não pode ser desfeita.')) return;
-  const idx = DB.alunos.findIndex(a=>a.id===id);
-  if(idx>-1){ DB.alunos.splice(idx,1); alunosFiltrados=[...getAlunosVisiveis()]; renderAlunos(); showToast('Aluno removido.','warning'); }
+  const { error } = await window.supabaseClient.from('alunos').delete().eq('id', id);
+  if(error){ console.error(error); showToast('Erro ao remover aluno no Supabase.','danger'); return; }
+  await loadSupabaseData();
+  alunosFiltrados=[...getAlunosVisiveis()];
+  renderAlunos();
+  showToast('Aluno removido.','warning');
 }
 function editAluno(id) {
   if(!perm('editarAlunos')) { showToast('Sem permissão.','danger'); return; }
@@ -559,17 +686,26 @@ function renderProfessores() {
   if(btnNovoProfEl) btnNovoProfEl.style.display = canEdit ? '' : 'none';
 }
 
-function saveProfessor() {
+async function saveProfessor() {
   if(!perm('editarProfs')) { showToast('Sem permissão.','danger'); return; }
   const nome = document.getElementById('p-nome').value.trim();
   if(!nome) { showToast('Nome é obrigatório!','danger'); return; }
-  DB.professores.push({id:DB.professores.length+1,nome,disciplina:document.getElementById('p-disc').value,email:document.getElementById('p-email').value,reg:document.getElementById('p-reg').value,turmas:[],ultimo:'Hoje'});
+  const payload = {
+    nome, disciplina: document.getElementById('p-disc').value,
+    email: document.getElementById('p-email').value,
+    reg: document.getElementById('p-reg').value, ultimo: 'Hoje'
+  };
+  const { error } = await window.supabaseClient.from('professores').insert(payload);
+  if(error){ console.error(error); showToast('Erro ao cadastrar professor no Supabase.','danger'); return; }
+  await loadSupabaseData();
   closeModal('modal-professor'); renderProfessores(); popularSelects();
   showToast('Professor '+nome+' cadastrado!','success');
 }
-function deleteProfessor(id) {
+async function deleteProfessor(id) {
   if(!perm('editarProfs')) { showToast('Sem permissão.','danger'); return; }
-  DB.professores.splice(DB.professores.findIndex(p=>p.id===id),1);
+  const { error } = await window.supabaseClient.from('professores').delete().eq('id', id);
+  if(error){ console.error(error); showToast('Erro ao remover professor no Supabase.','danger'); return; }
+  await loadSupabaseData();
   renderProfessores(); showToast('Professor removido.','warning');
 }
 
@@ -611,18 +747,22 @@ function renderDisciplinas() {
     </div>`).join('');
 }
 
-function saveDisciplina() {
+async function saveDisciplina() {
   if(!perm('editarDisc')) { showToast('Sem permissão.','danger'); return; }
   const nome = document.getElementById('disc-nome').value.trim();
   if(!nome) { showToast('Nome da disciplina é obrigatório!','danger'); return; }
-  DB.disciplinas.push({
-    id: DB.disciplinas.length+1, nome,
-    turma: document.getElementById('disc-turma').value,
-    profId: parseInt(document.getElementById('disc-prof').value)||null,
+  const turma = DB.turmas.find(t => t.nome === document.getElementById('disc-turma').value);
+  if(!turma){ showToast('Turma não encontrada.','danger'); return; }
+  const payload = {
+    nome, turma_id: turma.id,
+    professor_id: parseInt(document.getElementById('disc-prof').value)||null,
     ch: parseInt(document.getElementById('disc-ch').value)||1,
-    ano: document.getElementById('disc-ano').value||'2025',
-    area: document.getElementById('disc-area').value,
-  });
+    ano: parseInt(document.getElementById('disc-ano').value)||2025,
+    area: document.getElementById('disc-area').value
+  };
+  const { error } = await window.supabaseClient.from('disciplinas').insert(payload);
+  if(error){ console.error(error); showToast('Erro ao cadastrar disciplina no Supabase.','danger'); return; }
+  await loadSupabaseData();
   closeModal('modal-disciplina');
   // Atualizar selects de disciplina
   popularSelects();
@@ -630,11 +770,15 @@ function saveDisciplina() {
   showToast('Disciplina '+nome+' cadastrada!','success');
   ['disc-nome','disc-ch','disc-ano'].forEach(id=>document.getElementById(id).value='');
 }
-function deleteDisciplina(id) {
+async function deleteDisciplina(id) {
   if(!requirePermission('editarDisc')) return;
   if(!confirm('Remover esta disciplina?')) return;
-  const idx = DB.disciplinas.findIndex(d=>d.id===id);
-  if(idx>-1){ DB.disciplinas.splice(idx,1); renderDisciplinas(); popularSelects(); showToast('Disciplina removida.','warning'); }
+  const { error } = await window.supabaseClient.from('disciplinas').delete().eq('id', id);
+  if(error){ console.error(error); showToast('Erro ao remover disciplina no Supabase.','danger'); return; }
+  await loadSupabaseData();
+  renderDisciplinas();
+  popularSelects();
+  showToast('Disciplina removida.','warning');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -660,11 +804,18 @@ function renderTurmas() {
     }).join('')
   }</div>`;
 }
-function saveTurma() {
+async function saveTurma() {
   if(!requirePermission('editarTurmas')) return;
   const nome = document.getElementById('t-nome').value.trim();
   if(!nome){ showToast('Nome é obrigatório!','danger'); return; }
-  DB.turmas.push({id:DB.turmas.length+1,nome,serie:document.getElementById('t-serie').value,turno:document.getElementById('t-turno').value,sala:document.getElementById('t-sala').value,alunos:0});
+  const payload = {
+    nome, serie: document.getElementById('t-serie').value,
+    turno: document.getElementById('t-turno').value,
+    sala: document.getElementById('t-sala').value, qtd_alunos: 0
+  };
+  const { error } = await window.supabaseClient.from('turmas').insert(payload);
+  if(error){ console.error(error); showToast('Erro ao criar turma no Supabase.','danger'); return; }
+  await loadSupabaseData();
   closeModal('modal-turma'); renderTurmas(); showToast('Turma '+nome+' criada!','success');
 }
 
@@ -893,7 +1044,7 @@ function renderObservacoes() {
     </div>`).join('') || '<div class="empty-state"><div class="empty-state-icon"></div><p>Nenhuma observação registrada.</p></div>';
 }
 
-function saveNota() {
+async function saveNota() {
   if(!requirePermission('editarNotas')) return;
   const alunoId = parseInt(document.getElementById('n-aluno').value);
   const aluno   = DB.alunos.find(a=>a.id===alunoId);
@@ -904,19 +1055,38 @@ function saveNota() {
     return;
   }
   const novaVar = nota - aluno.media;
-  DB.notas.unshift({id:DB.notas.length+1,alunoId,aluno:aluno.nome,turma:aluno.turma,disciplina:document.getElementById('n-disc').value,tipo:document.getElementById('n-tipo').value,nota,bim:document.getElementById('n-bim').value,data:document.getElementById('n-data').value,var:+novaVar.toFixed(1)});
-  aluno.media = +((aluno.media+nota)/2).toFixed(1);
+  const payload = {
+    aluno_id: alunoId,
+    disciplina: document.getElementById('n-disc').value,
+    tipo: document.getElementById('n-tipo').value,
+    nota, bim: document.getElementById('n-bim').value,
+    data: document.getElementById('n-data').value,
+    variacao: +novaVar.toFixed(1)
+  };
+  const { error } = await window.supabaseClient.from('notas').insert(payload);
+  if(error){ console.error(error); showToast('Erro ao lançar nota no Supabase.','danger'); return; }
+  const novaMedia = +((aluno.media+nota)/2).toFixed(1);
+  await window.supabaseClient.from('alunos').update({ media: novaMedia }).eq('id', alunoId);
+  await loadSupabaseData();
   if(novaVar<-2.5){ DB.alertas.unshift({id:Date.now(),tipo:'critical',titulo:' Queda Detectada — '+aluno.nome,desc:`Nota ${nota} registrada. Queda de ${Math.abs(novaVar).toFixed(1)} pontos.`,data:new Date().toLocaleDateString('pt-BR'),lido:false}); document.getElementById('badge-alertas').textContent=DB.alertas.filter(a=>!a.lido).length; showToast(' Queda significativa detectada para '+aluno.nome,'danger'); }
   closeModal('modal-nota'); renderAvaliacoesAluno(); showToast('Nota lançada!','success');
 }
 
-function saveObservacao() {
+async function saveObservacao() {
   if(!requirePermission('editarObservacoes')) return;
   const alunoId = parseInt(document.getElementById('o-aluno').value);
   const aluno   = DB.alunos.find(a=>a.id===alunoId);
   const texto   = document.getElementById('o-texto').value.trim();
   if(!aluno || !canAccessStudent(alunoId) || !texto){ showToast('Selecione um aluno autorizado e preencha a observação.','danger'); return; }
-  DB.observacoes.unshift({id:DB.observacoes.length+1,alunoId,aluno:aluno.nome,texto,prio:document.getElementById('o-prio').value,data:new Date().toLocaleDateString('pt-BR'),prof:currentUser.nome});
+  const payload = {
+    aluno_id: alunoId,
+    professor_id: currentUser.profId || null,
+    texto, prio: document.getElementById('o-prio').value,
+    data: new Date().toISOString().slice(0,10)
+  };
+  const { error } = await window.supabaseClient.from('observacoes').insert(payload);
+  if(error){ console.error(error); showToast('Erro ao salvar observação no Supabase.','danger'); return; }
+  await loadSupabaseData();
   closeModal('modal-observacao'); renderObservacoes(); showToast('Observação salva!','success');
   document.getElementById('o-texto').value='';
 }
@@ -1033,19 +1203,29 @@ function renderEncaminhamentos() {
     </div>`).join('') || '<div class="empty-state"><div class="empty-state-icon"></div><p>Nenhum encaminhamento encontrado.</p></div>';
 }
 
-function saveEncaminhamento() {
+async function saveEncaminhamento() {
   if(!requirePermission('editarEnc')) return;
   const alunoId = parseInt(document.getElementById('enc-aluno').value);
   const aluno   = DB.alunos.find(a=>a.id===alunoId);
   const just    = document.getElementById('enc-just').value.trim();
   if(!aluno || !canAccessStudent(alunoId) || !just){ showToast('Selecione um aluno autorizado e preencha os campos.','danger'); return; }
-  DB.encaminhamentos.unshift({id:DB.encaminhamentos.length+1,alunoId,aluno:aluno.nome,tipo:document.getElementById('enc-tipo').value,urgencia:document.getElementById('enc-urg').value,resp:document.getElementById('enc-resp').value,just,data:new Date().toLocaleDateString('pt-BR'),status:'Pendente'});
+  const payload = {
+    aluno_id: alunoId, tipo: document.getElementById('enc-tipo').value,
+    urgencia: document.getElementById('enc-urg').value,
+    resp: document.getElementById('enc-resp').value,
+    just, data: new Date().toISOString().slice(0,10), status: 'Pendente'
+  };
+  const { error } = await window.supabaseClient.from('encaminhamentos').insert(payload);
+  if(error){ console.error(error); showToast('Erro ao registrar encaminhamento no Supabase.','danger'); return; }
+  await loadSupabaseData();
   closeModal('modal-encaminhamento'); renderEncaminhamentos(); showToast('Encaminhamento registrado!','success');
 }
 
-function encerrarEncaminhamento(id) {
+async function encerrarEncaminhamento(id) {
   if(!requirePermission('editarEnc')) return;
-  const e = DB.encaminhamentos.find(x=>x.id===id); if(e) e.status='Encerrado';
+  const { error } = await window.supabaseClient.from('encaminhamentos').update({ status: 'Encerrado' }).eq('id', id);
+  if(error){ console.error(error); showToast('Erro ao encerrar encaminhamento no Supabase.','danger'); return; }
+  await loadSupabaseData();
   renderEncaminhamentos(); showToast('Encaminhamento encerrado.','success');
 }
 
@@ -1134,7 +1314,7 @@ function abrirCasoPlano(alunoId) {
   openModal('modal-caso-plano');
 }
 
-function saveCasoPlano() {
+async function saveCasoPlano() {
   if(!requirePermission('editarCasos')) return;
   const alunoId = parseInt(document.getElementById('caso-alunoId').value);
   if(!canAccessStudent(alunoId)) {
@@ -1152,8 +1332,22 @@ function saveCasoPlano() {
     status: document.getElementById('caso-status').value,
     updatedAt: new Date().toLocaleDateString('pt-BR'),
   };
-  if(caso) Object.assign(caso, dados);
-  else DB.casos.push({id:DB.casos.length+1, alunoId, ...dados});
+  if(caso) {
+    const { error } = await window.supabaseClient.from('casos').update({
+      meta:dados.meta, est:dados.est, prazo:dados.prazo||null,
+      resp:dados.resp, progresso:dados.progresso, status:dados.status,
+      updated_at: new Date().toISOString().slice(0,10)
+    }).eq('id', caso.id);
+    if(error){ console.error(error); showToast('Erro ao salvar plano no Supabase.','danger'); return; }
+  } else {
+    const { error } = await window.supabaseClient.from('casos').insert({
+      aluno_id:alunoId, meta:dados.meta, est:dados.est, prazo:dados.prazo||null,
+      resp:dados.resp, progresso:dados.progresso, status:dados.status,
+      updated_at:new Date().toISOString().slice(0,10)
+    });
+    if(error){ console.error(error); showToast('Erro ao criar plano no Supabase.','danger'); return; }
+  }
+  await loadSupabaseData();
   closeModal('modal-caso-plano'); renderCasos();
   showToast('Plano de ação salvo!','success');
 }
@@ -1185,26 +1379,33 @@ function renderLaudos() {
   }).join('') : '<div class="empty-state"><div class="empty-state-icon"></div><p>Nenhum laudo encontrado.</p></div>';
 }
 
-function saveLaudo() {
+async function saveLaudo() {
   if(!perm('editarLaudos')){ showToast('Sem permissão.','danger'); return; }
   const alunoId = parseInt(document.getElementById('laud-aluno').value);
   if(!alunoId){ showToast('Selecione um aluno!','danger'); return; }
-  DB.laudos.push({
-    id: DB.laudos.length+1, alunoId,
+  const payload = {
+    aluno_id: alunoId,
     tipo:     document.getElementById('laud-tipo').value,
     cid:      document.getElementById('laud-cid').value,
     data:     document.getElementById('laud-data').value,
     medico:   document.getElementById('laud-medico').value,
     validade: document.getElementById('laud-validade').value,
     obs:      document.getElementById('laud-obs').value,
-  });
+  };
+  const { error } = await window.supabaseClient.from('laudos').insert(payload);
+  if(error){ console.error(error); showToast('Erro ao registrar laudo no Supabase.','danger'); return; }
+  await loadSupabaseData();
   closeModal('modal-laudo'); renderLaudos(); showToast('Laudo registrado com sucesso!','success');
   ['laud-cid','laud-medico','laud-obs'].forEach(id=>document.getElementById(id).value='');
 }
-function deleteLaudo(id){
+async function deleteLaudo(id){
   if(!requirePermission('editarLaudos')) return;
   if(!confirm('Remover este laudo? Ação irreversível.')) return;
-  const i = DB.laudos.findIndex(l=>l.id===id); if(i>-1){ DB.laudos.splice(i,1); renderLaudos(); showToast('Laudo removido.','warning'); }
+  const { error } = await window.supabaseClient.from('laudos').delete().eq('id', id);
+  if(error){ console.error(error); showToast('Erro ao remover laudo no Supabase.','danger'); return; }
+  await loadSupabaseData();
+  renderLaudos();
+  showToast('Laudo removido.','warning');
 }
 
 // ═══════════════════════════════════════════════════════════

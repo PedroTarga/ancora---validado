@@ -115,6 +115,16 @@ Este projeto não implementa autenticação, autorização confiável, criptogra
 
 Este projeto foi desenvolvido como uma aplicação estática de demonstração, voltada para apresentação de fluxo de gestão escolar e prototipagem de interface.
 
+## Integração com Supabase
+
+O projeto usa o Supabase como fonte de dados. A configuração publica está em `supabase-config.js`.
+
+1. Execute o código SQL do anexo no SQL Editor do Supabase.
+2. Execute `supabase-policies.sql` para permitir o acesso do cliente demonstração.
+3. Sirva o projeto por HTTP (`python -m http.server 8000`) e recarregue a página.
+
+**Importante:** as políticas de `supabase-policies.sql` permitem acesso público a todos os registros e operações para fins exclusivamente demonstrativos. Dados reais exigem Supabase Auth, tabelas de perfis/vínculos e políticas RLS por usuário. Nunca utilize a chave `service_role` no navegador.
+
 ## Licença
 
 Este projeto está disponível para uso acadêmico e demonstrativo.
