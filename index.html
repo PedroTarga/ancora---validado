@@ -29,6 +29,19 @@
     </div>
     <div class="login-tagline">Sistema de Monitoramento e Proteção Escolar</div>
     <form onsubmit="doLogin(event)">
+      <label class="login-label" for="loginRole">Função</label>
+      <select class="login-input" id="loginRole" onchange="onLoginRoleChange(this.value)">
+        <option value="gestor">Gestor / Coordenador — gestão geral</option>
+        <option value="professor">Professor — turmas atribuídas</option>
+        <option value="psicologo">Profissional de Apoio / Psicólogo — casos e laudos</option>
+        <option value="pais">Responsável / Pais — avaliações e frequência</option>
+      </select>
+      <div id="login-prof-row" style="display:none">
+        <label class="login-label" for="loginProfId">Professor</label>
+        <select class="login-input" id="loginProfId">
+          <option value="">Selecione um professor</option>
+        </select>
+      </div>
       <label class="login-label" for="loginUsername">Login</label>
       <input class="login-input" id="loginUsername" type="text" placeholder="Digite seu login" autocomplete="username">
       <label class="login-label" for="loginPassword">Senha</label>

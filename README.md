@@ -77,7 +77,7 @@ O site é estático e não requer etapa de compilação. Se a publicação não 
 
 ## Acesso de demonstração
 
-A tela aceita qualquer valor nos campos de login e senha, inclusive campos vazios. O acesso sempre abre a aplicação como Gestor / Coordenador; não há validação de credenciais.
+A tela permite selecionar uma função — Gestor / Coordenador, Professor, Profissional de Apoio / Psicólogo ou Responsável / Pais — e aceita qualquer valor nos campos de login e senha, inclusive campos vazios. Para o perfil de Professor, selecione também um professor. Não há validação de credenciais.
 
 As verificações de acesso são executadas no navegador e podem ser alteradas por quem controla a página. Os dados estão incluídos no JavaScript do cliente; portanto, não insira dados reais, pessoais ou sensíveis.
 

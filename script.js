@@ -236,11 +236,38 @@ function canRecordGrade(alunoId, disciplina) {
 // ═══════════════════════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════════════════════
+function onLoginRoleChange(role) {
+  document.getElementById('login-prof-row').style.display = role === 'professor' ? 'block' : 'none';
+}
+
 function doLogin(event) {
   event.preventDefault();
-  const role = 'gestor';
+  const role = document.getElementById('loginRole').value;
+  if(!Object.prototype.hasOwnProperty.call(RBAC, role)) {
+    showToast('Selecione uma função válida.','danger');
+    return;
+  }
   chartsCreated = {};
   let nome = 'Ana Coordenadora', profId = null, alunoId = null, turmas = [];
+
+  if(role === 'professor') {
+    const pid = parseInt(document.getElementById('loginProfId').value);
+    const professor = DB.professores.find(item => item.id === pid);
+    nome = professor ? professor.nome : 'Professor';
+    profId = professor ? professor.id : null;
+    turmas = professor ? [...professor.turmas] : [];
+  } else if(role === 'pais') {
+    DEMO_PARENT_STUDENT_ID = DB.alunos[0]?.id ?? null;
+    const aluno = DB.alunos.find(item => item.id === DEMO_PARENT_STUDENT_ID);
+    if(!aluno) {
+      showToast('Nenhum aluno disponível para o perfil de responsável.','danger');
+      return;
+    }
+    nome = aluno.resp;
+    alunoId = aluno.id;
+  } else if(role === 'psicologo') {
+    nome = 'Dra. Fernanda Cruz';
+  }
 
   currentUser = { role, nome, profId, alunoId, turmas };
   alunosFiltrados = [...getAlunosVisiveis()];
@@ -277,6 +304,8 @@ function doLogout() {
   document.querySelectorAll('.modal-overlay.open').forEach(modal => modal.classList.remove('open'));
   document.getElementById('app').classList.remove('visible');
   document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('loginRole').value = 'gestor';
+  document.getElementById('login-prof-row').style.display = 'none';
   // Restaurar visibilidade de todos itens de menu
   document.querySelectorAll('.nav-item').forEach(el => el.style.display = '');
   currentUser = { role:null, nome:'', profId:null, alunoId:null, turmas:[] };
@@ -356,6 +385,15 @@ async function initApp() {
 // ═══════════════════════════════════════════════════════════
 function popularSelects() {
   const alunos = getAlunosVisiveis();
+
+  const loginProf = document.getElementById('loginProfId');
+  if(loginProf) {
+    loginProf.innerHTML = '<option value="">Selecione um professor</option>' +
+      DB.professores.map(professor => {
+        const turmas = professor.turmas.length ? ` (${professor.turmas.join(' · ')})` : '';
+        return `<option value="${professor.id}">${professor.nome} — ${professor.disciplina || 'Sem disciplina'}${turmas}</option>`;
+      }).join('');
+  }
 
   // Aluno nos modals
   ['n-aluno','o-aluno','enc-aluno','laud-aluno'].forEach(id => {
