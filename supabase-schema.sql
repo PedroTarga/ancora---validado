@@ -140,3 +140,21 @@ CREATE INDEX idx_observacoes_aluno_id ON observacoes(aluno_id);
 CREATE INDEX idx_encaminhamentos_aluno_id ON encaminhamentos(aluno_id);
 CREATE INDEX idx_casos_aluno_id ON casos(aluno_id);
 CREATE INDEX idx_laudos_aluno_id ON laudos(aluno_id);
+
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON
+  turmas,
+  professores,
+  professor_turmas,
+  alunos,
+  disciplinas,
+  notas,
+  observacoes,
+  encaminhamentos,
+  casos,
+  laudos,
+  alertas,
+  frequencia
+TO anon, authenticated;
+
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
