@@ -41,7 +41,7 @@ ancora---validado/
 ### Opção 1: abrir direto no navegador
 
 1. Abra o arquivo `index.html` no navegador.
-2. Faça login com um dos perfis demo disponíveis.
+2. Preencha login e senha como quiser, ou deixe os campos vazios, e clique em **Entrar no Sistema**.
 
 ### Opção 2: servidor local simples
 
@@ -75,18 +75,11 @@ https://pedrotarga.github.io/ancora---validado/
 
 O site é estático e não requer etapa de compilação. Se a publicação não iniciar automaticamente, em **Settings → Pages**, defina **Build and deployment → Source** como **GitHub Actions**.
 
-## Perfis de demonstração
+## Acesso de demonstração
 
-O sistema inclui acesso demo para:
+A tela aceita qualquer valor nos campos de login e senha, inclusive campos vazios. O acesso sempre abre a aplicação como Gestor / Coordenador; não há validação de credenciais.
 
-- Gestor / Coordenador
-- Professor
-- Profissional de apoio / Psicólogo
-- Responsável / Pais
-
-Os perfis são personas de demonstração: escolher um perfil ou aluno não autentica uma pessoa nem comprova vínculo familiar. As verificações de acesso são executadas no navegador e podem ser alteradas por quem controla a página. Os dados estão incluídos no JavaScript do cliente; portanto, não insira dados reais, pessoais ou sensíveis.
-
-No fluxo demonstrativo, a persona de responsável fica vinculada a um único aluno fictício e pode consultar somente as avaliações e a frequência dele; não pode escolher outro aluno, lançar notas, criar observações, abrir o perfil detalhado ou consultar outros módulos. Professores ficam limitados às turmas atribuídas no exemplo.
+As verificações de acesso são executadas no navegador e podem ser alteradas por quem controla a página. Os dados estão incluídos no JavaScript do cliente; portanto, não insira dados reais, pessoais ou sensíveis.
 
 Este projeto não implementa autenticação, autorização confiável, criptografia, auditoria ou persistência em servidor. Antes de qualquer uso real, esses controles precisam ser implementados no backend: autenticar a conta, obter vínculos aluno-responsável de fonte confiável, aplicar autorização e escopo em cada consulta e gravação, proteger dados sensíveis e registrar auditoria. Ocultar botões ou rotas no cliente não constitui uma barreira de segurança.
 

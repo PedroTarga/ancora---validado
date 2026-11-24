@@ -236,40 +236,11 @@ function canRecordGrade(alunoId, disciplina) {
 // ═══════════════════════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════════════════════
-function onLoginRoleChange(role) {
-  document.getElementById('login-prof-row').style.display = role === 'professor' ? 'block' : 'none';
-}
-
-function doLogin() {
-  const role = document.getElementById('loginRole').value;
-  if(!Object.prototype.hasOwnProperty.call(RBAC, role)) {
-    showToast('Selecione um perfil de demonstração válido.','danger');
-    return;
-  }
+function doLogin(event) {
+  event.preventDefault();
+  const role = 'gestor';
   chartsCreated = {};
   let nome = 'Ana Coordenadora', profId = null, alunoId = null, turmas = [];
-
-  if(role === 'professor') {
-    const pid = parseInt(document.getElementById('loginProfId').value);
-    const p = DB.professores.find(x => x.id === pid);
-    nome = p ? p.nome : 'Professor';
-    profId = pid;
-    turmas = p ? [...p.turmas] : [];
-  } else if(role === 'pais') {
-    DEMO_PARENT_STUDENT_ID = DB.alunos[0]?.id ?? null;
-    const aid = DEMO_PARENT_STUDENT_ID;
-    const a = DB.alunos.find(x => x.id === aid);
-    if(!a) {
-      showToast('Selecione um aluno válido para a demonstração.','danger');
-      return;
-    }
-    nome = a.resp;
-    alunoId = aid;
-  } else if(role === 'psicologo') {
-    nome = 'Dra. Fernanda Cruz';
-  } else {
-    nome = 'Ana Coordenadora';
-  }
 
   currentUser = { role, nome, profId, alunoId, turmas };
   alunosFiltrados = [...getAlunosVisiveis()];
@@ -306,8 +277,6 @@ function doLogout() {
   document.querySelectorAll('.modal-overlay.open').forEach(modal => modal.classList.remove('open'));
   document.getElementById('app').classList.remove('visible');
   document.getElementById('login-screen').classList.remove('hidden');
-  document.getElementById('loginRole').value = 'gestor';
-  document.getElementById('login-prof-row').style.display = 'none';
   // Restaurar visibilidade de todos itens de menu
   document.querySelectorAll('.nav-item').forEach(el => el.style.display = '');
   currentUser = { role:null, nome:'', profId:null, alunoId:null, turmas:[] };
@@ -387,15 +356,6 @@ async function initApp() {
 // ═══════════════════════════════════════════════════════════
 function popularSelects() {
   const alunos = getAlunosVisiveis();
-
-  const loginProf = document.getElementById('loginProfId');
-  if(loginProf) {
-    loginProf.innerHTML = '<option value="">Selecione um professor</option>' +
-      DB.professores.map(p => {
-        const turmas = p.turmas.length ? ` (${p.turmas.join(' · ')})` : '';
-        return `<option value="${p.id}">${p.nome} — ${p.disciplina || 'Sem disciplina'}${turmas}</option>`;
-      }).join('');
-  }
 
   // Aluno nos modals
   ['n-aluno','o-aluno','enc-aluno','laud-aluno'].forEach(id => {
